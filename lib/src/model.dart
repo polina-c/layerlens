@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-const String separator = '/';
+import 'package:layerlens/src/primitives.dart';
 
 class Layer {
   final int local;
@@ -38,11 +38,11 @@ abstract class SourceNode {
 
   SourceNode(this.path)
       : shortName = path.last,
-        fullName = path.join(separator);
+        fullName = path.join(pathSeparator);
 
   SourceNode.parse(this.fullName)
       : path = fullName
-            .split(separator)
+            .split(pathSeparator)
             .where((e) => e.trim().isNotEmpty)
             .toList() {
     shortName = path.last;

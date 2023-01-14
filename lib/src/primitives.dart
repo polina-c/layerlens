@@ -12,16 +12,4 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/// Mark the object as deeply immutable when initialization is done.
-///
-/// There is no strong protection from mutation, just some asserts.
-mixin Sealable {
-  /// See doc for the mixin [Sealable].
-  void seal() {
-    _isSealed = true;
-  }
-
-  /// See doc for the mixin [Sealable].
-  bool get isSealed => _isSealed;
-  bool _isSealed = false;
-}
+const String pathSeparator = '/';

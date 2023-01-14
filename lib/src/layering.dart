@@ -13,11 +13,21 @@
 //  limitations under the License.
 
 import 'model.dart';
+import 'primitives.dart';
 
 const String _rootName = '.';
 
 class Layering {
   Layering(Dependencies dependencies) : files = _depsToFiles(dependencies) {
+    _createRoot();
+    _setSiblingDependencies();
+  }
+
+  final Map<FullName, SourceFile> files;
+  final nodes = <FullName, SourceNode>{};
+  late final SourceFolder root;
+
+  void _createRoot() {
     root = SourceFolder([_rootName], {});
 
     for (final fullName in files.keys) {
@@ -27,14 +37,17 @@ class Layering {
     }
   }
 
-  final Map<FullName, SourceFile> files;
-  final nodes = <FullName, SourceNode>{};
-  late final SourceFolder root;
-
-  void setSiblingDeps() {
+  void _setSiblingDependencies() {
     for (final consumer in files.values) {
-      for (final deps in consumer.dependencies) {
-        final siblingIndex = _findSiblingIndex(consumer.path, deps.path);
+      for (final dependency in consumer.dependencies) {
+        final siblingIndex = _findSiblingIndex(consumer.path, dependency.path);
+        final consumerSibling =
+            nodes[_pathFragment(consumer.path, siblingIndex)]!;
+        final dependencySibling =
+            nodes[_pathFragment(dependency.path, siblingIndex)]!;
+
+        consumerSibling.siblingDependencies.add(dependencySibling);
+        dependencySibling.siblingConsumers.add(consumerSibling);
       }
     }
   }
@@ -92,7 +105,7 @@ Map<FullName, SourceFile> _depsToFiles(Dependencies dependencies) {
   return result;
 }
 
-// Finds first index where paths are not equal, i.e. the nodes are siblings to each other.
+/// Finds first index where paths are not equal, i.e. the nodes are siblings to each other.
 int _findSiblingIndex(Path consumer, Path dependency) {
   var index = 0;
 
@@ -101,4 +114,10 @@ int _findSiblingIndex(Path consumer, Path dependency) {
   }
 
   return index;
+}
+
+/// Fragment of path from beginning to the index, including it.
+FullName _pathFragment(Path path, int toIndex) {
+  final result = path.getRange(0, toIndex + 1);
+  return result.join(pathSeparator);
 }

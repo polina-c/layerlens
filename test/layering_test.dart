@@ -12,7 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:layerlens/src/code_parser.dart';
 import 'package:layerlens/src/layering.dart';
 import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
