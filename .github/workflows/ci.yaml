@@ -19,6 +19,7 @@ jobs:
       - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
         with:
           sdk: main
+
       - name: Version
         run: dart --version
 
@@ -28,6 +29,7 @@ jobs:
       - name: Install example dependencies
         run: dart pub get
         working-directory: example
+        directory: example
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .

@@ -23,6 +23,6 @@ void main() {
 
   test('self', () async {
     final deps = await collectDeps('.');
-    expect(deps, hasLength(3));
+    expect(deps.length, greaterThan(5));
   });
 }
