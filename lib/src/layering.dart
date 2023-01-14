@@ -68,8 +68,9 @@ _propogateFileToFolder(
 Map<FullName, SourceFile> _depsToFiles(Dependencies dependencies) {
   final result = <FullName, SourceFile>{};
   for (final consumerName in dependencies.keys) {
+    result.putIfAbsent(consumerName, () => SourceFile(consumerName));
+
     for (final dependencyName in dependencies[consumerName]!) {
-      result.putIfAbsent(consumerName, () => SourceFile(consumerName));
       result.putIfAbsent(dependencyName, () => SourceFile(dependencyName));
 
       final consumer = result[consumerName]!;

@@ -13,11 +13,27 @@
 //  limitations under the License.
 
 import 'package:layerlens/src/code_parser.dart';
+import 'package:layerlens/src/layering.dart';
+import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
+final _tests = <String, Dependencies>{
+  'simple': {
+    'a/b/c/d.dart': {},
+    'a/b/c.dart': {},
+    'a/b.dart': {},
+    'a.dart': {}
+  },
+};
+
 void main() {
-  test('example', () async {
-    final deps = await collectDeps('example');
-    expect(deps, hasLength(2));
+  test('creates folder structure', () async {
+    for (final name in _tests.keys) {
+      final deps = _tests[name]!;
+      final layering = Layering(deps);
+
+      expect(layering.files, hasLength(deps.length));
+      expect(layering.root.children, hasLength(2));
+    }
   });
 }
