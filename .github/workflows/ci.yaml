@@ -11,8 +11,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        sdk: [master]
     steps:
       # These are the latest versions of the github actions; dependabot will
       # send PRs to keep these up-to-date.
