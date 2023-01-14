@@ -22,13 +22,22 @@ class Layering {
 
     for (final fullName in files.keys) {
       final file = files[fullName]!;
+      nodes[file.fullName] = file;
       _propogateFileToFolder(root, file, file.path, 0);
     }
   }
 
   final Map<FullName, SourceFile> files;
-  final folders = <FullName, SourceFolder>{};
+  final nodes = <FullName, SourceNode>{};
   late final SourceFolder root;
+
+  void setSiblingDeps() {
+    for (final consumer in files.values) {
+      for (final deps in consumer.dependencies) {
+        final siblingIndex = _findSiblingIndex(consumer.path, deps.path);
+      }
+    }
+  }
 
   /// Recursively adds file, and folders for the file path, to the
   /// source tree.
@@ -61,7 +70,7 @@ class Layering {
 
   SourceFolder _createFolder(Path path) {
     final result = SourceFolder(path, {});
-    folders[result.fullName] = result;
+    nodes[result.fullName] = result;
     return result;
   }
 }
@@ -81,4 +90,15 @@ Map<FullName, SourceFile> _depsToFiles(Dependencies dependencies) {
     }
   }
   return result;
+}
+
+// Finds first index where paths are not equal, i.e. the nodes are siblings to each other.
+int _findSiblingIndex(Path consumer, Path dependency) {
+  var index = 0;
+
+  while (consumer[index] == dependency[index]) {
+    index++;
+  }
+
+  return index;
 }
