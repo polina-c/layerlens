@@ -25,6 +25,10 @@ jobs:
       - name: Install dependencies
         run: dart pub get
 
+      - name: Install example dependencies
+        run: dart pub get
+        working-directory: example
+
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
 
