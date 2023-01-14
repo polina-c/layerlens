@@ -15,18 +15,19 @@
 const String separator = '/';
 
 class Layer {
-  final int number;
-  final String full;
+  final int local;
+  final String global;
 
-  Layer(this.number, this.full);
+  Layer(this.local, this.global);
 }
 
 typedef ShortName = String;
 typedef FullName = String;
 typedef Dependencies = Map<FullName, Set<FullName>>;
+typedef Path = List<String>;
 
 abstract class SourceNode {
-  final List<String> path;
+  final Path path;
   late ShortName shortName;
   final FullName fullName;
 
