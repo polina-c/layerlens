@@ -13,13 +13,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout
-
-      - uses: dart-lang/setup-dart
+      # These are the latest versions of the github actions; dependabot will
+      # send PRs to keep these up-to-date.
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
         with:
           sdk: master
-
       - name: Version
         run: dart --version
 
