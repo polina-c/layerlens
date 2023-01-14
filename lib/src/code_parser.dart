@@ -14,9 +14,12 @@
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+// ignore: implementation_imports
 import 'package:analyzer/src/generated/source.dart';
 import 'package:path/path.dart';
+// ignore: implementation_imports
 import 'package:surveyor/src/driver.dart';
+// ignore: implementation_imports
 import 'package:surveyor/src/visitors.dart';
 
 import 'model.dart';
@@ -39,7 +42,7 @@ int? _debugLimit; //500;
 
 class _DepsCollector extends RecursiveAstVisitor
     implements PreAnalysisCallback, PostAnalysisCallback, AstContext {
-  int _count = 0;
+  final _count = 0;
   String? _filePath;
   final String homePath;
 
@@ -54,7 +57,7 @@ class _DepsCollector extends RecursiveAstVisitor
 
   @override
   void setFilePath(String filePath) {
-    this._filePath = filePath;
+    _filePath = filePath;
   }
 
   @override
@@ -89,10 +92,12 @@ class _DepsCollector extends RecursiveAstVisitor
     String? dependency = _toRelative(dependencyAbsolutePath);
     if (!isIncluded(dependency) || !isIncluded(dependent)) return;
 
-    if (!collectedDeps.containsKey(dependent))
-      collectedDeps[dependent] = Set<String>();
-    if (!collectedDeps.containsKey(dependency))
-      collectedDeps[dependency] = Set<String>();
+    if (!collectedDeps.containsKey(dependent)) {
+      collectedDeps[dependent] = <String>{};
+    }
+    if (!collectedDeps.containsKey(dependency)) {
+      collectedDeps[dependency] = <String>{};
+    }
 
     collectedDeps[dependent]!.add(dependency);
   }
