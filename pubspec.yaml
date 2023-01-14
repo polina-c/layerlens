@@ -1,0 +1,14 @@
+name: layerlens
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  surveyor:
+    git:
+      url: https://github.com/pq/surveyor.git
+      ref: master # branch name
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
