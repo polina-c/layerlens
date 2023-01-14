@@ -16,6 +16,8 @@ import 'package:layerlens/src/layering.dart';
 import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
+import 'test_infra/tests.dart';
+
 final _tests = <String, Dependencies>{
   'simple': {
     'a/b/c/d.dart': {},
@@ -33,6 +35,14 @@ void main() {
 
       expect(layering.files, hasLength(deps.length));
       expect(layering.root.children, hasLength(2));
+    }
+  });
+
+  test('parses dependencies', () async {
+    for (final test in layeringTests) {
+      final layering = Layering(test.input);
+      expect(layering.nodes, hasLength(test.nodes));
+      expect(layering.files, hasLength(test.files));
     }
   });
 }
