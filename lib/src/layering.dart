@@ -14,7 +14,7 @@
 
 import 'model.dart';
 
-const String _rootName = '';
+const String _rootName = '.';
 
 class Layering {
   Layering(Dependencies dependencies) : files = _depsToFiles(dependencies) {
@@ -28,11 +28,41 @@ class Layering {
 SourceFolder _root(Map<FullName, SourceFile> files) {
   final result = SourceFolder([_rootName], {});
 
-  for (final file in files.keys){
-    result.
+  for (final fullName in files.keys) {
+    final file = files[fullName]!;
+    _propogateFileToFolder(result, file, file.path, 0);
   }
 
   return result;
+}
+
+/// Recursively adds file, and folders for the file path, to the
+/// source tree.
+_propogateFileToFolder(
+  SourceFolder folder,
+  SourceFile file,
+  List<String> path,
+  pathIndex,
+) {
+  assert(pathIndex < path.length);
+  final isLast = pathIndex == path.length - 1;
+
+  if (isLast) {
+    assert(file.shortName == path[pathIndex]);
+    assert(!folder.children.containsKey(file.shortName));
+    folder.children[file.shortName] = file;
+    return;
+  }
+
+  final subFolderPath = path.getRange(0, pathIndex + 1).toList();
+  final subFolderName = subFolderPath.last;
+
+  final SourceFolder subFolder = folder.children.putIfAbsent(
+    subFolderName,
+    () => SourceFolder(subFolderPath, {}),
+  ) as SourceFolder;
+
+  _propogateFileToFolder(subFolder, file, path, pathIndex + 1);
 }
 
 Map<FullName, SourceFile> _depsToFiles(Dependencies dependencies) {
