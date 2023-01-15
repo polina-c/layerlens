@@ -2,17 +2,7 @@
 
 Generate a dependency diagram in every folder of your source code.
 
-```mermaid
-flowchart TD;
-generator.dart-->model.dart;
-analyzer.dart-->layering.dart;
-analyzer.dart-->model.dart;
-analyzer.dart-->primitives.dart;
-code_parser.dart-->model.dart;
-code_parser.dart-->surveyor;
-layering.dart-->model.dart;
-model.dart-->primitives.dart;
-```
+<img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
 ## Disclaimer
 
@@ -23,15 +13,20 @@ merchantability, or fitness for a particular purpose.
 ## Prerequisites
 
 Install `Markdown Preview Mermaid Support` extension to VSCode,
-to see the diagrams in VSCode preview.
+to see the diagrams in preview.
 
-## Generate Diagrams
+## Generate diagrams for your project
 
-Run:
+1. Add dependency to https://pub.dev/packages/layerlens
+2. Run `dart run layerlens` in the root of your project
+3. Find the file DEPENDENCIES.md in each source folder
+4. In VSCode right click the file and select 'Open Preview'
 
-```
-dart run layerlens
-```
+## Regenerate on every GitHub push
+
+To make GitHub auto-generating the diagrams after every push,
+copy [regenerate-dependencies.yaml](.github/workflows/regenerate-dependencies.yaml)
+to `.github/workflows`.
 
 ## Contributing
 
