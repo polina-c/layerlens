@@ -49,8 +49,10 @@ class Package {
 
   File get pubspecFile => File(pathutil.join(dir.path, 'pubspec.yaml'));
 
-  Future<bool> installDependencies(
-      {bool force = false, bool silent = false,}) async {
+  Future<bool> installDependencies({
+    bool force = false,
+    bool silent = false,
+  }) async {
     if (!force && _installer.hasDependenciesInstalled(this)) {
       return false;
     }
@@ -64,12 +66,16 @@ class _Installer {
   bool hasDependenciesInstalled(Package package) =>
       package.dir.existsSync() && package.packageConfigFile.existsSync();
 
-  Future<ProcessResult?> installDependencies(Package package,
-      {bool silent = false,}) async {
+  Future<ProcessResult?> installDependencies(
+    Package package, {
+    bool silent = false,
+  }) async {
     var sourcePath = package.dir.path;
     if (!package.dir.existsSync()) {
       _print(
-          'Unable to install dependencies: $sourcePath does not exist', silent,);
+        'Unable to install dependencies: $sourcePath does not exist',
+        silent,
+      );
       return null;
     }
     if (!package.pubspecFile.existsSync()) {
@@ -78,15 +84,24 @@ class _Installer {
 
     if (package.dependencies.containsKey('flutter') == true) {
       _print(
-          'Running "flutter packages get" in ${pathutil.basename(sourcePath)}',
-          silent,);
-      return Process.run('flutter', ['packages', 'get'],
-          workingDirectory: sourcePath, runInShell: true,);
+        'Running "flutter packages get" in ${pathutil.basename(sourcePath)}',
+        silent,
+      );
+      return Process.run(
+        'flutter',
+        ['packages', 'get'],
+        workingDirectory: sourcePath,
+        runInShell: true,
+      );
     }
 
     _print('Running "pub get" in ${pathutil.basename(sourcePath)}', silent);
-    return Process.run('dart', ['pub', 'get'],
-        workingDirectory: sourcePath, runInShell: true,);
+    return Process.run(
+      'dart',
+      ['pub', 'get'],
+      workingDirectory: sourcePath,
+      runInShell: true,
+    );
   }
 
   /// Display the following [msg] to stdout iff [silent] is false.

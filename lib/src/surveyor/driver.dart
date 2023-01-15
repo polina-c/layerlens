@@ -106,8 +106,10 @@ class Driver {
 
   bool get skipPackageInstall => forceSkipInstall || options.skipInstall;
 
-  Future analyze(
-      {bool displayTiming = false, bool requirePackagesFile = true,}) {
+  Future analyze({
+    bool displayTiming = false,
+    bool requirePackagesFile = true,
+  }) {
     var analysisFuture =
         _analyze(sources, requirePackagesFile: requirePackagesFile);
     if (!displayTiming) return analysisFuture;
@@ -115,7 +117,8 @@ class Driver {
     var stopwatch = Stopwatch()..start();
     return analysisFuture.then((value) {
       print(
-          '(Elapsed time: ${Duration(milliseconds: stopwatch.elapsedMilliseconds)})',);
+        '(Elapsed time: ${Duration(milliseconds: stopwatch.elapsedMilliseconds)})',
+      );
     });
   }
 
@@ -133,21 +136,28 @@ class Driver {
     }
   }
 
-  Future _analyze(List<String> sourceDirs,
-      {required bool requirePackagesFile,}) async {
+  Future _analyze(
+    List<String> sourceDirs, {
+    required bool requirePackagesFile,
+  }) async {
     if (sourceDirs.isEmpty) {
       _print('Specify one or more files and directories.');
       return;
     }
     ResourceProvider resourceProvider = PhysicalResourceProvider.INSTANCE;
-    await _analyzeFiles(resourceProvider, sourceDirs,
-        requirePackagesFile: requirePackagesFile,);
+    await _analyzeFiles(
+      resourceProvider,
+      sourceDirs,
+      requirePackagesFile: requirePackagesFile,
+    );
     _print('Finished.');
   }
 
   Future _analyzeFiles(
-      ResourceProvider resourceProvider, List<String> analysisRoots,
-      {required bool requirePackagesFile,}) async {
+    ResourceProvider resourceProvider,
+    List<String> analysisRoots, {
+    required bool requirePackagesFile,
+  }) async {
     if (skipPackageInstall) {
       _print('(Skipping dependency checks.)');
     }
@@ -186,7 +196,9 @@ class Driver {
           // Ensure dependencies are installed.
           if (!skipPackageInstall) {
             await package.installDependencies(
-                force: forcePackageInstall, silent: silent,);
+              force: forcePackageInstall,
+              silent: silent,
+            );
           }
 
           // Skip analysis if no .packages.

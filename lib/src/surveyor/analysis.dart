@@ -236,7 +236,9 @@ class CLIError implements Comparable<CLIError> {
 
     // path
     compare = Comparable.compare(
-        sourcePath.toLowerCase(), other.sourcePath.toLowerCase(),);
+      sourcePath.toLowerCase(),
+      other.sourcePath.toLowerCase(),
+    );
     if (compare != 0) return compare;
 
     // offset
@@ -260,7 +262,9 @@ abstract class ErrorFormatter {
   void flush();
 
   void formatError(
-      Map<AnalysisError, LineInfo> errorToLine, AnalysisError error,);
+    Map<AnalysisError, LineInfo> errorToLine,
+    AnalysisError error,
+  );
 
   void formatErrors(List<AnalysisErrorInfo> errorInfos) {
     stats.unfilteredCount += errorInfos.length;
@@ -287,11 +291,13 @@ class HumanErrorFormatter extends ErrorFormatter {
   // This is a Set in order to de-dup CLI errors.
   Set<CLIError> batchedErrors = {};
 
-  HumanErrorFormatter(StringSink out, AnalysisStats stats,
-      {SeverityProcessor? severityProcessor,
-      bool ansiColor = false,
-      this.displayCorrections = false,})
-      : ansi = AnsiLogger(ansiColor),
+  HumanErrorFormatter(
+    StringSink out,
+    AnalysisStats stats, {
+    SeverityProcessor? severityProcessor,
+    bool ansiColor = false,
+    this.displayCorrections = false,
+  })  : ansi = AnsiLogger(ansiColor),
         super(out, stats, severityProcessor: severityProcessor);
 
   @override
@@ -322,7 +328,8 @@ class HumanErrorFormatter extends ErrorFormatter {
 
       if (displayCorrections) {
         out.writeln(
-            '${' '.padLeft(error.severity.length + 2)}${error.correction}',);
+          '${' '.padLeft(error.severity.length + 2)}${error.correction}',
+        );
       }
     }
 
@@ -332,7 +339,9 @@ class HumanErrorFormatter extends ErrorFormatter {
 
   @override
   void formatError(
-      Map<AnalysisError, LineInfo> errorToLine, AnalysisError error,) {
+    Map<AnalysisError, LineInfo> errorToLine,
+    AnalysisError error,
+  ) {
     var source = error.source;
     var location = errorToLine[error]!.getLocation(error.offset);
 
@@ -366,15 +375,17 @@ class HumanErrorFormatter extends ErrorFormatter {
       sourcePath = _relative(source.fullName);
     }
 
-    batchedErrors.add(CLIError(
-      severity: errorType,
-      sourcePath: sourcePath,
-      offset: error.offset,
-      line: location.lineNumber,
-      column: location.columnNumber,
-      message: message,
-      errorCode: error.errorCode.name.toLowerCase(),
-      correction: error.correction,
-    ),);
+    batchedErrors.add(
+      CLIError(
+        severity: errorType,
+        sourcePath: sourcePath,
+        offset: error.offset,
+        line: location.lineNumber,
+        column: location.columnNumber,
+        message: message,
+        errorCode: error.errorCode.name.toLowerCase(),
+        correction: error.correction,
+      ),
+    );
   }
 }
