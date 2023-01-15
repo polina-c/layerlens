@@ -1,3 +1,7 @@
+# 1.0.4
+
+* More inor fixes.
+
 # 1.0.3
 
 * Minor fixes.
