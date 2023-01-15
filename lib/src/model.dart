@@ -25,8 +25,8 @@ abstract class SourceNode {
   late ShortName shortName;
   final FullName fullName;
 
-  final siblingDependencies = <SourceNode>[];
-  final siblingConsumers = <SourceNode>[];
+  final siblingDependencies = <SourceNode>{};
+  final siblingConsumers = <SourceNode>{};
 
   Layer? layer;
 
@@ -47,9 +47,6 @@ class SourceFolder extends SourceNode {
   SourceFolder(super.path, this.children);
 
   Map<ShortName, SourceNode> children;
-
-  bool get hasMultipleSourceFiles =>
-      children.values.whereType<SourceFile>().length > 1;
 
   void orderChildrenByLayer() {
     final entries = children.entries.toList()

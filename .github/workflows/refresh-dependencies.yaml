@@ -1,0 +1,38 @@
+name: Refresh dependencies.
+
+on: [push]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: clone the repo
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+    - name: install dart sdk
+      uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
+      with:
+        sdk: dev
+
+    - name: version
+      run: dart --version
+
+    - name: dart pub get
+      run: dart pub get
+
+    - name: generate
+      run: dart run layerlens
+
+    - name: Commit files
+      run: |
+        echo ${{ github.ref }}
+        git add .
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "CI: Automated layerlens push" -a | exit 0
+    - name: Push changes
+      if: github.ref == 'refs/heads/master'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
