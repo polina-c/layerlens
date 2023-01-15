@@ -12,112 +12,105 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'dart:math';
+
 import 'model.dart';
-import 'primitives.dart';
 
-const String _rootName = '.';
+// wl in this file means 'without layer'
 
-class Layering {
-  Layering(Dependencies dependencies) : files = _depsToFiles(dependencies) {
-    _createRoot();
-    _setSiblingDependencies();
-  }
+void assignLayers(SourceFolder folder, {String parentGlobalLayer = ''}) {
+  _assignLocalLayersForSiblings(folder);
+}
 
-  final Map<FullName, SourceFile> files;
-  final nodes = <FullName, SourceNode>{};
-  late final SourceFolder root;
+// TODO(polina-c): convert to records.
+class _NodesAndValue {
+  final Set<SourceNode> nodes;
+  final int value;
 
-  void _createRoot() {
-    root = SourceFolder([_rootName], {});
+  _NodesAndValue(this.nodes, this.value);
+}
 
-    for (final fullName in files.keys) {
-      final file = files[fullName]!;
-      nodes[file.fullName] = file;
-      _propogateFileToFolder(root, file, file.path, 0);
+void _assignLocalLayersForSiblings(SourceFolder folder) {
+  // Items without layer.
+  final wl = folder.children.values.toSet();
+  int layer = 1;
+
+  while (wl.isNotEmpty) {
+    final withMinConsumersWl = _withMinConsumersWl(wl);
+    final nextSet = _withMaxDependenciesWl(withMinConsumersWl.nodes).nodes;
+
+    assert(nextSet.isNotEmpty);
+
+    if (withMinConsumersWl.value > 0) {
+      // If there are cycles, layer alphabetically.
+      final sorted = nextSet.toList()
+        ..sort((a, b) => a.shortName.compareTo(b.shortName));
+
+      for (final node in sorted) {
+        node.layer = Layer(layer);
+        wl.remove(node);
+        layer++;
+      }
+    } else {
+      // Assign the same number to all.
+      for (final node in nextSet) {
+        node.layer = Layer(layer);
+        wl.remove(node);
+      }
+      layer++;
     }
+
+    // Safety check for infinite loop:
+    assert(layer < 10000);
   }
+}
 
-  void _setSiblingDependencies() {
-    for (final consumer in files.values) {
-      for (final dependency in consumer.dependencies) {
-        final siblingIndex = _findSiblingIndex(consumer.path, dependency.path);
-        final consumerSibling =
-            nodes[_pathFragment(consumer.path, siblingIndex)]!;
-        final dependencySibling =
-            nodes[_pathFragment(dependency.path, siblingIndex)]!;
+_NodesAndValue _withMinConsumersWl(Set<SourceNode> nodes) {
+  final byNumberOfConsumersWl = <int, Set<SourceNode>>{};
 
-        consumerSibling.siblingDependencies.add(dependencySibling);
-        dependencySibling.siblingConsumers.add(consumerSibling);
+  for (final node in nodes) {
+    assert(node.layer == null);
+    int numOfConsumersWl = 0;
+
+    for (final consumer in node.siblingConsumers) {
+      if (consumer.layer == null) {
+        numOfConsumersWl += 1;
       }
     }
+
+    byNumberOfConsumersWl.putIfAbsent(numOfConsumersWl, () => {}).add(node);
   }
 
-  /// Recursively adds file, and folders for the file path, to the
-  /// source tree.
-  _propogateFileToFolder(
-    SourceFolder folder,
-    SourceFile file,
-    List<String> path,
-    pathIndex,
-  ) {
-    assert(pathIndex < path.length);
-    final isLast = pathIndex == path.length - 1;
+  final minNumber = byNumberOfConsumersWl.keys.reduce((v, e) => min(v, e));
 
-    if (isLast) {
-      assert(file.shortName == path[pathIndex]);
-      assert(!folder.children.containsKey(file.shortName));
-      folder.children[file.shortName] = file;
-      return;
+  return _NodesAndValue(
+    byNumberOfConsumersWl[minNumber]!,
+    minNumber,
+  );
+}
+
+_NodesAndValue _withMaxDependenciesWl(Set<SourceNode> nodes) {
+  final byNumberOfDependenciesWl = <int, Set<SourceNode>>{};
+
+  for (final node in nodes) {
+    assert(node.layer == null);
+    int numOfDependenciesWl = 0;
+
+    for (final dependency in node.siblingConsumers) {
+      if (dependency.layer == null) {
+        numOfDependenciesWl += 1;
+      }
     }
 
-    final subFolderPath = path.getRange(0, pathIndex + 1).toList();
-    final subFolderName = subFolderPath.last;
-
-    final SourceFolder subFolder = folder.children.putIfAbsent(
-      subFolderName,
-      () => _createFolder(subFolderPath),
-    ) as SourceFolder;
-
-    _propogateFileToFolder(subFolder, file, path, pathIndex + 1);
+    byNumberOfDependenciesWl
+        .putIfAbsent(numOfDependenciesWl, () => {})
+        .add(node);
   }
 
-  SourceFolder _createFolder(Path path) {
-    final result = SourceFolder(path, {});
-    nodes[result.fullName] = result;
-    return result;
-  }
-}
+  final maxNumber = byNumberOfDependenciesWl.keys.reduce((v, e) => max(v, e));
 
-Map<FullName, SourceFile> _depsToFiles(Dependencies dependencies) {
-  final result = <FullName, SourceFile>{};
-  for (final consumerName in dependencies.keys) {
-    result.putIfAbsent(consumerName, () => SourceFile(consumerName));
-
-    for (final dependencyName in dependencies[consumerName]!) {
-      result.putIfAbsent(dependencyName, () => SourceFile(dependencyName));
-
-      final consumer = result[consumerName]!;
-      final dependency = result[dependencyName]!;
-
-      consumer.dependencies.add(dependency);
-    }
-  }
-  return result;
-}
-
-/// Finds first index where paths are not equal, i.e. the nodes are siblings to each other.
-int _findSiblingIndex(Path consumer, Path dependency) {
-  var index = 0;
-
-  while (consumer[index] == dependency[index]) {
-    index++;
-  }
-
-  return index;
-}
-
-/// Fragment of path from beginning to the index, including it.
-FullName _pathFragment(Path path, int toIndex) {
-  final result = path.getRange(0, toIndex + 1);
-  return result.join(pathSeparator);
+  return _NodesAndValue(
+    byNumberOfDependenciesWl[maxNumber]!,
+    maxNumber,
+  );
 }

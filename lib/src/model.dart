@@ -16,9 +16,9 @@ import 'package:layerlens/src/primitives.dart';
 
 class Layer {
   final int local;
-  final String global;
+  late String global;
 
-  Layer(this.local, this.global);
+  Layer(this.local);
 }
 
 typedef ShortName = String;
@@ -34,7 +34,7 @@ abstract class SourceNode {
   final siblingDependencies = <SourceNode>[];
   final siblingConsumers = <SourceNode>[];
 
-  bool hasInversions = false;
+  Layer? layer;
 
   SourceNode(this.path)
       : shortName = path.last,

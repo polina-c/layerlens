@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:layerlens/src/layering.dart';
+import 'package:layerlens/src/analyzer.dart';
 import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
@@ -31,7 +31,7 @@ void main() {
   test('creates folder structure', () async {
     for (final name in _tests.keys) {
       final deps = _tests[name]!;
-      final layering = Layering(deps);
+      final layering = Analyzer(deps);
 
       expect(layering.files, hasLength(deps.length));
       expect(layering.root.children, hasLength(2));
@@ -40,9 +40,9 @@ void main() {
 
   test('parses dependencies', () async {
     for (final test in layeringTests) {
-      final layering = Layering(test.input);
-      expect(layering.nodes, hasLength(test.nodes));
-      expect(layering.files, hasLength(test.files));
+      final analyzer = Analyzer(test.input);
+      expect(analyzer.nodes, hasLength(test.nodes));
+      expect(analyzer.files, hasLength(test.files));
     }
   });
 }
