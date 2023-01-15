@@ -26,7 +26,7 @@ import 'package:analyzer/src/lint/linter.dart'; // ignore: implementation_import
 import 'package:analyzer/src/lint/registry.dart'; // ignore: implementation_imports
 import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
-import 'package:linter/src/rules.dart'; // ignore: implementation_imports
+
 import 'package:path/path.dart' as path;
 
 import 'common.dart';
@@ -107,7 +107,7 @@ class Driver {
   bool get skipPackageInstall => forceSkipInstall || options.skipInstall;
 
   Future analyze(
-      {bool displayTiming = false, bool requirePackagesFile = true}) {
+      {bool displayTiming = false, bool requirePackagesFile = true,}) {
     var analysisFuture =
         _analyze(sources, requirePackagesFile: requirePackagesFile);
     if (!displayTiming) return analysisFuture;
@@ -115,7 +115,7 @@ class Driver {
     var stopwatch = Stopwatch()..start();
     return analysisFuture.then((value) {
       print(
-          '(Elapsed time: ${Duration(milliseconds: stopwatch.elapsedMilliseconds)})');
+          '(Elapsed time: ${Duration(milliseconds: stopwatch.elapsedMilliseconds)})',);
     });
   }
 
@@ -134,20 +134,20 @@ class Driver {
   }
 
   Future _analyze(List<String> sourceDirs,
-      {required bool requirePackagesFile}) async {
+      {required bool requirePackagesFile,}) async {
     if (sourceDirs.isEmpty) {
       _print('Specify one or more files and directories.');
       return;
     }
     ResourceProvider resourceProvider = PhysicalResourceProvider.INSTANCE;
     await _analyzeFiles(resourceProvider, sourceDirs,
-        requirePackagesFile: requirePackagesFile);
+        requirePackagesFile: requirePackagesFile,);
     _print('Finished.');
   }
 
   Future _analyzeFiles(
       ResourceProvider resourceProvider, List<String> analysisRoots,
-      {required bool requirePackagesFile}) async {
+      {required bool requirePackagesFile,}) async {
     if (skipPackageInstall) {
       _print('(Skipping dependency checks.)');
     }
@@ -160,8 +160,6 @@ class Driver {
     _print('Analyzing...');
 
     var cmd = DriverCommands();
-
-    registerLintRules();
 
     for (var root in analysisRoots) {
       if (cmd.continueAnalyzing) {
@@ -188,7 +186,7 @@ class Driver {
           // Ensure dependencies are installed.
           if (!skipPackageInstall) {
             await package.installDependencies(
-                force: forcePackageInstall, silent: silent);
+                force: forcePackageInstall, silent: silent,);
           }
 
           // Skip analysis if no .packages.

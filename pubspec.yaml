@@ -8,11 +8,9 @@ environment:
 
 dependencies:
   analyzer: ^3.0.0
+  cli_util: ^0.3.5
+  http: ^0.13.5
   path: ^1.8.3
-  surveyor:
-    git:
-      url: https://github.com/pq/surveyor.git
-      ref: master # branch name
   yaml: ^3.1.1
 
 dev_dependencies:

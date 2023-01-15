@@ -2,6 +2,18 @@
 
 Generate a dependency diagram in every folder of your source code.
 
+```mermaid
+flowchart TD;
+generator.dart-->model.dart;
+analyzer.dart-->layering.dart;
+analyzer.dart-->model.dart;
+analyzer.dart-->primitives.dart;
+code_parser.dart-->model.dart;
+code_parser.dart-->surveyor;
+layering.dart-->model.dart;
+model.dart-->primitives.dart;
+```
+
 ## Disclaimer
 
 This project is not an official Google project. It is not supported by
