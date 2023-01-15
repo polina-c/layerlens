@@ -14,17 +14,11 @@
 
 import 'package:layerlens/src/primitives.dart';
 
-class Layer {
-  final int local;
-  late String global;
-
-  Layer(this.local);
-}
-
 typedef ShortName = String;
 typedef FullName = String;
 typedef Dependencies = Map<FullName, Set<FullName>>;
 typedef Path = List<String>;
+typedef Layer = int;
 
 abstract class SourceNode {
   final Path path;
@@ -52,7 +46,13 @@ abstract class SourceNode {
 class SourceFolder extends SourceNode {
   SourceFolder(super.path, this.children);
 
-  final Map<ShortName, SourceNode> children;
+  Map<ShortName, SourceNode> children;
+
+  void orderChildrenByLayer() {
+    final entries = children.entries.toList()
+      ..sort((a, b) => a.value.layer!.compareTo(b.value.layer!));
+    children = Map.fromEntries(entries);
+  }
 }
 
 class SourceFile extends SourceNode {

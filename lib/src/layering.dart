@@ -16,13 +16,21 @@ import 'dart:math';
 
 import 'model.dart';
 
-// wl in this file means 'without layer'
+// `wl` in this file means 'without layer'
 
-void assignLayers(SourceFolder folder, {String parentGlobalLayer = ''}) {
-  _assignLocalLayersForSiblings(folder);
+/// Recursively assigns layers.
+void assignLayers(SourceFolder folder) {
+  _assignLocalLayerToChildren(folder);
+  folder.orderChildrenByLayer();
+
+  for (final child in folder.children.values) {
+    if (child is SourceFolder) {
+      assignLayers(child);
+    }
+  }
 }
 
-// TODO(polina-c): convert to records.
+// TODO(polina-c): convert to record.
 class _NodesAndValue {
   final Set<SourceNode> nodes;
   final int value;
@@ -30,7 +38,7 @@ class _NodesAndValue {
   _NodesAndValue(this.nodes, this.value);
 }
 
-void _assignLocalLayersForSiblings(SourceFolder folder) {
+void _assignLocalLayerToChildren(SourceFolder folder) {
   // Items without layer.
   final wl = folder.children.values.toSet();
   int layer = 1;
@@ -47,14 +55,14 @@ void _assignLocalLayersForSiblings(SourceFolder folder) {
         ..sort((a, b) => a.shortName.compareTo(b.shortName));
 
       for (final node in sorted) {
-        node.layer = Layer(layer);
+        node.layer = layer;
         wl.remove(node);
         layer++;
       }
     } else {
       // Assign the same number to all.
       for (final node in nextSet) {
-        node.layer = Layer(layer);
+        node.layer = layer;
         wl.remove(node);
       }
       layer++;

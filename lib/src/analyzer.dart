@@ -28,6 +28,8 @@ class Analyzer {
 
   final Map<FullName, SourceFile> files;
   final nodes = <FullName, SourceNode>{};
+
+  /// Children are ordered by layer.
   late final SourceFolder root;
 
   void _createRoot() {
