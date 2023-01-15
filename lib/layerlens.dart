@@ -20,7 +20,5 @@ import 'src/code_parser.dart';
 Future<void> generateLayering(String packageFolder) async {
   final deps = await collectDeps(packageFolder);
   final layering = Analyzer(deps);
-  final presenter =
-      LayeringPresenter(layering: layering, packageFolder: packageFolder);
-  presenter.generateFiles();
+  await MdGenerator(folder: layering.root).generateFiles();
 }

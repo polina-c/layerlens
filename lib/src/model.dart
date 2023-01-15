@@ -48,6 +48,9 @@ class SourceFolder extends SourceNode {
 
   Map<ShortName, SourceNode> children;
 
+  bool get hasMultipleSourceFiles =>
+      children.values.whereType<SourceFile>().length > 1;
+
   void orderChildrenByLayer() {
     final entries = children.entries.toList()
       ..sort((a, b) => a.value.layer!.compareTo(b.value.layer!));

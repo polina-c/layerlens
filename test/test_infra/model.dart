@@ -15,8 +15,12 @@
 import 'package:layerlens/src/model.dart';
 
 class LayeringTest {
-  LayeringTest(this.name,
-      {required this.input, required this.files, required this.nodes});
+  LayeringTest(
+    this.name, {
+    required this.input,
+    required this.files,
+    required this.nodes,
+  });
 
   late final String name;
   late final Dependencies input;

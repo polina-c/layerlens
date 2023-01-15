@@ -111,6 +111,9 @@ class _DepsCollector extends RecursiveAstVisitor
   }
 
   @override
-  void preAnalysis(SurveyorContext context,
-      {bool? subDir, DriverCommands? commandCallback}) {}
+  void preAnalysis(
+    SurveyorContext context, {
+    bool? subDir,
+    DriverCommands? commandCallback,
+  }) {}
 }

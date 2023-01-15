@@ -14,18 +14,28 @@
 
 import 'dart:io';
 
-import 'analyzer.dart';
+import 'package:layerlens/src/model.dart';
 
-class LayeringPresenter {
-  final Analyzer layering;
-  final String packageFolder;
+class MdGenerator {
+  final SourceFolder folder;
 
-  LayeringPresenter({
-    required this.layering,
-    required this.packageFolder,
+  MdGenerator({
+    required this.folder,
   });
 
-  void generateFiles() {
-    File('LAYERS.MD').writeAsStringSync('hi\n');
+  Future<void> generateFiles() async {
+    await _generateFile(folder);
+  }
+
+  /// Recursively generates md files in source folders.
+  Future<void> _generateFile(SourceFolder folder) async {
+    final file = File('${folder.fullName}/DEPENDENCIES.md');
+
+    if (await file.exists()) await file.delete();
+    if (folder.hasMultipleSourceFiles) file.writeAsStringSync(file.path);
+
+    for (final node in folder.children.values) {
+      if (node is SourceFolder) await _generateFile(node);
+    }
   }
 }
