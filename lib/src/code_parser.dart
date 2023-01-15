@@ -17,12 +17,10 @@ import 'package:analyzer/dart/ast/visitor.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/generated/source.dart';
 import 'package:path/path.dart';
-// ignore: implementation_imports
-import 'package:surveyor/src/driver.dart';
-// ignore: implementation_imports
-import 'package:surveyor/src/visitors.dart';
 
 import 'model.dart';
+import 'surveyor/driver.dart';
+import 'surveyor/visitors.dart';
 
 Future<Dependencies> collectDeps(String packageFolder) async {
   var collector = _DepsCollector(packageFolder);

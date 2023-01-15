@@ -10,11 +10,12 @@ merchantability, or fitness for a particular purpose.
 
 ## Prerequisites
 
-Install `Markdown Preview Mermaid Support` extension to VSCode.
+Install `Markdown Preview Mermaid Support` extension to VSCode,
+to see the diagrams in VSCode preview.
 
 ## Generate Diagrams
 
-Then run:
+Run:
 
 ```
 dart run layerlens
