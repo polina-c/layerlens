@@ -4,6 +4,8 @@ Generate dependency diagram in every folder of your source code.
 
 <img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
+[Layerlens on pub.dev](https://pub.dev/packages/layerlens)
+
 ## Disclaimer
 
 This project is not an official Google project. It is not supported by

@@ -1,6 +1,10 @@
+# 1.0.5
+
+* Even more minor fixes.
+
 # 1.0.4
 
-* More inor fixes.
+* More minor fixes.
 
 # 1.0.3
 
