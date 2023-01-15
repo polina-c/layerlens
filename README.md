@@ -24,9 +24,9 @@ to see the diagrams locally, in preview.
 3. Find the generated file DEPENDENCIES.md in a source folder
 4. In VSCode, right click the file and select 'Open Preview'
 
-### Regenerate on every GitHub push
+### Re-generate on every GitHub push
 
-To make GitHub auto-generating the diagrams after every push,
+To make GitHub re-generating the diagrams after every push,
 copy [regenerate-dependencies.yaml](.github/workflows/regenerate-dependencies.yaml)
 to `.github/workflows`.
 
