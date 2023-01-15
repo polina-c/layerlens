@@ -32,7 +32,12 @@ to `.github/workflows`.
 
 ### Alert on circular references
 
-If you want presubmit alerting on circular references to be implemented, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain why you want it.
+If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain why you want it.
+
+### Supported languages
+
+While lauerlens diagramming is language agnistic, for now only `dart` is supported.
+Please [submit an issue](https://github.com/polina-c/layerlens/issues/new) if you want other language to be added.
 
 ## Contribute to layerlens
 
