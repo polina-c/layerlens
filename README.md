@@ -17,7 +17,7 @@ merchantability, or fitness for a particular purpose.
 Install `Markdown Preview Mermaid Support` extension to VSCode,
 to see the diagrams locally, in preview.
 
-## Generate diagrams for your project
+## Generate diagrams
 
 1. Add dependency to https://pub.dev/packages/layerlens
 2. Run `dart run layerlens` in the root of your project
