@@ -18,6 +18,15 @@
             "args": [
                 "--path=../platform/polina_flutter/packages/flutter",
             ],
-        }
+        },
+        {
+            "name": "polina-c/analyzer",
+            "request": "launch",
+            "type": "dart",
+            "program": "bin/layerlens.dart",
+            "args": [
+                "--path=../dart-sdk/sdk/pkg/analyzer",
+            ],
+        },
     ]
 }
