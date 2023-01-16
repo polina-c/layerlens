@@ -25,7 +25,7 @@ enum _Options {
 }
 
 void main(List<String> args) async {
-  final parser =
+  final parsedArgs =
       (ArgParser()..addOption(_Options.path.name, defaultsTo: '.')).parse(args);
-  await generateLayering(parser[_Options.path.name]);
+  await generateLayering(parsedArgs[_Options.path.name]);
 }
