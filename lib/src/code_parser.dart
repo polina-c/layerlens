@@ -87,18 +87,18 @@ class _DepsCollector extends RecursiveAstVisitor
   }
 
   _collectDep(String dependentAbsolutePath, String dependencyAbsolutePath) {
-    String? dependent = _toRelative(dependentAbsolutePath);
+    String? consumer = _toRelative(dependentAbsolutePath);
     String? dependency = _toRelative(dependencyAbsolutePath);
-    if (!isIncluded(dependency) || !isIncluded(dependent)) return;
+    if (!isIncluded(dependency) || !isIncluded(consumer)) return;
 
-    if (!collectedDeps.containsKey(dependent)) {
-      collectedDeps[dependent] = <String>{};
+    if (!collectedDeps.containsKey(consumer)) {
+      collectedDeps[consumer] = <String>{};
     }
     if (!collectedDeps.containsKey(dependency)) {
       collectedDeps[dependency] = <String>{};
     }
 
-    collectedDeps[dependent]!.add(dependency);
+    collectedDeps[consumer]!.add(dependency);
   }
 
   String _toRelative(String path) {
