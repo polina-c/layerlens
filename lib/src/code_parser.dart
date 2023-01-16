@@ -105,10 +105,11 @@ class _DepsCollector extends RecursiveAstVisitor
     var result = normalize(relative(path, from: homePath));
 
     // Leading '../' should be removed, because
-    // `normalize does not handle it.
+    // `normalize` does not handle it.
     var count = 0;
-    while (result.startsWith('..$pathSeparator')) {
-      result = result.substring('../'.length);
+    final parentDir = '..$pathSeparator';
+    while (result.startsWith(parentDir)) {
+      result = result.substring(parentDir.length);
       count++;
     }
 
