@@ -12,8 +12,20 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'package:args/args.dart';
 import 'package:layerlens/layerlens.dart';
 
+enum _Options {
+  path('path'),
+  ;
+
+  const _Options(this.name);
+
+  final String name;
+}
+
 void main(List<String> args) async {
-  await generateLayering('.');
+  final parser =
+      (ArgParser()..addOption(_Options.path.name, defaultsTo: '.')).parse(args);
+  await generateLayering(parser[_Options.path.name]);
 }
