@@ -13,36 +13,21 @@
 //  limitations under the License.
 
 import 'package:layerlens/src/analyzer.dart';
-import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
 import 'test_infra/tests.dart';
 
-final _tests = <String, Dependencies>{
-  'simple': {
-    'a/b/c/d.dart': {},
-    'a/b/c.dart': {},
-    'a/b.dart': {},
-    'a.dart': {}
-  },
-};
-
 void main() {
-  test('creates folder structure', () async {
-    for (final name in _tests.keys) {
-      final deps = _tests[name]!;
-      final layering = Analyzer(deps);
-
-      expect(layering.files, hasLength(deps.length));
-      expect(layering.root.children, hasLength(2));
-    }
-  });
-
-  test('parses dependencies', () async {
-    for (final test in layeringTests) {
-      final analyzer = Analyzer(test.input);
-      expect(analyzer.nodes, hasLength(test.nodes));
-      expect(analyzer.files, hasLength(test.files));
-    }
-  });
+  for (final t in layeringTests) {
+    test('parses dependencies for ${t.name}', () async {
+      final analyzer = Analyzer(t.input);
+      expect(analyzer.files, hasLength(t.input.length), reason: t.name);
+      expect(analyzer.nodes, hasLength(t.nodes), reason: t.name);
+      expect(
+        analyzer.root.children,
+        hasLength(t.rootChildren),
+        reason: t.name,
+      );
+    });
+  }
 }

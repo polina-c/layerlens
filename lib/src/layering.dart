@@ -69,7 +69,7 @@ void _assignLocalLayerToChildren(SourceFolder folder) {
     }
 
     // Safety check for infinite loop:
-    if (layer < 10000) throw 'The loop seems to be infinite';
+    if (layer > 10000) throw 'The loop seems to be infinite';
   }
 }
 

@@ -17,13 +17,34 @@ import 'model.dart';
 /// Test data, used accross tests.
 final layeringTests = [
   LayeringTest(
-    'test1',
+    'no dependencies',
+    input: {
+      'a/b/c/d.dart': {},
+      'a/b/c.dart': {},
+      'a/b.dart': {},
+      'a.dart': {},
+    },
+    rootChildren: 2,
+    nodes: 7,
+  ),
+  LayeringTest(
+    'simple cirle',
+    input: {
+      'a': {'b'},
+      'b': {'c'},
+      'c': {'a'}
+    },
+    rootChildren: 3,
+    nodes: 3,
+  ),
+  LayeringTest(
+    'cross-folder cirle',
     input: {
       'root': {'a/a'},
       'a/a': {'b/b'},
       'b/b': {'root'}
     },
-    files: 3,
+    rootChildren: 3,
     nodes: 5,
   )
 ];

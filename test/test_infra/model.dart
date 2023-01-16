@@ -18,13 +18,13 @@ class LayeringTest {
   LayeringTest(
     this.name, {
     required this.input,
-    required this.files,
     required this.nodes,
+    required this.rootChildren,
   });
 
   late final String name;
   late final Dependencies input;
 
-  final int files;
   final int nodes;
+  final int rootChildren;
 }
