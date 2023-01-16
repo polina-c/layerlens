@@ -54,11 +54,16 @@ class MdGenerator {
     result.writeln('');
     result.writeln('```mermaid');
     result.writeln('flowchart TD;');
+
+    final items = <String>[];
     for (final consumer in folder.children.values) {
       for (final dep in consumer.siblingDependencies) {
-        result.writeln('${consumer.shortName}-->${dep.shortName};');
+        items.add('${consumer.shortName}-->${dep.shortName};');
       }
     }
+    items.sort();
+    result.writeln(items.join('\n'));
+
     result.writeln('```');
     result.writeln('');
 
