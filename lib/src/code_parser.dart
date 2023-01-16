@@ -19,6 +19,7 @@ import 'package:analyzer/src/generated/source.dart';
 import 'package:path/path.dart';
 
 import 'model.dart';
+import 'primitives.dart';
 import 'surveyor/driver.dart';
 import 'surveyor/visitors.dart';
 
@@ -101,7 +102,24 @@ class _DepsCollector extends RecursiveAstVisitor
   }
 
   String _toRelative(String path) {
-    return relative(path, from: homePath);
+    var result = normalize(relative(path, from: homePath));
+
+    // Leading '../' should be removed, because
+    // `normalize does not handle it.
+    var count = 0;
+    while (result.startsWith('..$pathSeparator')) {
+      result = result.substring('../'.length);
+      count++;
+    }
+
+    while (count > 0) {
+      final index = result.indexOf(pathSeparator);
+      result = result.substring(index + 1);
+
+      count--;
+    }
+
+    return result;
   }
 
   bool isIncluded(String relativePath) {
