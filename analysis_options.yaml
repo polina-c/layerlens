@@ -17,6 +17,7 @@ include: package:lints/recommended.yaml
 
 linter:
   rules:
+    - prefer_relative_imports
     - require_trailing_commas
     - unawaited_futures
 

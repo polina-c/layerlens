@@ -13,8 +13,7 @@
 //  limitations under the License.
 
 import 'dart:io';
-
-import 'package:layerlens/src/model.dart';
+import 'model.dart';
 
 class MdGenerator {
   final SourceFolder folder;
@@ -29,10 +28,17 @@ class MdGenerator {
 
   /// Recursively generates md files in source folders.
   Future<void> _generateFile(SourceFolder folder) async {
-    final file = File('${folder.fullName}/DEPENDENCIES.md');
+    final file =
+        File('${folder.fullName}${Platform.pathSeparator}DEPENDENCIES.md');
 
-    if (await file.exists()) await file.delete();
-    if (folder.children.length > 1) file.writeAsStringSync(_content(folder));
+    if (await file.exists()) {
+      await file.delete();
+    }
+
+    // Diagram is generated if there are at least two children.
+    if (folder.children.length > 1) {
+      file.writeAsStringSync(_content(folder));
+    }
 
     for (final node in folder.children.values) {
       if (node is SourceFolder) await _generateFile(node);

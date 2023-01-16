@@ -12,12 +12,16 @@ merchantability, or fitness for a particular purpose.
 
 ## Prerequisites
 
-Install `Markdown Preview Mermaid Support` extension to VSCode,
-to see the diagrams locally, in preview.
+To see the diagrams in IDE, in preview:
+- **VSCode**: install `Markdown Preview Mermaid Support` extension
+
+- **Android Studio**: enable the "Mermaid" extension in the
+[Markdown language settings](https://www.jetbrains.com/help/idea/markdown-reference.html)
 
 ## Generate diagrams
 
 1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
+2. Run `dart pub get` or `flutter pub get`
 2. Run `dart run layerlens` in the root of your project
 3. Find the generated file DEPENDENCIES.md in a source folder
 4. In VSCode, right click the file and select 'Open Preview'
@@ -25,7 +29,7 @@ to see the diagrams locally, in preview.
 ## CI: re-generate on every GitHub push
 
 To make GitHub re-generating the diagrams after every push,
-copy [regenerate-dependencies.yaml](.github/workflows/regenerate-dependencies.yaml)
+copy [regenerate-dependencies.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
 to `.github/workflows`.
 
 ## Alert on circular references

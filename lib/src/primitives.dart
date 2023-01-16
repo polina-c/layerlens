@@ -12,4 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-const String pathSeparator = '/';
+import 'dart:io';
+
+String pathSeparator = Platform.pathSeparator;

@@ -69,10 +69,13 @@ void _assignLocalLayerToChildren(SourceFolder folder) {
     }
 
     // Safety check for infinite loop:
-    assert(layer < 10000);
+    if (layer < 10000) throw 'The loop seems to be infinite';
   }
 }
 
+/// This method is very similar to [_withMaxDependenciesWl].
+///
+/// It is possible to generalize them into one.
 _NodesAndValue _withMinConsumersWl(Set<SourceNode> nodes) {
   final byNumberOfConsumersWl = <int, Set<SourceNode>>{};
 
@@ -104,7 +107,7 @@ _NodesAndValue _withMaxDependenciesWl(Set<SourceNode> nodes) {
     assert(node.layer == null);
     int numOfDependenciesWl = 0;
 
-    for (final dependency in node.siblingConsumers) {
+    for (final dependency in node.siblingDependencies) {
       if (dependency.layer == null) {
         numOfDependenciesWl += 1;
       }

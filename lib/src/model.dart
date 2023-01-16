@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:layerlens/src/primitives.dart';
+import 'primitives.dart';
 
 typedef ShortName = String;
 typedef FullName = String;

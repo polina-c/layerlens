@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:layerlens/src/generator.dart';
-import 'package:layerlens/src/analyzer.dart';
+import 'src/generator.dart';
+import 'src/analyzer.dart';
 
 import 'src/code_parser.dart';
 
