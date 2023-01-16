@@ -17,7 +17,7 @@ to see the diagrams locally, in preview.
 
 ## Generate diagrams
 
-1. Add dependency to https://pub.dev/packages/layerlens
+1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
 2. Run `dart run layerlens` in the root of your project
 3. Find the generated file DEPENDENCIES.md in a source folder
 4. In VSCode, right click the file and select 'Open Preview'
