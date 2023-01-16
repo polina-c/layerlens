@@ -1,3 +1,7 @@
+# 1.0.6
+
+* Made multipackage and minor fixes.
+
 # 1.0.5
 
 * Even more minor fixes.
