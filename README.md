@@ -29,7 +29,7 @@ To see the diagrams in IDE, in preview:
 ## CI: re-generate on every GitHub push
 
 To make GitHub re-generating the diagrams after every push,
-copy [regenerate-dependencies.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
+copy content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
 to `.github/workflows`.
 
 ## Alert on circular references
