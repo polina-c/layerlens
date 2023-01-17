@@ -1,6 +1,6 @@
-# .0.7
+# 1.0.7
 
-
+* Described benefits of a-circular code.
 
 # 1.0.6
 
