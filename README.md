@@ -12,7 +12,7 @@ merchantability, or fitness for a particular purpose.
 
 ## Prerequisites
 
-To see the diagrams in IDE, in preview:
+To see the diagrams in IDE:
 - **VSCode**: install `Markdown Preview Mermaid Support` extension
 
 - **Android Studio**: enable the "Mermaid" extension in the
