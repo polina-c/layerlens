@@ -1,0 +1,37 @@
+name: Dart
+
+on:
+  push:
+    branches: [ main]
+  pull_request:
+    branches: [ main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # These are the latest versions of the github actions; dependabot will
+      # send PRs to keep these up-to-date.
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: main
+
+      - name: Version
+        run: dart --version
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Install example dependencies
+        working-directory: example
+        run: dart pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze project source
+        run: dart analyze --fatal-infos
+
+      - name: Run tests
+        run: dart test
