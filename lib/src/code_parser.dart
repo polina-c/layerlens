@@ -32,12 +32,12 @@ Future<Dependencies> collectDeps(String packageFolder) async {
   driver.visitor = collector;
   driver.silent = true;
 
-  await driver.analyze();
+  await driver.analyze(requirePackagesFile: false);
   return collector.collectedDeps;
 }
 
 /// If non-null, stops once limit is reached (for debugging).
-int? _debugLimit; //500;
+const _limit = 100000;
 
 class _DepsCollector extends RecursiveAstVisitor
     implements PreAnalysisCallback, PostAnalysisCallback, AstContext {
@@ -51,7 +51,7 @@ class _DepsCollector extends RecursiveAstVisitor
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
-    cmd.continueAnalyzing = _debugLimit == null || _count < _debugLimit!;
+    if (_count > _limit) throw 'too many items';
   }
 
   @override
@@ -89,6 +89,7 @@ class _DepsCollector extends RecursiveAstVisitor
   _collectDep(String dependentAbsolutePath, String dependencyAbsolutePath) {
     String? consumer = _toRelative(dependentAbsolutePath);
     String? dependency = _toRelative(dependencyAbsolutePath);
+
     if (!isIncluded(dependency) || !isIncluded(consumer)) return;
 
     if (!collectedDeps.containsKey(consumer)) {

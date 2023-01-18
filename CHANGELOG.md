@@ -1,3 +1,7 @@
+# 1.0.7
+
+* Described benefits of a-circular code.
+
 # 1.0.6
 
 * Made multipackage and minor fixes.

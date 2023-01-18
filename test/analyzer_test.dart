@@ -19,7 +19,7 @@ import 'test_infra/tests.dart';
 
 void main() {
   for (final t in layeringTests) {
-    test('parses dependencies for ${t.name}', () async {
+    test('$Analyzer works for ${t.name}', () async {
       final analyzer = Analyzer(t.input);
       expect(analyzer.files, hasLength(t.input.length), reason: t.name);
       expect(analyzer.nodes, hasLength(t.nodes), reason: t.name);
