@@ -13,13 +13,12 @@
 //  limitations under the License.
 
 // ignore: implementation_imports
-import 'dart:io';
 
 // ignore: implementation_imports
 import 'package:surveyor/src/driver.dart';
 // ignore: implementation_imports
 import 'package:surveyor/src/visitors.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
@@ -49,11 +48,11 @@ class _DepsCollector extends RecursiveAstVisitor
     implements PreAnalysisCallback, PostAnalysisCallback, AstContext {
   final _count = 0;
   String? _filePath;
-  final String _rootPath;
+  final String _absoluteRootPath;
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector(this._rootPath);
+  _DepsCollector(String rootPath) : _absoluteRootPath = p.absolute(rootPath);
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -109,66 +108,58 @@ class _DepsCollector extends RecursiveAstVisitor
   /// Returns null if imported lib is outside of the package's `lib` and `bin`.
   Dependency? _toDependency(String? importValue) {
     return toDependency(
-      rootPath: _rootPath,
+      absoluteRootPath: _absoluteRootPath,
       absoluteLibPath: _filePath,
       importPath: importValue,
-      currentDir: Directory.current.absolute.path,
     );
   }
 }
 
-/// Returns null if imported lib is outside of the package's `lib` and `bin`.
+/// Returns null if the import is outside of the package `lib` or `bin`.
 Dependency? toDependency({
-  required String rootPath,
-  required String currentDir,
+  required String absoluteRootPath,
   required String? absoluteLibPath,
   required String? importPath,
 }) {
   if (absoluteLibPath == null || importPath == null) return null;
+  if (importPath.startsWith('package:') || importPath.startsWith('dart:')) {
+    return null;
+  }
+
+  final consumer = _toRelative(absoluteRootPath, absoluteLibPath);
+  if (!_isInLibOrBin(consumer)) return null;
+
+  final absoluteLibDir = p.dirname(absoluteLibPath);
+
+  final dependencyAbsoulte =
+      p.join(absoluteRootPath, absoluteLibDir, importPath);
+  final dependency = _toRelative(absoluteRootPath, dependencyAbsoulte);
+  if (!_isInLibOrBin(dependency)) return null;
+
+  return Dependency(dependency: dependency, consumer: consumer);
 }
 
-  // _PathTest(
-  //   name: 'simple',
-  //   rootPath: "../platform/packages/flutter",
-  //   absoluteLibPath: '/root/_/platform/packages/flutter/lib/src/consumer.dart',
-  //   currentDir: "/roor/_/layerlens",
-  //   importPath: 'dependency.dart',
-  //   result: Dependency(
-  //     consumer: 'lib/src/consumer.dart',
-  //     dependency: 'lib/src/dependency.dart',
-  //   ),
-  // ),
+bool _isInLibOrBin(String lib) =>
+    lib.startsWith('bin/') || lib.startsWith('lib/');
 
+String _toRelative(String home, String path) {
+  var result = p.normalize(p.relative(path, from: home));
 
+  // Leading '../' should be removed, because
+  // `normalize` does not handle it.
+  var count = 0;
+  final parentDir = '..$pathSeparator';
+  while (result.startsWith(parentDir)) {
+    result = result.substring(parentDir.length);
+    count++;
+  }
 
-// String isRelative(String? lib) {
-//   if (lib == null) return false;
-//   return !lib.startsWith('package:') && !lib.startsWith('dart:');
-// }
+  while (count > 0) {
+    final index = result.indexOf(pathSeparator);
+    result = result.substring(index + 1);
 
-// bool isIncluded(String relativePath) {
-//   return relativePath.startsWith('bin/') || relativePath.startsWith('lib/');
-// }
+    count--;
+  }
 
-
-// String _toRelative(String path) {
-//   var result = normalize(relative(path, from: homePath));
-
-//   // Leading '../' should be removed, because
-//   // `normalize` does not handle it.
-//   var count = 0;
-//   final parentDir = '..$pathSeparator';
-//   while (result.startsWith(parentDir)) {
-//     result = result.substring(parentDir.length);
-//     count++;
-//   }
-
-//   while (count > 0) {
-//     final index = result.indexOf(pathSeparator);
-//     result = result.substring(index + 1);
-
-//     count--;
-//   }
-
-//   return result;
-// }
+  return result;
+}

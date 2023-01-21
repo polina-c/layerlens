@@ -82,4 +82,7 @@ class Dependency {
 
   @override
   int get hashCode => Object.hash(dependency, consumer);
+
+  @override
+  String toString() => '$consumer -> $dependency';
 }

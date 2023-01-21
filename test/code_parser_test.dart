@@ -30,10 +30,9 @@ void main() {
   });
 
   for (final t in _pathTests) {
-    test('toDependency produces correct output, ${t.name}', () {
+    test('toDependency, ${t.name}', () {
       final result = toDependency(
-        rootPath: t.rootPath,
-        currentDir: t.currentDir,
+        absoluteRootPath: t.absoluteRootPath,
         absoluteLibPath: t.absoluteLibPath,
         importPath: t.importPath,
       );
@@ -46,32 +45,63 @@ void main() {
 class _PathTest {
   final String name;
 
-  final String rootPath;
+  final String absoluteRootPath;
   final String absoluteLibPath;
   final String? importPath;
-  final String currentDir;
 
   final Dependency? result;
 
   _PathTest({
     required this.name,
-    required this.rootPath,
+    required this.absoluteRootPath,
     required this.absoluteLibPath,
     required this.importPath,
-    required this.currentDir,
     required this.result,
   });
 }
 
 final _pathTests = [
   _PathTest(
-    name: 'simple',
-    rootPath: "../platform/packages/flutter",
-    absoluteLibPath: '/root/_/platform/packages/flutter/lib/src/consumer.dart',
-    currentDir: "/roor/_/layerlens",
+    name: 'local',
+    absoluteRootPath: "/root/flutter",
+    absoluteLibPath: '/root/flutter/lib/src/consumer.dart',
     importPath: 'dependency.dart',
     result: Dependency(
       consumer: 'lib/src/consumer.dart',
+      dependency: 'lib/src/dependency.dart',
+    ),
+  ),
+  _PathTest(
+    name: 'package:',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/z/consumer.dart',
+    importPath: 'package:dependency/dependency.dart',
+    result: null,
+  ),
+  _PathTest(
+    name: 'dart:',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/z/consumer.dart',
+    importPath: 'dart:dependency/dependency.dart',
+    result: null,
+  ),
+  _PathTest(
+    name: 'subdir',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/lib/consumer.dart',
+    importPath: 'a/b/dependency.dart',
+    result: Dependency(
+      consumer: 'lib/consumer.dart',
+      dependency: 'lib/a/b/dependency.dart',
+    ),
+  ),
+  _PathTest(
+    name: 'parent',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/lib/src/a/b/consumer.dart',
+    importPath: '../../dependency.dart',
+    result: Dependency(
+      consumer: 'lib/src/a/b/consumer.dart',
       dependency: 'lib/src/dependency.dart',
     ),
   ),
