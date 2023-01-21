@@ -12,16 +12,19 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// ignore: implementation_imports
+import 'package:surveyor/src/driver.dart';
+// ignore: implementation_imports
+import 'package:surveyor/src/visitors.dart';
+import 'package:path/path.dart';
+
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/generated/source.dart';
-import 'package:path/path.dart';
 
 import 'model.dart';
 import 'primitives.dart';
-import 'surveyor/driver.dart';
-import 'surveyor/visitors.dart';
 
 Future<Dependencies> collectDeps(String packageFolder) async {
   var collector = _DepsCollector(packageFolder);
@@ -62,10 +65,8 @@ class _DepsCollector extends RecursiveAstVisitor
   @override
   void setLineInfo(LineInfo lineInfo) {}
 
-  static Source source(NamespaceDirective node) {
-    final selectedSource = node.selectedSource;
-    if (selectedSource == null) throw 'selectedSource should not be null';
-    return selectedSource;
+  static String source(NamespaceDirective node) {
+    return node.toSource();
   }
 
   String get filePath {
@@ -76,13 +77,13 @@ class _DepsCollector extends RecursiveAstVisitor
 
   @override
   dynamic visitImportDirective(ImportDirective node) {
-    _collectDep(filePath, source(node).fullName);
+    _collectDep(filePath, source(node));
     return super.visitImportDirective(node);
   }
 
   @override
   visitExportDirective(ExportDirective node) {
-    _collectDep(filePath, source(node).fullName);
+    _collectDep(filePath, source(node));
     return super.visitExportDirective(node);
   }
 
