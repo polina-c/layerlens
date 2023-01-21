@@ -14,22 +14,25 @@
 
 import 'dart:io';
 import 'model.dart';
+import 'package:path/path.dart' as path;
 
 class MdGenerator {
-  final SourceFolder folder;
+  final String rootDir;
+  final SourceFolder sourceFolder;
 
   MdGenerator({
-    required this.folder,
+    required this.rootDir,
+    required this.sourceFolder,
   });
 
   Future<void> generateFiles() async {
-    await _generateFile(folder);
+    await _generateFile(sourceFolder);
   }
 
   /// Recursively generates md files in source folders.
   Future<void> _generateFile(SourceFolder folder) async {
     final file =
-        File('${folder.fullName}${Platform.pathSeparator}DEPENDENCIES.md');
+        File(path.joinAll([rootDir, folder.fullName, 'DEPENDENCIES.md']));
 
     if (await file.exists()) {
       await file.delete();
