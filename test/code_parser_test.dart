@@ -13,16 +13,66 @@
 //  limitations under the License.
 
 import 'package:layerlens/src/code_parser.dart';
+import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('example', () async {
-    final deps = await collectDeps('example');
-    expect(deps, hasLength(2));
+  group('collect deps for', () {
+    test('example', () async {
+      final deps = await collectDeps('example');
+      expect(deps, hasLength(2));
+    });
+
+    test('self', () async {
+      final deps = await collectDeps('.');
+      expect(deps.length, greaterThan(5));
+    });
   });
 
-  test('self', () async {
-    final deps = await collectDeps('.');
-    expect(deps.length, greaterThan(5));
+  for (final t in _pathTests) {
+    test('toDependency produces correct output, ${t.name}', () {
+      final result = toDependency(
+        rootPath: t.rootPath,
+        currentDir: t.currentDir,
+        absoluteLibPath: t.absoluteLibPath,
+        importPath: t.importPath,
+      );
+
+      expect(result, equals(t.result));
+    });
+  }
+}
+
+class _PathTest {
+  final String name;
+
+  final String rootPath;
+  final String absoluteLibPath;
+  final String? importPath;
+  final String currentDir;
+
+  final Dependency? result;
+
+  _PathTest({
+    required this.name,
+    required this.rootPath,
+    required this.absoluteLibPath,
+    required this.importPath,
+    required this.currentDir,
+    required this.result,
   });
 }
+
+final _pathTests = [
+  _PathTest(
+    name: 'simple',
+    rootPath: "../platform/packages/flutter",
+    absoluteLibPath: '/root/_/platform/packages/flutter/lib/src/consumer.dart',
+    currentDir: "/roor/_/layerlens",
+    importPath: 'dependency.dart',
+    result: Dependency(
+      consumer: 'lib/src/consumer.dart',
+      dependency: 'lib/src/dependency.dart',
+    ),
+  ),
+];

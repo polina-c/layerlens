@@ -18,6 +18,12 @@ To see the diagrams in IDE, in preview:
 - **Android Studio**: enable the "Mermaid" extension in the
 [Markdown language settings](https://www.jetbrains.com/help/idea/markdown-reference.html)
 
+## Assumptions
+
+All internal dependencies would be referenced with relative directives.
+
+Use [prefer_relative_imports](https://dart-lang.github.io/linter/lints/prefer_relative_imports.html) to guarantee this.
+
 ## Generate diagrams
 
 1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
