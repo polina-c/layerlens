@@ -103,33 +103,7 @@ class _DepsCollector extends RecursiveAstVisitor
       collectedDeps[dependency.dependency] = <String>{};
     }
 
-    collectedDeps[consumer]!.add(dependency);
-  }
-
-  String _toRelative(String path) {
-    var result = p.normalize(p.relative(path, from: rootDir));
-
-    // Leading '../' should be removed, because
-    // `normalize` does not handle it.
-    var count = 0;
-    final parentDir = '..$pathSeparator';
-    while (result.startsWith(parentDir)) {
-      result = result.substring(parentDir.length);
-      count++;
-    }
-
-    while (count > 0) {
-      final index = result.indexOf(pathSeparator);
-      result = result.substring(index + 1);
-
-      count--;
-    }
-
-    return result;
-  }
-
-  bool isIncluded(String relativePath) {
-    return relativePath.startsWith('bin/') || relativePath.startsWith('lib/');
+    collectedDeps[dependency.consumer]!.add(dependency.dependency);
   }
 
   @override
