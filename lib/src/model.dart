@@ -60,3 +60,29 @@ class SourceFile extends SourceNode {
 
   final Set<SourceFile> dependencies = {};
 }
+
+class Dependency {
+  Dependency({
+    required this.dependency,
+    required this.consumer,
+  });
+
+  final String dependency;
+  final String consumer;
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+    return other is Dependency &&
+        other.dependency == dependency &&
+        other.consumer == consumer;
+  }
+
+  @override
+  int get hashCode => Object.hash(dependency, consumer);
+
+  @override
+  String toString() => '$consumer -> $dependency';
+}

@@ -9,9 +9,7 @@ analyzer.dart-->model.dart;
 analyzer.dart-->primitives.dart;
 code_parser.dart-->model.dart;
 code_parser.dart-->primitives.dart;
-code_parser.dart-->surveyor;
 generator.dart-->model.dart;
 layering.dart-->model.dart;
-model.dart-->primitives.dart;
 ```
 

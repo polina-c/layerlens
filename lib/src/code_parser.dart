@@ -12,16 +12,21 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// ignore: implementation_imports
+
+// ignore: implementation_imports
+import 'package:surveyor/src/driver.dart';
+// ignore: implementation_imports
+import 'package:surveyor/src/visitors.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/generated/source.dart';
-import 'package:path/path.dart';
 
 import 'model.dart';
 import 'primitives.dart';
-import 'surveyor/driver.dart';
-import 'surveyor/visitors.dart';
 
 Future<Dependencies> collectDeps({
   required String packageFolder,
@@ -33,7 +38,7 @@ Future<Dependencies> collectDeps({
   );
   var driver = Driver.forArgs([packageFolder]);
   driver.forceSkipInstall = true;
-  driver.showErrors = false;
+  driver.showErrors = true;
   driver.resolveUnits = true;
   driver.visitor = collector;
   driver.silent = true;
@@ -49,12 +54,13 @@ class _DepsCollector extends RecursiveAstVisitor
     implements PreAnalysisCallback, PostAnalysisCallback, AstContext {
   final _count = 0;
   String? _filePath;
-  final String packageFolder;
+  final String _absoluteRootPath;
   final String? packageName;
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector({required this.packageFolder, required this.packageName});
+  _DepsCollector({required this.rootPath, required this.packageName})
+      : _absoluteRootPath = p.absolute(rootPath);
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -69,12 +75,6 @@ class _DepsCollector extends RecursiveAstVisitor
   @override
   void setLineInfo(LineInfo lineInfo) {}
 
-  static Source source(NamespaceDirective node) {
-    final selectedSource = node.selectedSource;
-    if (selectedSource == null) throw 'selectedSource should not be null';
-    return selectedSource;
-  }
-
   String get filePath {
     final filePath = _filePath;
     if (filePath == null) throw 'File path should be set';
@@ -83,27 +83,24 @@ class _DepsCollector extends RecursiveAstVisitor
 
   @override
   dynamic visitImportDirective(ImportDirective node) {
-    _collectDep(filePath, source(node).fullName);
+    _collectDep(_toDependency(node.uri.stringValue));
     return super.visitImportDirective(node);
   }
 
   @override
   visitExportDirective(ExportDirective node) {
-    _collectDep(filePath, source(node).fullName);
+    _collectDep(_toDependency(node.uri.stringValue));
     return super.visitExportDirective(node);
   }
 
-  _collectDep(String dependentAbsolutePath, String dependencyAbsolutePath) {
-    String? consumer = _toRelative(dependentAbsolutePath);
-    String? dependency = _toRelative(dependencyAbsolutePath);
+  _collectDep(Dependency? dependency) {
+    if (dependency == null) return;
 
-    if (!isIncluded(dependency) || !isIncluded(consumer)) return;
-
-    if (!collectedDeps.containsKey(consumer)) {
-      collectedDeps[consumer] = <String>{};
+    if (!collectedDeps.containsKey(dependency.consumer)) {
+      collectedDeps[dependency.consumer] = <String>{};
     }
-    if (!collectedDeps.containsKey(dependency)) {
-      collectedDeps[dependency] = <String>{};
+    if (!collectedDeps.containsKey(dependency.dependency)) {
+      collectedDeps[dependency.dependency] = <String>{};
     }
 
     collectedDeps[consumer]!.add(dependency);
@@ -141,4 +138,62 @@ class _DepsCollector extends RecursiveAstVisitor
     bool? subDir,
     DriverCommands? commandCallback,
   }) {}
+
+  /// Returns null if imported lib is outside of the package's `lib` and `bin`.
+  Dependency? _toDependency(String? importValue) {
+    return toDependency(
+      absoluteRootPath: _absoluteRootPath,
+      absoluteLibPath: _filePath,
+      importPath: importValue,
+    );
+  }
+}
+
+/// Returns null if the import is outside of the package `lib` or `bin`.
+Dependency? toDependency({
+  required String absoluteRootPath,
+  required String? absoluteLibPath,
+  required String? importPath,
+}) {
+  if (absoluteLibPath == null || importPath == null) return null;
+  if (importPath.startsWith('package:') || importPath.startsWith('dart:')) {
+    return null;
+  }
+
+  final consumer = _toRelative(absoluteRootPath, absoluteLibPath);
+  if (!_isInLibOrBin(consumer)) return null;
+
+  final absoluteLibDir = p.dirname(absoluteLibPath);
+
+  final dependencyAbsoulte =
+      p.join(absoluteRootPath, absoluteLibDir, importPath);
+  final dependency = _toRelative(absoluteRootPath, dependencyAbsoulte);
+  if (!_isInLibOrBin(dependency)) return null;
+
+  return Dependency(dependency: dependency, consumer: consumer);
+}
+
+bool _isInLibOrBin(String lib) =>
+    lib.startsWith('bin/') || lib.startsWith('lib/');
+
+String _toRelative(String home, String path) {
+  var result = p.normalize(p.relative(path, from: home));
+
+  // Leading '../' should be removed, because
+  // `normalize` does not handle it.
+  var count = 0;
+  final parentDir = '..$pathSeparator';
+  while (result.startsWith(parentDir)) {
+    result = result.substring(parentDir.length);
+    count++;
+  }
+
+  while (count > 0) {
+    final index = result.indexOf(pathSeparator);
+    result = result.substring(index + 1);
+
+    count--;
+  }
+
+  return result;
 }

@@ -1,5 +1,5 @@
 name: layerlens
-version: 1.0.7
+version: 1.0.8
 description: Generate a dependency diagram in every folder of your source code.
 repository: https://github.com/polina-c/layerlens
 
@@ -7,13 +7,11 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  analyzer: ^3.0.0
+  analyzer: ^5.4.0
   args: ^2.3.1
-  cli_util: ^0.3.5
-  http: ^0.13.5
   platform: ^3.1.0
   path: ^1.8.3
-  yaml: ^3.1.1
+  surveyor: ^1.0.0-dev.2.0
 
 dev_dependencies:
   lints: ^2.0.0
