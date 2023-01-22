@@ -17,7 +17,7 @@ import 'package:layerlens/layerlens.dart';
 
 enum _Options {
   path('path'),
-  package('analyzer'),
+  package('package'),
   ;
 
   const _Options(this.name);
