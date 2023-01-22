@@ -47,7 +47,9 @@ You may want to avoid circular references, because without circles:
 
 LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
 
-If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain your use case.
+If, in addition, you want presubmit alerting for circular references,
+upvote [the issue](https://github.com/polina-c/layerlens/issues/4)
+and explain your use case.
 
 ## Supported languages
 
