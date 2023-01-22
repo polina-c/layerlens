@@ -29,14 +29,14 @@ import 'model.dart';
 import 'primitives.dart';
 
 Future<Dependencies> collectDeps({
-  required String packageFolder,
+  required String rootDir,
   String? packageName,
 }) async {
   var collector = _DepsCollector(
     packageName: packageName,
-    packageFolder: packageFolder,
+    rootDir: rootDir,
   );
-  var driver = Driver.forArgs([packageFolder]);
+  var driver = Driver.forArgs([rootDir]);
   driver.forceSkipInstall = true;
   driver.showErrors = true;
   driver.resolveUnits = true;
@@ -59,8 +59,8 @@ class _DepsCollector extends RecursiveAstVisitor
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector({required this.rootPath, required this.packageName})
-      : _absoluteRootPath = p.absolute(rootPath);
+  _DepsCollector({required String rootDir, required this.packageName})
+      : _absoluteRootPath = p.absolute(rootDir);
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -107,7 +107,7 @@ class _DepsCollector extends RecursiveAstVisitor
   }
 
   String _toRelative(String path) {
-    var result = normalize(relative(path, from: packageFolder));
+    var result = p.normalize(p.relative(path, from: rootDir));
 
     // Leading '../' should be removed, because
     // `normalize` does not handle it.
