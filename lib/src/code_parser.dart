@@ -55,12 +55,13 @@ class _DepsCollector extends RecursiveAstVisitor
   final _count = 0;
   String? _filePath;
   final String _absoluteRootPath;
-  final String? packageName;
+  final String? packagePrefix;
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector({required String rootDir, required this.packageName})
-      : _absoluteRootPath = p.absolute(rootDir);
+  _DepsCollector({required String rootDir, required packageName})
+      : _absoluteRootPath = p.absolute(rootDir),
+        packagePrefix = packageName == null ? null : 'package:$packageName/';
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -119,6 +120,7 @@ class _DepsCollector extends RecursiveAstVisitor
       absoluteRootPath: _absoluteRootPath,
       absoluteLibPath: _filePath,
       importPath: importValue,
+      packagePrefix: packagePrefix,
     );
   }
 }
@@ -128,19 +130,30 @@ Dependency? toDependency({
   required String absoluteRootPath,
   required String? absoluteLibPath,
   required String? importPath,
+  required String? packagePrefix,
 }) {
   if (absoluteLibPath == null || importPath == null) return null;
-  if (importPath.startsWith('package:') || importPath.startsWith('dart:')) {
-    return null;
-  }
+  if (importPath.startsWith('dart:')) return null;
+
+  // Check if import statement references library in the same package.
+  final isSelfReference =
+      packagePrefix != null && importPath.startsWith(packagePrefix);
+
+  if (importPath.startsWith('package:') && !isSelfReference) return null;
 
   final consumer = _toRelative(absoluteRootPath, absoluteLibPath);
   if (!_isInLibOrBin(consumer)) return null;
 
   final absoluteLibDir = p.dirname(absoluteLibPath);
 
-  final dependencyAbsoulte =
-      p.join(absoluteRootPath, absoluteLibDir, importPath);
+  final String dependencyAbsoulte;
+  if (isSelfReference) {
+    final fromLib = importPath.substring(packagePrefix.length);
+    dependencyAbsoulte = p.join(absoluteRootPath, 'lib', fromLib);
+  } else {
+    dependencyAbsoulte = p.join(absoluteRootPath, absoluteLibDir, importPath);
+  }
+
   final dependency = _toRelative(absoluteRootPath, dependencyAbsoulte);
   if (!_isInLibOrBin(dependency)) return null;
 

@@ -35,6 +35,7 @@ void main() {
         absoluteRootPath: t.absoluteRootPath,
         absoluteLibPath: t.absoluteLibPath,
         importPath: t.importPath,
+        packagePrefix: t.packagePrefix,
       );
 
       expect(result, equals(t.result));
@@ -48,6 +49,7 @@ class _PathTest {
   final String absoluteRootPath;
   final String absoluteLibPath;
   final String? importPath;
+  final String? packagePrefix;
 
   final Dependency? result;
 
@@ -57,6 +59,7 @@ class _PathTest {
     required this.absoluteLibPath,
     required this.importPath,
     required this.result,
+    this.packagePrefix,
   });
 }
 
@@ -103,6 +106,36 @@ final _pathTests = [
     result: Dependency(
       consumer: 'lib/src/a/b/consumer.dart',
       dependency: 'lib/src/dependency.dart',
+    ),
+  ),
+  _PathTest(
+    name: 'package, relative',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/lib/src/a/b/consumer.dart',
+    importPath: '../../dependency.dart',
+    packagePrefix: 'package:thisPackage/',
+    result: Dependency(
+      consumer: 'lib/src/a/b/consumer.dart',
+      dependency: 'lib/src/dependency.dart',
+    ),
+  ),
+  _PathTest(
+    name: 'package, dependency',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/lib/src/a/b/consumer.dart',
+    importPath: 'package:somePackage1/dependency.dart',
+    packagePrefix: 'package:somePackage/',
+    result: null,
+  ),
+  _PathTest(
+    name: 'package, absolute',
+    absoluteRootPath: "/x/y",
+    absoluteLibPath: '/x/y/lib/src/a/b/consumer.dart',
+    importPath: 'package:thisPackage/c/dependency.dart',
+    packagePrefix: 'package:thisPackage/',
+    result: Dependency(
+      consumer: 'lib/src/a/b/consumer.dart',
+      dependency: 'lib/c/dependency.dart',
     ),
   ),
 ];
