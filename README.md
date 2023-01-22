@@ -12,7 +12,7 @@ merchantability, or fitness for a particular purpose.
 
 ## Prerequisites
 
-To see the diagrams in IDE, in preview:
+To see the diagrams in IDE:
 - **VSCode**: install `Markdown Preview Mermaid Support` extension
 
 - **Android Studio**: enable the "Mermaid" extension in the
@@ -28,17 +28,22 @@ Use [prefer_relative_imports](https://dart-lang.github.io/linter/lints/prefer_re
 
 1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
 2. Run `dart pub get` or `flutter pub get`
-2. Run `dart run layerlens` in the root of your project
+2. Run `dart run layerlens`
 3. Find the generated file DEPENDENCIES.md in a source folder
 4. In VSCode, right click the file and select 'Open Preview'
 
 ## CI: re-generate on every GitHub push
 
 To make GitHub re-generating the diagrams after every push,
-copy [regenerate-dependencies.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
+copy content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
 to `.github/workflows`.
 
 ## Alert on circular references
+
+You may want to avoid circular references, because:
+1. Method contracts are easier to understand
+2. Treeshaking (i.e. not includine non-used code into build) is more efficient
+3. Incremental build is faster
 
 If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain why you want it.
 
