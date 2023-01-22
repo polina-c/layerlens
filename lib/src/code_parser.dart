@@ -35,7 +35,7 @@ Future<Dependencies> collectDeps(String packageFolder) async {
   driver.showErrors = true;
   driver.resolveUnits = true;
   driver.visitor = collector;
-  driver.silent = false;
+  driver.silent = true;
 
   await driver.analyze(requirePackagesFile: false);
   return collector.collectedDeps;
