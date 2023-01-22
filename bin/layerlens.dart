@@ -37,7 +37,7 @@ void main(List<String> args) async {
 
   final parsedArgs = parser.parse(args);
   await generateLayering(
-    packageFolder: parsedArgs[_Options.path.name],
+    rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
   );
 }

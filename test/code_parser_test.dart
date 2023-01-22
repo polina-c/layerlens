@@ -19,12 +19,12 @@ import 'package:test/test.dart';
 void main() {
   group('collect deps for', () {
     test('example', () async {
-      final deps = await collectDeps('example');
+      final deps = await collectDeps(rootDir: 'example');
       expect(deps, hasLength(3));
     });
 
     test('self', () async {
-      final deps = await collectDeps('.');
+      final deps = await collectDeps(rootDir: '.');
       expect(deps.length, greaterThan(5));
     });
   });
