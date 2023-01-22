@@ -40,12 +40,14 @@ to `.github/workflows`.
 
 ## Alert on circular references
 
-You may want to avoid circular references, because:
-1. Method contracts are easier to understand
+You may want to avoid circular references, because without circles:
+1. Method contracts are easier to understand and clean up
 2. Treeshaking (i.e. not includine non-used code into build) is more efficient
 3. Incremental build is faster
 
-If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain why you want it.
+LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
+
+If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain your use case.
 
 ## Supported languages
 
