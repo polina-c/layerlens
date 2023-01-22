@@ -135,11 +135,12 @@ Dependency? toDependency({
   if (absoluteLibPath == null || importPath == null) return null;
   if (importPath.startsWith('dart:')) return null;
 
-  // Check if import statement references library in the same package.
-  final isSelfReference =
+  // Check if import statement references library
+  // with `package:...` in the same package.
+  final toSelfWithPackage =
       packagePrefix != null && importPath.startsWith(packagePrefix);
 
-  if (importPath.startsWith('package:') && !isSelfReference) return null;
+  if (importPath.startsWith('package:') && !toSelfWithPackage) return null;
 
   final consumer = _toRelative(absoluteRootPath, absoluteLibPath);
   if (!_isInLibOrBin(consumer)) return null;
@@ -147,7 +148,7 @@ Dependency? toDependency({
   final absoluteLibDir = p.dirname(absoluteLibPath);
 
   final String dependencyAbsoulte;
-  if (isSelfReference) {
+  if (toSelfWithPackage) {
     final fromLib = importPath.substring(packagePrefix.length);
     dependencyAbsoulte = p.join(absoluteRootPath, 'lib', fromLib);
   } else {
