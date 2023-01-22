@@ -38,9 +38,9 @@ class MdGenerator {
       await file.delete();
     }
 
-    // Diagram is generated if there are at least two children.
-    if (folder.children.length > 1) {
-      file.writeAsStringSync(content(folder));
+    final theContent = content(folder);
+    if (theContent != null) {
+      file.writeAsStringSync(theContent);
     }
 
     for (final node in folder.children.values) {
@@ -48,7 +48,19 @@ class MdGenerator {
     }
   }
 
-  static String content(SourceFolder folder) {
+  static String? content(SourceFolder folder) {
+    final items = <String>[];
+    for (final consumer in folder.children.values) {
+      for (final dep in consumer.siblingDependencies) {
+        final isInversion = consumer.layer! > dep.layer!;
+        final arrow = isInversion ? '--!-->' : '-->';
+        items.add('${consumer.shortName}$arrow${dep.shortName};');
+      }
+    }
+
+    if (items.isEmpty) return null;
+
+    items.sort();
     final result = StringBuffer();
 
     result.writeln('<!---');
@@ -58,18 +70,7 @@ class MdGenerator {
     result.writeln('');
     result.writeln('```mermaid');
     result.writeln('flowchart TD;');
-
-    final items = <String>[];
-    for (final consumer in folder.children.values) {
-      for (final dep in consumer.siblingDependencies) {
-        final isInversion = consumer.layer! > dep.layer!;
-        final arrow = isInversion ? '--!-->' : '-->';
-        items.add('${consumer.shortName}$arrow${dep.shortName};');
-      }
-    }
-    items.sort();
     result.writeln(items.join('\n'));
-
     result.writeln('```');
     result.writeln('');
 
