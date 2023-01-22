@@ -11,6 +11,15 @@
             "program": "bin/layerlens.dart",
         },
         {
+            "name": "example",
+            "request": "launch",
+            "type": "dart",
+            "program": "bin/layerlens.dart",
+            "args": [
+                "--path=example",
+            ],
+        },
+        {
             "name": "polina-c/flutter",
             "request": "launch",
             "type": "dart",
@@ -25,7 +34,7 @@
             "type": "dart",
             "program": "bin/layerlens.dart",
             "args": [
-                "--path=../dart-sdk/sdk/pkg/analyzer",
+                "--path=../dart-sdk-github/pkg/analyzer",
             ],
         },
     ]

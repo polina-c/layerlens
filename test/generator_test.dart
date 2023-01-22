@@ -12,14 +12,19 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'src/generator.dart';
-import 'src/analyzer.dart';
+import 'package:layerlens/src/analyzer.dart';
+import 'package:layerlens/src/code_parser.dart';
+import 'package:layerlens/src/generator.dart';
+import 'package:layerlens/src/model.dart';
+import 'package:test/test.dart';
 
-import 'src/code_parser.dart';
+void main() {
+  test('generator marks inversions', () async {
+    final deps = await collectDeps('example');
+    final analyzer = Analyzer(deps);
 
-Future<void> generateLayering(String rootDir) async {
-  final deps = await collectDeps(rootDir);
-  final layering = Analyzer(deps);
-  await MdGenerator(sourceFolder: layering.root, rootDir: rootDir)
-      .generateFiles();
+    final content =
+        MdGenerator.content(analyzer.root.children['lib'] as SourceFolder);
+    expect(content, contains('--!-->'));
+  });
 }

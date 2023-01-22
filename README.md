@@ -1,6 +1,6 @@
 # LayerLens
 
-Generate dependency diagrams in every folder of your source code as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
+Generate dependency diagram in every folder of your source code as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
 
 <img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
@@ -18,6 +18,12 @@ To see the diagrams in IDE:
 - **Android Studio**: enable the "Mermaid" extension in the
 [Markdown language settings](https://www.jetbrains.com/help/idea/markdown-reference.html)
 
+## Assumptions
+
+All internal dependencies would be referenced with relative directives.
+
+Use [prefer_relative_imports](https://dart-lang.github.io/linter/lints/prefer_relative_imports.html) to guarantee this.
+
 ## Generate diagrams
 
 1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
@@ -34,12 +40,16 @@ to `.github/workflows`.
 
 ## Alert on circular references
 
-You may want to avoid circular references, because:
-1. Method contracts are easier to understand
+You may want to avoid circular references, because without circles:
+1. Method contracts are easier to understand and clean up
 2. Treeshaking (i.e. not includine non-used code into build) is more efficient
 3. Incremental build is faster
 
-If you want presubmit alerting for circular references, upvote [the issue](https://github.com/polina-c/layerlens/issues/4) and explain why you want it.
+LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
+
+If, in addition, you want presubmit alerting for circular references,
+upvote [the issue](https://github.com/polina-c/layerlens/issues/4)
+and explain your use case.
 
 ## Supported languages
 
