@@ -23,8 +23,14 @@ import 'primitives.dart';
 import 'surveyor/driver.dart';
 import 'surveyor/visitors.dart';
 
-Future<Dependencies> collectDeps(String packageFolder) async {
-  var collector = _DepsCollector(packageFolder);
+Future<Dependencies> collectDeps({
+  required String packageFolder,
+  String? packageName,
+}) async {
+  var collector = _DepsCollector(
+    packageName: packageName,
+    packageFolder: packageFolder,
+  );
   var driver = Driver.forArgs([packageFolder]);
   driver.forceSkipInstall = true;
   driver.showErrors = false;
@@ -43,11 +49,12 @@ class _DepsCollector extends RecursiveAstVisitor
     implements PreAnalysisCallback, PostAnalysisCallback, AstContext {
   final _count = 0;
   String? _filePath;
-  final String homePath;
+  final String packageFolder;
+  final String? packageName;
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector(this.homePath);
+  _DepsCollector({required this.packageFolder, required this.packageName});
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -103,7 +110,7 @@ class _DepsCollector extends RecursiveAstVisitor
   }
 
   String _toRelative(String path) {
-    var result = normalize(relative(path, from: homePath));
+    var result = normalize(relative(path, from: packageFolder));
 
     // Leading '../' should be removed, because
     // `normalize` does not handle it.

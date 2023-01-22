@@ -17,12 +17,12 @@ import 'package:test/test.dart';
 
 void main() {
   test('example', () async {
-    final deps = await collectDeps('example');
+    final deps = await collectDeps(packageFolder: 'example');
     expect(deps, hasLength(2));
   });
 
   test('self', () async {
-    final deps = await collectDeps('.');
+    final deps = await collectDeps(packageFolder: '.');
     expect(deps.length, greaterThan(5));
   });
 }
