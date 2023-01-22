@@ -34,7 +34,7 @@
             "type": "dart",
             "program": "bin/layerlens.dart",
             "args": [
-                "--path=../dart-sdk-github/sdk/pkg/analyzer",
+                "--path=../dart-sdk-github/pkg/analyzer",
             ],
         },
     ]
