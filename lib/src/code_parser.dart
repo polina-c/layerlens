@@ -91,7 +91,7 @@ class _DepsCollector extends RecursiveAstVisitor
     if (!collectedDeps.containsKey(dependency.consumer)) {
       collectedDeps[dependency.consumer] = <String>{};
     }
-    if (!collectedDeps.containsKey(dependency)) {
+    if (!collectedDeps.containsKey(dependency.dependency)) {
       collectedDeps[dependency.dependency] = <String>{};
     }
 

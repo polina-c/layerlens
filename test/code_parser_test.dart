@@ -20,7 +20,7 @@ void main() {
   group('collect deps for', () {
     test('example', () async {
       final deps = await collectDeps('example');
-      expect(deps, hasLength(0));
+      expect(deps, hasLength(3));
     });
 
     test('self', () async {
