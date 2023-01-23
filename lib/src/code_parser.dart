@@ -147,15 +147,15 @@ Dependency? toDependency({
 
   final absoluteLibDir = p.dirname(absoluteLibPath);
 
-  final String dependencyAbsoulte;
+  final String dependencyAbsolute;
   if (toSelfWithPackage) {
     final fromLib = importPath.substring(packagePrefix.length);
-    dependencyAbsoulte = p.join(absoluteRootPath, 'lib', fromLib);
+    dependencyAbsolute = p.join(absoluteRootPath, 'lib', fromLib);
   } else {
-    dependencyAbsoulte = p.join(absoluteRootPath, absoluteLibDir, importPath);
+    dependencyAbsolute = p.join(absoluteRootPath, absoluteLibDir, importPath);
   }
 
-  final dependency = _toRelative(absoluteRootPath, dependencyAbsoulte);
+  final dependency = _toRelative(absoluteRootPath, dependencyAbsolute);
   if (!_isInLibOrBin(dependency)) return null;
 
   return Dependency(dependency: dependency, consumer: consumer);
