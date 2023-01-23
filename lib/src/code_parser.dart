@@ -28,9 +28,15 @@ import 'package:analyzer/src/generated/source.dart';
 import 'model.dart';
 import 'primitives.dart';
 
-Future<Dependencies> collectDeps(String packageFolder) async {
-  var collector = _DepsCollector(packageFolder);
-  var driver = Driver.forArgs([packageFolder]);
+Future<Dependencies> collectDeps({
+  required String rootDir,
+  String? packageName,
+}) async {
+  var collector = _DepsCollector(
+    packageName: packageName,
+    rootDir: rootDir,
+  );
+  var driver = Driver.forArgs([rootDir]);
   driver.forceSkipInstall = true;
   driver.showErrors = true;
   driver.resolveUnits = true;
@@ -49,10 +55,13 @@ class _DepsCollector extends RecursiveAstVisitor
   final _count = 0;
   String? _filePath;
   final String _absoluteRootPath;
+  final String? packagePrefix;
 
   Map<String, Set<String>> collectedDeps = {};
 
-  _DepsCollector(String rootPath) : _absoluteRootPath = p.absolute(rootPath);
+  _DepsCollector({required String rootDir, required packageName})
+      : _absoluteRootPath = p.absolute(rootDir),
+        packagePrefix = packageName == null ? null : 'package:$packageName/';
 
   @override
   void postAnalysis(SurveyorContext context, DriverCommands cmd) {
@@ -111,6 +120,7 @@ class _DepsCollector extends RecursiveAstVisitor
       absoluteRootPath: _absoluteRootPath,
       absoluteLibPath: _filePath,
       importPath: importValue,
+      packagePrefix: packagePrefix,
     );
   }
 }
@@ -120,20 +130,32 @@ Dependency? toDependency({
   required String absoluteRootPath,
   required String? absoluteLibPath,
   required String? importPath,
+  required String? packagePrefix,
 }) {
   if (absoluteLibPath == null || importPath == null) return null;
-  if (importPath.startsWith('package:') || importPath.startsWith('dart:')) {
-    return null;
-  }
+  if (importPath.startsWith('dart:')) return null;
+
+  // Check if import statement references library
+  // with `package:...` in the same package.
+  final toSelfWithPackage =
+      packagePrefix != null && importPath.startsWith(packagePrefix);
+
+  if (importPath.startsWith('package:') && !toSelfWithPackage) return null;
 
   final consumer = _toRelative(absoluteRootPath, absoluteLibPath);
   if (!_isInLibOrBin(consumer)) return null;
 
   final absoluteLibDir = p.dirname(absoluteLibPath);
 
-  final dependencyAbsoulte =
-      p.join(absoluteRootPath, absoluteLibDir, importPath);
-  final dependency = _toRelative(absoluteRootPath, dependencyAbsoulte);
+  final String dependencyAbsolute;
+  if (toSelfWithPackage) {
+    final fromLib = importPath.substring(packagePrefix.length);
+    dependencyAbsolute = p.join(absoluteRootPath, 'lib', fromLib);
+  } else {
+    dependencyAbsolute = p.join(absoluteRootPath, absoluteLibDir, importPath);
+  }
+
+  final dependency = _toRelative(absoluteRootPath, dependencyAbsolute);
   if (!_isInLibOrBin(dependency)) return null;
 
   return Dependency(dependency: dependency, consumer: consumer);

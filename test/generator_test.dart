@@ -20,7 +20,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('generator marks inversions', () async {
-    final deps = await collectDeps('example');
+    final deps = await collectDeps(rootDir: 'example');
     final analyzer = Analyzer(deps);
 
     final content =

@@ -17,6 +17,7 @@ import 'package:layerlens/layerlens.dart';
 
 enum _Options {
   path('path'),
+  package('package'),
   ;
 
   const _Options(this.name);
@@ -25,7 +26,18 @@ enum _Options {
 }
 
 void main(List<String> args) async {
-  final parsedArgs =
-      (ArgParser()..addOption(_Options.path.name, defaultsTo: '.')).parse(args);
-  await generateLayering(parsedArgs[_Options.path.name]);
+  final parser = ArgParser()
+    ..addOption(_Options.path.name, defaultsTo: '.')
+    ..addOption(
+      _Options.package.name,
+      defaultsTo: null,
+      help: 'Package name is needed when internal '
+          'libraries reference each other with `package:` import.',
+    );
+
+  final parsedArgs = parser.parse(args);
+  await generateLayering(
+    rootDir: parsedArgs[_Options.path.name],
+    packageName: parsedArgs[_Options.package.name],
+  );
 }

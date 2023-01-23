@@ -1,3 +1,7 @@
+# 1.0.9
+
+* Support absolute import statements referencing current package.
+
 # 1.0.8
 
 * Mark inverted dependencies.
