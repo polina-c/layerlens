@@ -41,9 +41,10 @@ to `.github/workflows`.
 ## Alert on circular references
 
 You may want to avoid circular references, because without circles:
-1. Method contracts are easier to understand and clean up
-2. Treeshaking (i.e. not includine non-used code into build) is more efficient
-3. Incremental build is faster
+1. Code is easier to maintain
+2. Chance of memory leaks is smaller
+3. Treeshaking (i.e. not includine non-used code into build) is more efficient
+4. Incremental build is faster
 
 LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
 
