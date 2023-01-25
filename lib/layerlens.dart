@@ -17,6 +17,8 @@ import 'src/analyzer.dart';
 
 import 'src/code_parser.dart';
 
+/// Generates dependency diagram in eash source folder
+/// where dart libraries or folders depend on eash other.
 Future<void> generateLayering({
   required String rootDir,
   required String? packageName,
