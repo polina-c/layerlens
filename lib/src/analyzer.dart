@@ -19,6 +19,8 @@ import 'model.dart';
 
 const String _rootName = '.';
 
+/// Takes dependencies as input, and detects
+/// dependencies for children of each folder.
 class Analyzer {
   Analyzer(Dependencies dependencies) : files = _depsToFiles(dependencies) {
     _createRoot();
@@ -26,7 +28,10 @@ class Analyzer {
     assignLayers(root);
   }
 
+  /// Registry of of all files.
   final Map<FullName, SourceFile> files;
+
+  /// Registry of of all files and folders.
   final nodes = <FullName, SourceNode>{};
 
   /// Children are ordered by layer.

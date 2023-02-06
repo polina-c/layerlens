@@ -36,8 +36,11 @@ void main(List<String> args) async {
     );
 
   final parsedArgs = parser.parse(args);
-  await generateLayering(
+  final generatedDiagrams = await generateLayering(
     rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
+  );
+  print(
+    'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',
   );
 }
