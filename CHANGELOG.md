@@ -1,3 +1,9 @@
+# 1.0.10
+
+* Configure layerlense as executable.
+* Oputput number of generated diagrams.
+* Update documentation.
+
 # 1.0.9
 
 * Support absolute import statements referencing current package.

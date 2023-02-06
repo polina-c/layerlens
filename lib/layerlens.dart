@@ -19,7 +19,9 @@ import 'src/code_parser.dart';
 
 /// Generates dependency diagram in eash source folder
 /// where dart libraries or folders depend on eash other.
-Future<void> generateLayering({
+///
+/// Returns number of generated diagrams.
+Future<int> generateLayering({
   required String rootDir,
   required String? packageName,
 }) async {
@@ -28,6 +30,6 @@ Future<void> generateLayering({
     packageName: packageName,
   );
   final layering = Analyzer(deps);
-  await MdGenerator(sourceFolder: layering.root, rootDir: rootDir)
+  return await MdGenerator(sourceFolder: layering.root, rootDir: rootDir)
       .generateFiles();
 }

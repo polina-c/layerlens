@@ -25,12 +25,15 @@ class MdGenerator {
     required this.sourceFolder,
   });
 
-  Future<void> generateFiles() async {
-    await _generateFile(sourceFolder);
+  Future<int> generateFiles() async {
+    return await _generateFile(sourceFolder);
   }
 
   /// Recursively generates md files in source folders.
-  Future<void> _generateFile(SourceFolder folder) async {
+  ///
+  /// Returns number of generated files.
+  Future<int> _generateFile(SourceFolder folder) async {
+    var result = 0;
     final file =
         File(path.joinAll([rootDir, folder.fullName, 'DEPENDENCIES.md']));
 
@@ -41,11 +44,14 @@ class MdGenerator {
     final theContent = content(folder);
     if (theContent != null) {
       file.writeAsStringSync(theContent);
+      result++;
     }
 
     for (final node in folder.children.values) {
-      if (node is SourceFolder) await _generateFile(node);
+      if (node is SourceFolder) result += await _generateFile(node);
     }
+
+    return result;
   }
 
   static String? content(SourceFolder folder) {
