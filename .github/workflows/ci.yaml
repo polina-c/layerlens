@@ -7,7 +7,7 @@ on:
     branches: [ main]
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
     steps:
       # These are the latest versions of the github actions; dependabot will
