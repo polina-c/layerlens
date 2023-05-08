@@ -1,6 +1,6 @@
 # 1.0.12
 
-* Increase SDK version..
+* Increase SDK version.
 
 # 1.0.11
 
