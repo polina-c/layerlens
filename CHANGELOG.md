@@ -1,3 +1,7 @@
+# 1.0.12
+
+* Increase SDK version.
+
 # 1.0.11
 
 * Downgrade version of `path` to make layerlens available for `flutter stable`.
