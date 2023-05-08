@@ -1,3 +1,7 @@
+# 1.0.11
+
+* Downgrade version of `path` to make layerlens available for `flutter stable`.
+
 # 1.0.10
 
 * Configure layerlense as executable.
