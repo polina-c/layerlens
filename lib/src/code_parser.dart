@@ -12,6 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'dart:io';
 // ignore: implementation_imports
 
 // ignore: implementation_imports
@@ -161,8 +162,10 @@ Dependency? toDependency({
   return Dependency(dependency: dependency, consumer: consumer);
 }
 
+final String binDir = 'bin${Platform.pathSeparator}';
+final String libDir = 'lib${Platform.pathSeparator}';
 bool _isInLibOrBin(String lib) =>
-    lib.startsWith('bin/') || lib.startsWith('lib/');
+    lib.startsWith(binDir) || lib.startsWith(libDir);
 
 String _toRelative(String home, String path) {
   var result = p.normalize(p.relative(path, from: home));
