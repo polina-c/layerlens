@@ -13,7 +13,6 @@
 //  limitations under the License.
 
 import 'dart:io';
-// ignore: implementation_imports
 
 // ignore: implementation_imports
 import 'package:surveyor/src/driver.dart';
