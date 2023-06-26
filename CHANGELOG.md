@@ -1,3 +1,7 @@
+# 1.0.13
+
+* Fix parsing projects on Windows hosts.
+
 # 1.0.12
 
 * Increase SDK version.

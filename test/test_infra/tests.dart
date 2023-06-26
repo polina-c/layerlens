@@ -32,7 +32,7 @@ final layeringTests = [
     input: {
       'a': {'b'},
       'b': {'c'},
-      'c': {'a'}
+      'c': {'a'},
     },
     rootChildren: 3,
     nodes: 3,
@@ -42,9 +42,9 @@ final layeringTests = [
     input: {
       'root': {'a/a'},
       'a/a': {'b/b'},
-      'b/b': {'root'}
+      'b/b': {'root'},
     },
     rootChildren: 3,
     nodes: 5,
-  )
+  ),
 ];
