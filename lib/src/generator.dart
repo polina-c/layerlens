@@ -78,8 +78,10 @@ class MdGenerator {
     result.writeln('flowchart TD;');
     result.writeln(items.join('\n'));
     result.writeln('```');
+    result.writeln('');
     result.writeln(
-        'Inversions: ${folder.localInversions}, with subfolders: ${folder.totalInversions}');
+      'Inversions: ${folder.localInversions}, with subfolders: ${folder.totalInversions}.',
+    );
     result.writeln('');
 
     return result.toString();

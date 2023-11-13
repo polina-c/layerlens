@@ -5,7 +5,7 @@ Dependencies that create loop are markes with `!`.
 
 ```mermaid
 flowchart TD;
-layerlens.dart-->src;
+c.dart-->d.dart;
 ```
 
 Inversions: 0, with subfolders: 0.

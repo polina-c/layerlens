@@ -15,3 +15,5 @@ layering.dart-->model.dart;
 model.dart-->primitives.dart;
 ```
 
+Inversions: 0, with subfolders: 0.
+
