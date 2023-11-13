@@ -26,5 +26,7 @@ void main() {
     final content =
         MdGenerator.content(analyzer.root.children['lib'] as SourceFolder);
     expect(content, contains('--!-->'));
+    expect(content, contains('Inversions in this folder: 1'));
+    expect(content, contains('Inversions including subfolders: 2'));
   });
 }
