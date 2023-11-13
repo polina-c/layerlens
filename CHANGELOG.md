@@ -1,3 +1,7 @@
+# 1.0.14
+
+* Add total number of inversions.
+
 # 1.0.13
 
 * Fix parsing projects on Windows hosts.

@@ -57,10 +57,10 @@ class MdGenerator {
   static String? content(SourceFolder folder) {
     final items = <String>[];
     for (final consumer in folder.children.values) {
-      for (final dep in consumer.siblingDependencies) {
-        final isInversion = consumer.layer! > dep.layer!;
-        final arrow = isInversion ? '--!-->' : '-->';
-        items.add('${consumer.shortName}$arrow${dep.shortName};');
+      for (final dependency in consumer.siblingDependencies) {
+        final inversion = isInversion(consumer, dependency);
+        final arrow = inversion ? '--!-->' : '-->';
+        items.add('${consumer.shortName}$arrow${dependency.shortName};');
       }
     }
 
@@ -78,6 +78,8 @@ class MdGenerator {
     result.writeln('flowchart TD;');
     result.writeln(items.join('\n'));
     result.writeln('```');
+    result.writeln(
+        'Inversions: ${folder.localInversions}, with subfolders: ${folder.totalInversions}');
     result.writeln('');
 
     return result.toString();

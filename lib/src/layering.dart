@@ -18,16 +18,20 @@ import 'model.dart';
 
 // `wl` in this file means 'without layer'
 
-/// Recursively assigns layers.
+/// Recursively assigns layers and calculates inversions.
 void assignLayers(SourceFolder folder) {
   _assignLocalLayerToChildren(folder);
   folder.orderChildrenByLayer();
 
+  var inversionsInSubfolders = 0;
   for (final child in folder.children.values) {
     if (child is SourceFolder) {
       assignLayers(child);
+      inversionsInSubfolders += child.totalInversions;
     }
   }
+  folder.calculateLocalInversions();
+  folder.totalInversions = folder.localInversions + inversionsInSubfolders;
 }
 
 // TODO(polina-c): convert to record.

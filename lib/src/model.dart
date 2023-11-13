@@ -43,15 +43,30 @@ abstract class SourceNode {
   }
 }
 
+bool isInversion(SourceNode consumer, SourceNode dependency) =>
+    consumer.layer! > dependency.layer!;
+
 class SourceFolder extends SourceNode {
   SourceFolder(super.path, this.children);
 
   Map<ShortName, SourceNode> children;
+  late int localInversions;
+  late int totalInversions;
 
   void orderChildrenByLayer() {
     final entries = children.entries.toList()
       ..sort((a, b) => a.value.layer!.compareTo(b.value.layer!));
     children = Map.fromEntries(entries);
+  }
+
+  void calculateLocalInversions() {
+    var result = 0;
+    for (final consumer in children.values) {
+      result += consumer.siblingDependencies
+          .where((dependency) => isInversion(consumer, dependency))
+          .length;
+    }
+    localInversions = result;
   }
 }
 
