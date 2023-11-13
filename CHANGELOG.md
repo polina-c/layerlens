@@ -1,6 +1,6 @@
 # 1.0.14
 
-* Add total number of inversions.
+* Show number of inversions on diagrams.
 
 # 1.0.13
 
