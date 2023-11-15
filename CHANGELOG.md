@@ -1,3 +1,7 @@
+# 1.0.14
+
+* Show number of inversions on diagrams.
+
 # 1.0.13
 
 * Fix parsing projects on Windows hosts.

@@ -5,12 +5,10 @@ Dependencies that create loops (inversions) are marked with `!`.
 
 ```mermaid
 flowchart TD;
-example.dart-->f1.dart;
-f1.dart-->f2.dart;
-f2.dart--!-->example.dart;
-subfolder1-->subfolder2;
+a.dart-->b.dart;
+b.dart--!-->a.dart;
 ```
 
 Inversions in this folder: 1
-Inversions including subfolders: 2.
+Inversions including subfolders: 1.
 
