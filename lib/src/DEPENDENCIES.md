@@ -16,7 +16,7 @@ model.dart-->primitives.dart;
 ```
 
 ### Inversions
-In this folder: **0**
+In this folder: 0
 
-Including sub-folders: **0**
+Including sub-folders: 0
 

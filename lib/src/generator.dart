@@ -83,11 +83,11 @@ class MdGenerator {
     result.writeln('');
     result.writeln('### Inversions');
     result.writeln(
-      'In this folder: **${folder.localInversions}**',
+      'In this folder: ${folder.localInversions}',
     );
     result.writeln('');
     result.writeln(
-      'Including sub-folders: **${folder.totalInversions}**',
+      'Including sub-folders: ${folder.totalInversions}',
     );
     result.writeln('');
 
