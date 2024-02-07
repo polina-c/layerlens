@@ -84,6 +84,7 @@ class MdGenerator {
     result.writeln(
       'Inversions in this folder: ${folder.localInversions}',
     );
+    result.writeln('');
     result.writeln(
       'Inversions including subfolders: ${folder.totalInversions}.',
     );

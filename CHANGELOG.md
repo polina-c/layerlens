@@ -1,3 +1,7 @@
+# 1.0.15
+
+* Improve formatting.
+
 # 1.0.14
 
 * Show number of inversions on diagrams.
