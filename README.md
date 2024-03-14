@@ -1,15 +1,12 @@
 # LayerLens
 
 Generate dependency diagram in every folder of your Dart or Flutter
-source code as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
+package as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
 
 <img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
-## Disclaimer
 
-This project is not an official Google project. It is not supported by
-Google and Google specifically disclaims all warranties as to its quality,
-merchantability, or fitness for a particular purpose.
+NOTE:  LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
 
 ## Configure layerlens
 
@@ -66,3 +63,9 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
 ## License
 
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
+
+## Disclaimer
+
+This project is not an official Google project. It is not supported by
+Google and Google specifically disclaims all warranties as to its quality,
+merchantability, or fitness for a particular purpose.
