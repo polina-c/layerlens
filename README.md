@@ -10,12 +10,22 @@ NOTE:  LayerLens shows inside-package dependencies. For cross-package dependenci
 
 ## Configure layerlens
 
+### Configure command globally
+
 1. Run `dart pub global activate layerlens`
 
 2. Verify you can run `layerlens`. If you get `command not found`, make sure
 your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path).
 
-3. To see the diagrams in your IDE:
+### Configure command for a package
+
+1. Add `layerlens: <version>` to the section `dev_dependencies` in the package's pubspec.yaml.
+
+2. Run `dart pub get` or `flutter pub get` for the package.
+
+### Configure IDE
+
+To see the diagrams in your IDE:
 
 - **VSCode**: install `Markdown Preview Mermaid Support` extension
 
@@ -24,7 +34,11 @@ your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running
 
 ## Generate diagrams
 
-1. Run `layerlens <your package root>`
+1. Run command:
+
+  - With global configuration: `layerlens --path <your package root>`
+
+  - With package configuration: `dart run layerlens` in the package root
 
 2. Find the generated file DEPENDENCIES.md in each source folder, where
 libraries or folders depend on each other.
@@ -42,14 +56,12 @@ to `.github/workflows`.
 You may want to avoid circular references, because without circles:
 1. Code is easier to maintain
 2. Chance of memory leaks is smaller
-3. Treeshaking (i.e. not includine non-used code into build) is more efficient
+3. Treeshaking (i.e. not including non-used code into build) is more efficient
 4. Incremental build is faster
 
 LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
 
-If, in addition, you want presubmit alerting for circular references,
-upvote [the issue](https://github.com/polina-c/layerlens/issues/4)
-and explain your use case.
+Also you can add command `dart run layerlens --fail-on-cycles` to the repo's pre-submit bots.
 
 ## Supported languages
 

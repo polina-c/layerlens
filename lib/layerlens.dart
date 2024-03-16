@@ -24,6 +24,7 @@ import 'src/code_parser.dart';
 Future<int> generateLayering({
   required String rootDir,
   required String? packageName,
+  required bool failOnCycles,
 }) async {
   final deps = await collectDeps(
     rootDir: rootDir,
