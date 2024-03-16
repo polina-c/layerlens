@@ -15,8 +15,6 @@
 import 'package:layerlens/layerlens.dart';
 import 'package:layerlens/src/analyzer.dart';
 import 'package:layerlens/src/code_parser.dart';
-import 'package:layerlens/src/generator.dart';
-import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
 
 void main() async {
