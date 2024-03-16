@@ -70,6 +70,9 @@ void main(List<String> args) async {
     rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
     failOnCycles: parsedArgs[_Options.failOnCycles.name] as bool,
+    cyclesFailureMessage: '''Error: cycles detected.
+To see the cycles, generate diagrams without --${_Options.failOnCycles.name} and search for '--!--'.
+''',
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',

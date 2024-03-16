@@ -12,25 +12,50 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'dart:io';
+
 import 'src/generator.dart';
 import 'src/analyzer.dart';
 
 import 'src/code_parser.dart';
+import 'package:meta/meta.dart';
 
-/// Generates dependency diagram in eash source folder
-/// where dart libraries or folders depend on eash other.
+typedef ExitFn = Function(int code);
+
+/// Generates dependency diagram in each source folder
+/// where there are dependencies between dart libraries or folders.
 ///
 /// Returns number of generated diagrams.
 Future<int> generateLayering({
   required String rootDir,
   required String? packageName,
   required bool failOnCycles,
+  required String cyclesFailureMessage,
+  ExitFn exitFn = exit,
 }) async {
   final deps = await collectDeps(
     rootDir: rootDir,
     packageName: packageName,
   );
   final layering = Analyzer(deps);
+  handleCycles(
+    layering,
+    exitFn,
+    failOnCycles: failOnCycles,
+    failureMessage: cyclesFailureMessage,
+  );
   return await MdGenerator(sourceFolder: layering.root, rootDir: rootDir)
       .generateFiles();
+}
+
+@visibleForTesting
+void handleCycles(
+  Analyzer layering,
+  ExitFn exitFn, {
+  required bool failOnCycles,
+  required String failureMessage,
+}) {
+  if (layering.root.totalInversions == 0 || !failOnCycles) return;
+  print(failureMessage);
+  exitFn(1);
 }
