@@ -35,3 +35,6 @@ jobs:
 
       - name: Run tests
         run: dart test
+
+      - name: Check for cycles
+        run: dart run layerlens --fail-on-cycles
