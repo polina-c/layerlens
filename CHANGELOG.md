@@ -1,3 +1,7 @@
+# 1.0.16
+
+* Support argument `--fail-on-cycles`.
+
 # 1.0.15
 
 * Improve formatting.
