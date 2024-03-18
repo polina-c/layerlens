@@ -69,7 +69,8 @@ void main(List<String> args) async {
     return;
   }
 
-  if (parsedArgs[_Options.usage.name] == true) {
+  if (parsedArgs[_Options.usage.name] == true ||
+      parsedArgs[_Options.help.name] == true) {
     print(parser.usage);
     return;
   }
