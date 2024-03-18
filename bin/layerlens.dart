@@ -18,6 +18,9 @@ import 'package:layerlens/layerlens.dart';
 enum _Options {
   path('path'),
   package('package'),
+  usage('usage'),
+  help('help'),
+  failOnCycles('fail-on-cycles'),
   ;
 
   const _Options(this.name);
@@ -27,18 +30,58 @@ enum _Options {
 
 void main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption(_Options.path.name, defaultsTo: '.')
+    ..addFlag(
+      _Options.usage.name,
+      defaultsTo: false,
+      help:
+          'Prints help on how to use the command. The same as --${_Options.usage.name}.',
+    )
+    ..addFlag(
+      _Options.help.name,
+      defaultsTo: false,
+      help:
+          'Prints help on how to use the command. The same as --${_Options.help.name}.',
+    )
+    ..addFlag(
+      _Options.failOnCycles.name,
+      defaultsTo: false,
+      help: 'Fail if there are circular dependencies.',
+    )
+    ..addOption(
+      _Options.path.name,
+      defaultsTo: '.',
+      help: 'Root directory of the package.',
+    )
     ..addOption(
       _Options.package.name,
       defaultsTo: null,
-      help: 'Package name is needed when internal '
+      help: 'Package name, that is needed when internal '
           'libraries reference each other with `package:` import.',
     );
 
-  final parsedArgs = parser.parse(args);
+  late final ArgResults parsedArgs;
+
+  try {
+    parsedArgs = parser.parse(args);
+  } on FormatException catch (e) {
+    print(e.message);
+    print(parser.usage);
+    return;
+  }
+
+  if (parsedArgs[_Options.usage.name] == true ||
+      parsedArgs[_Options.help.name] == true) {
+    print(parser.usage);
+    return;
+  }
+
   final generatedDiagrams = await generateLayering(
     rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
+    failOnCycles: parsedArgs[_Options.failOnCycles.name] as bool,
+    cyclesFailureMessage: '''Error: cycles detected.
+To see the cycles, generate diagrams without --${_Options.failOnCycles.name} and search for '--!--'.
+''',
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',

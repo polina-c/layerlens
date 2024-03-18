@@ -1,24 +1,31 @@
 # LayerLens
 
 Generate dependency diagram in every folder of your Dart or Flutter
-source code as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
+package as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
 
 <img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
-## Disclaimer
 
-This project is not an official Google project. It is not supported by
-Google and Google specifically disclaims all warranties as to its quality,
-merchantability, or fitness for a particular purpose.
+NOTE:  LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
 
 ## Configure layerlens
+
+### Configure command globally
 
 1. Run `dart pub global activate layerlens`
 
 2. Verify you can run `layerlens`. If you get `command not found`, make sure
 your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path).
 
-3. To see the diagrams in your IDE:
+### Configure command for a package
+
+1. Add `layerlens: <version>` to the section `dev_dependencies` in the package's pubspec.yaml.
+
+2. Run `dart pub get` or `flutter pub get` for the package.
+
+### Configure IDE
+
+To see the diagrams in your IDE:
 
 - **VSCode**: install `Markdown Preview Mermaid Support` extension
 
@@ -27,7 +34,11 @@ your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running
 
 ## Generate diagrams
 
-1. Run `layerlens <your package root>`
+1. Run command:
+
+  - With global configuration: `layerlens --path <your package root>`
+
+  - With package configuration: `dart run layerlens` in the package root
 
 2. Find the generated file DEPENDENCIES.md in each source folder, where
 libraries or folders depend on each other.
@@ -45,14 +56,12 @@ to `.github/workflows`.
 You may want to avoid circular references, because without circles:
 1. Code is easier to maintain
 2. Chance of memory leaks is smaller
-3. Treeshaking (i.e. not includine non-used code into build) is more efficient
+3. Treeshaking (i.e. not including non-used code into build) is more efficient
 4. Incremental build is faster
 
 LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
 
-If, in addition, you want presubmit alerting for circular references,
-upvote [the issue](https://github.com/polina-c/layerlens/issues/4)
-and explain your use case.
+Also you can add command `dart run layerlens --fail-on-cycles` to the repo's pre-submit bots.
 
 ## Supported languages
 
@@ -66,3 +75,9 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
 ## License
 
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
+
+## Disclaimer
+
+This project is not an official Google project. It is not supported by
+Google and Google specifically disclaims all warranties as to its quality,
+merchantability, or fitness for a particular purpose.
