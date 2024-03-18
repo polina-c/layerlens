@@ -19,6 +19,7 @@ enum _Options {
   path('path'),
   package('package'),
   usage('usage'),
+  help('help'),
   failOnCycles('fail-on-cycles'),
   ;
 
@@ -32,7 +33,14 @@ void main(List<String> args) async {
     ..addFlag(
       _Options.usage.name,
       defaultsTo: false,
-      help: 'Prints usage.',
+      help:
+          'Prints help on how to use the command. The same as --${_Options.usage.name}.',
+    )
+    ..addFlag(
+      _Options.help.name,
+      defaultsTo: false,
+      help:
+          'Prints help on how to use the command. The same as --${_Options.help.name}.',
     )
     ..addFlag(
       _Options.failOnCycles.name,
