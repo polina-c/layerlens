@@ -63,6 +63,12 @@ LayerLens marks inverted dependencies (dependencies that create circles) with '!
 
 Also you can add command `dart run layerlens --fail-on-cycles` to the repo's pre-submit bots.
 
+## Build filters
+
+If you want to generate the `DEPENDENCIES.md` only for a specific folders, you can use `--build-filter` option. For example, to generate the diagram only for the root `lib/` folder, you run following `dart run layerlens --build-filter "lib"`.
+
+You can specify multiple build filters and you should use [glob](https://pub.dev/packages/glob) syntax. The mechanism is inspired by `--build-filter` in Dart's [`build_runner`](https://github.com/dart-lang/build/blob/master/docs/partial_builds.md)
+
 ## Supported languages
 
 While layerlens concepts are language agnostic, for now only `dart` is supported.

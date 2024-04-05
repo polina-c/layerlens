@@ -11,6 +11,8 @@ f2.dart--!-->example.dart;
 subfolder1-->subfolder2;
 ```
 
-Inversions in this folder: 1
-Inversions including subfolders: 2.
+### Inversions
+In this folder: 1
+
+Including sub-folders: 2
 

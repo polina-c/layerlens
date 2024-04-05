@@ -9,6 +9,8 @@ a.dart-->b.dart;
 b.dart--!-->a.dart;
 ```
 
-Inversions in this folder: 1
-Inversions including subfolders: 1.
+### Inversions
+In this folder: 1
+
+Including sub-folders: 1
 

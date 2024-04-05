@@ -13,12 +13,14 @@
 //  limitations under the License.
 
 import 'package:args/args.dart';
+import 'package:glob/glob.dart';
 import 'package:layerlens/layerlens.dart';
 
 enum _Options {
   path('path'),
   package('package'),
   usage('usage'),
+  buildFilter('build-filter'),
   help('help'),
   failOnCycles('fail-on-cycles'),
   ;
@@ -57,6 +59,11 @@ void main(List<String> args) async {
       defaultsTo: null,
       help: 'Package name, that is needed when internal '
           'libraries reference each other with `package:` import.',
+    )
+    ..addMultiOption(
+      _Options.buildFilter.name,
+      help:
+          'Filter for which folders to generate diagrams. Use glob syntax. Default is all folders.',
     );
 
   late final ArgResults parsedArgs;
@@ -75,10 +82,17 @@ void main(List<String> args) async {
     return;
   }
 
+  List<Glob> getBuildFilters() {
+    final buildFilters = parsedArgs[_Options.buildFilter.name];
+    if (buildFilters is! List<String>) return [];
+    return buildFilters.map((filter) => Glob(filter)).toList();
+  }
+
   final generatedDiagrams = await generateLayering(
     rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
     failOnCycles: parsedArgs[_Options.failOnCycles.name] as bool,
+    buildFilters: getBuildFilters(),
     cyclesFailureMessage: '''Error: cycles detected.
 To see the cycles, generate diagrams without --${_Options.failOnCycles.name} and search for '--!--'.
 ''',
