@@ -63,7 +63,7 @@ void main(List<String> args) async {
     ..addMultiOption(
       _Options.buildFilter.name,
       help:
-          'Filter for which folders to generate diagrams. Use glob syntax. Default is all folders.',
+          'Filter for which folders to generate diagrams. Use glob syntax. Default is all folders.\nhttps://github.com/polina-c/layerlens/blob/main/README.md#build-filters',
     );
 
   late final ArgResults parsedArgs;
