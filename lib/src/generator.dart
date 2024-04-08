@@ -50,7 +50,7 @@ class MdGenerator {
     if (theContent != null) {
       if (buildFilters.isEmpty ||
           buildFilters.any((filter) => filter.matches(folder.fullName))) {
-        file.writeAsStringSync(theContent);
+        await file.writeAsString(theContent);
         result++;
       }
     }
