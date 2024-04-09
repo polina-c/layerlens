@@ -253,5 +253,33 @@ void main() {
       expect(subfolderFileC.existsSync(), false);
       expect(subfolderFileD.existsSync(), false);
     });
+    test(
+        'one subfolder with entire subtree without the subfolder itself, but includes another subfolder',
+        () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        buildFilters: [
+          Glob('lib'),
+          Glob('lib/subfolder1'),
+          Glob('lib/subfolder2/**'),
+          Glob('lib/subfolder2/c'),
+        ],
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 4);
+      expect(rootFile.existsSync(), true);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFileA.existsSync(), false);
+      expect(subfolderFileB.existsSync(), false);
+      expect(subfolderFileC.existsSync(), true);
+      expect(subfolderFileD.existsSync(), true);
+    });
   });
 }
