@@ -32,6 +32,10 @@ void main() {
   late File rootFile;
   late File subfolderFile1;
   late File subfolderFile2;
+  late File subfolderFileA;
+  late File subfolderFileB;
+  late File subfolderFileC;
+  late File subfolderFileD;
 
   setUp(() async {
     memoryFileSystem = MemoryFileSystem();
@@ -42,6 +46,14 @@ void main() {
         memoryFileSystem.file('$rootDir/lib/subfolder1/DEPENDENCIES.md');
     subfolderFile2 =
         memoryFileSystem.file('$rootDir/lib/subfolder2/DEPENDENCIES.md');
+    subfolderFileA =
+        memoryFileSystem.file('$rootDir/lib/subfolder1/a/DEPENDENCIES.md');
+    subfolderFileB =
+        memoryFileSystem.file('$rootDir/lib/subfolder1/b/DEPENDENCIES.md');
+    subfolderFileC =
+        memoryFileSystem.file('$rootDir/lib/subfolder2/c/DEPENDENCIES.md');
+    subfolderFileD =
+        memoryFileSystem.file('$rootDir/lib/subfolder2/d/DEPENDENCIES.md');
 
     /// Copy test/test_project to MemoryFileSystem, so the files are created and tested in memory.
     await memoryFileSystem.directory(rootDir).create(recursive: true);
@@ -91,10 +103,35 @@ void main() {
 
       final noGeneratedFiles = await generateFiles(generator);
 
+      expect(noGeneratedFiles, 7);
       expect(rootFile.existsSync(), true);
-      expect(noGeneratedFiles, 3);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), true);
+      expect(subfolderFileA.existsSync(), true);
+      expect(subfolderFileB.existsSync(), true);
+      expect(subfolderFileC.existsSync(), true);
+      expect(subfolderFileD.existsSync(), true);
+    });
+    test('build all files (with filter)', () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        buildFilters: [Glob('**')],
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 7);
+      expect(rootFile.existsSync(), true);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), true);
+      expect(subfolderFileA.existsSync(), true);
+      expect(subfolderFileB.existsSync(), true);
+      expect(subfolderFileC.existsSync(), true);
+      expect(subfolderFileD.existsSync(), true);
     });
     test('build only root', () async {
       final deps = await collectDeps(rootDir: rootDir);
@@ -108,10 +145,14 @@ void main() {
 
       final noGeneratedFiles = await generateFiles(generator);
 
-      expect(rootFile.existsSync(), true);
       expect(noGeneratedFiles, 1);
+      expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), false);
       expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFileA.existsSync(), false);
+      expect(subfolderFileB.existsSync(), false);
+      expect(subfolderFileC.existsSync(), false);
+      expect(subfolderFileD.existsSync(), false);
     });
 
     test('build root and one subfolder', () async {
@@ -126,10 +167,91 @@ void main() {
 
       final noGeneratedFiles = await generateFiles(generator);
 
-      expect(rootFile.existsSync(), true);
       expect(noGeneratedFiles, 2);
+      expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFileA.existsSync(), false);
+      expect(subfolderFileB.existsSync(), false);
+      expect(subfolderFileC.existsSync(), false);
+      expect(subfolderFileD.existsSync(), false);
+    });
+    test('build root and one subfolder with entire subtree', () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        buildFilters: [
+          Glob('lib'),
+          Glob('lib/subfolder1'),
+          Glob('lib/subfolder2'),
+          Glob('lib/subfolder2/**'),
+        ],
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 5);
+      expect(rootFile.existsSync(), true);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), true);
+      expect(subfolderFileA.existsSync(), false);
+      expect(subfolderFileB.existsSync(), false);
+      expect(subfolderFileC.existsSync(), true);
+      expect(subfolderFileD.existsSync(), true);
+    });
+    test(
+        'build root and one subfolder with entire subtree without the subfolder itself',
+        () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        buildFilters: [
+          Glob('lib'),
+          Glob('lib/subfolder1'),
+          Glob('lib/subfolder2/**'),
+        ],
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 4);
+      expect(rootFile.existsSync(), true);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFileA.existsSync(), false);
+      expect(subfolderFileB.existsSync(), false);
+      expect(subfolderFileC.existsSync(), true);
+      expect(subfolderFileD.existsSync(), true);
+    });
+    test('one subfolder with entire subtree', () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        buildFilters: [
+          Glob('lib/subfolder1'),
+          Glob('lib/subfolder1/**'),
+        ],
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 3);
+      expect(rootFile.existsSync(), false);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFileA.existsSync(), true);
+      expect(subfolderFileB.existsSync(), true);
+      expect(subfolderFileC.existsSync(), false);
+      expect(subfolderFileD.existsSync(), false);
     });
   });
 }
