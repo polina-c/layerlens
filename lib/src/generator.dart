@@ -13,16 +13,21 @@
 //  limitations under the License.
 
 import 'dart:io';
-import 'model.dart';
+
+import 'package:glob/glob.dart';
 import 'package:path/path.dart' as path;
+
+import 'model.dart';
 
 class MdGenerator {
   final String rootDir;
   final SourceFolder sourceFolder;
+  final List<Glob> buildFilters;
 
   MdGenerator({
     required this.rootDir,
     required this.sourceFolder,
+    required this.buildFilters,
   });
 
   Future<int> generateFiles() async {
@@ -43,8 +48,11 @@ class MdGenerator {
 
     final theContent = content(folder);
     if (theContent != null) {
-      file.writeAsStringSync(theContent);
-      result++;
+      if (buildFilters.isEmpty ||
+          buildFilters.any((filter) => filter.matches(folder.fullName))) {
+        await file.writeAsString(theContent);
+        result++;
+      }
     }
 
     for (final node in folder.children.values) {

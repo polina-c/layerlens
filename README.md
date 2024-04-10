@@ -5,8 +5,7 @@ package as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) d
 
 <img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
 
-
-NOTE:  LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
+NOTE: LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
 
 ## Configure layerlens
 
@@ -15,7 +14,7 @@ NOTE:  LayerLens shows inside-package dependencies. For cross-package dependenci
 1. Run `dart pub global activate layerlens`
 
 2. Verify you can run `layerlens`. If you get `command not found`, make sure
-your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path).
+   your path [contains pub cache](https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path).
 
 ### Configure command for a package
 
@@ -30,18 +29,18 @@ To see the diagrams in your IDE:
 - **VSCode**: install `Markdown Preview Mermaid Support` extension
 
 - **Android Studio**: enable the "Mermaid" extension in the
-[Markdown language settings](https://www.jetbrains.com/help/idea/markdown-reference.html)
+  [Markdown language settings](https://www.jetbrains.com/help/idea/markdown-reference.html)
 
 ## Generate diagrams
 
 1. Run command:
 
-  - With global configuration: `layerlens --path <your package root>`
+- With global configuration: `layerlens --path <your package root>`
 
-  - With package configuration: `dart run layerlens` in the package root
+- With package configuration: `dart run layerlens` in the package root
 
 2. Find the generated file DEPENDENCIES.md in each source folder, where
-libraries or folders depend on each other.
+   libraries or folders depend on each other.
 
 3. In VSCode, right click DEPENDENCIES.md and select 'Open Preview'
 
@@ -49,11 +48,12 @@ libraries or folders depend on each other.
 
 1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
 2. Copy the content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/blob/main/.github/workflows/run-layerlens.yaml)
-to `.github/workflows`.
+   to `.github/workflows`.
 
 ## Alert on circular references
 
 You may want to avoid circular references, because without circles:
+
 1. Code is easier to maintain
 2. Chance of memory leaks is smaller
 3. Treeshaking (i.e. not including non-used code into build) is more efficient
@@ -62,6 +62,12 @@ You may want to avoid circular references, because without circles:
 LayerLens marks inverted dependencies (dependencies that create circles) with '!'.
 
 Also you can add command `dart run layerlens --fail-on-cycles` to the repo's pre-submit bots.
+
+## Build filters
+
+If you want to generate the `DEPENDENCIES.md` only for a specific folders, you can use `--build-filter` option and you should use [glob](https://pub.dev/packages/glob) syntax. For example, to generate the diagram only for the root `lib/` folder, you run following `dart run layerlens --build-filter "lib"`.
+
+You can specify multiple build filters . The mechanism is inspired by `--build-filter` in Dart's [`build_runner`](https://github.com/dart-lang/build/blob/master/docs/partial_builds.md). For example, to run the layerlens for root `lib/` and it's subfolder `lib/subfolder1` run `layerlens --build-filter "lib" --build-filter "lib/subfolder1"`. To generate the entire subtree for a given subfolder you can run following: `layerlens --build-filter "lib/subfolder1" --build-filter "lib/subfolder1/**"`
 
 ## Supported languages
 

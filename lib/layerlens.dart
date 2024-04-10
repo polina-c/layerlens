@@ -14,11 +14,12 @@
 
 import 'dart:io';
 
-import 'src/generator.dart';
-import 'src/analyzer.dart';
-
-import 'src/code_parser.dart';
+import 'package:glob/glob.dart';
 import 'package:meta/meta.dart';
+
+import 'src/analyzer.dart';
+import 'src/code_parser.dart';
+import 'src/generator.dart';
 
 typedef ExitFn = Function(int code);
 
@@ -31,6 +32,7 @@ Future<int> generateLayering({
   required String? packageName,
   required bool failOnCycles,
   required String cyclesFailureMessage,
+  required List<Glob> buildFilters,
   ExitFn exitFn = exit,
 }) async {
   final deps = await collectDeps(
@@ -44,8 +46,11 @@ Future<int> generateLayering({
     failOnCycles: failOnCycles,
     failureMessage: cyclesFailureMessage,
   );
-  return await MdGenerator(sourceFolder: layering.root, rootDir: rootDir)
-      .generateFiles();
+  return await MdGenerator(
+    sourceFolder: layering.root,
+    rootDir: rootDir,
+    buildFilters: buildFilters,
+  ).generateFiles();
 }
 
 @visibleForTesting

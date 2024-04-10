@@ -8,6 +8,8 @@ flowchart TD;
 c.dart-->d.dart;
 ```
 
-Inversions in this folder: 0
-Inversions including subfolders: 0.
+### Inversions
+In this folder: 0
+
+Including sub-folders: 0
 
