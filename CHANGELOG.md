@@ -1,3 +1,7 @@
+# 1.0.17
+
+* Add build filters.
+
 # 1.0.16
 
 * Support argument `--fail-on-cycles`.
