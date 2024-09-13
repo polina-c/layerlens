@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
 
-Generates dependency diagram in every folder of your Dart or Flutter
+Generates a dependency diagram in every folder of your Dart or Flutter
 package as [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html) documents.
 
 Alerts on cyclic dependencies.
