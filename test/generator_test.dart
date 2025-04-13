@@ -90,6 +90,7 @@ void main() {
     expect(content, contains('this folder: 1'));
     expect(content, contains('sub-folders: 2'));
   });
+
   group('build filters', () {
     test('build all files (without any filters)', () async {
       final deps = await collectDeps(rootDir: rootDir);
@@ -113,6 +114,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('build all files (with filter)', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -135,6 +137,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('build only root', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -235,6 +238,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('one subfolder with entire subtree', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -249,9 +253,9 @@ void main() {
         failIfChanged: false,
       );
 
-      final generatedFileCount = await generateFiles(generator);
+      final fileCount = await generateFiles(generator);
 
-      expect(generatedFileCount, 3);
+      expect(fileCount, 3);
       expect(rootFile.existsSync(), false);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
@@ -260,6 +264,7 @@ void main() {
       expect(subfolderFileC.existsSync(), false);
       expect(subfolderFileD.existsSync(), false);
     });
+
     test(
         'one subfolder with entire subtree without the subfolder itself, but includes another subfolder',
         () async {
