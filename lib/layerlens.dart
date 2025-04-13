@@ -20,8 +20,7 @@ import 'package:meta/meta.dart';
 import 'src/analyzer.dart';
 import 'src/code_parser.dart';
 import 'src/generator.dart';
-
-typedef ExitFn = Function(int code);
+import 'src/cli.dart';
 
 /// Generates dependency diagram in each source folder
 /// where there are dependencies between dart libraries or folders.
@@ -31,9 +30,9 @@ Future<int> generateLayering({
   required String rootDir,
   required String? packageName,
   required bool failOnCycles,
-  required String cyclesFailureMessage,
+  required bool failIfChanged,
   required List<Glob> buildFilters,
-  ExitFn exitFn = exit,
+  ExitCallback exitFn = exit,
 }) async {
   final deps = await collectDeps(
     rootDir: rootDir,
@@ -44,23 +43,22 @@ Future<int> generateLayering({
     layering,
     exitFn,
     failOnCycles: failOnCycles,
-    failureMessage: cyclesFailureMessage,
   );
   return await MdGenerator(
-    sourceFolder: layering.root,
-    rootDir: rootDir,
-    buildFilters: buildFilters,
-  ).generateFiles();
+          sourceFolder: layering.root,
+          rootDir: rootDir,
+          buildFilters: buildFilters,
+          failIfChanged: failIfChanged)
+      .generateFiles();
 }
 
 @visibleForTesting
 void handleCycles(
   Analyzer layering,
-  ExitFn exitFn, {
+  ExitCallback exitFn, {
   required bool failOnCycles,
-  required String failureMessage,
 }) {
-  if (layering.root.totalInversions == 0 || !failOnCycles) return;
-  print(failureMessage);
-  exitFn(1);
+  if (layering.root.totalInversions > 0 && failOnCycles) {
+    failExecution(FailureCodes.cycles, exitFn: exitFn);
+  }
 }

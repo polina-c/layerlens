@@ -23,11 +23,13 @@ class MdGenerator {
   final String rootDir;
   final SourceFolder sourceFolder;
   final List<Glob> buildFilters;
+  final bool failIfChanged;
 
   MdGenerator({
     required this.rootDir,
     required this.sourceFolder,
     required this.buildFilters,
+    required this.failIfChanged,
   });
 
   Future<int> generateFiles() async {
@@ -47,7 +49,9 @@ class MdGenerator {
     }
 
     final theContent = content(folder);
-    if (theContent != null) {
+
+    if (theContent == null) {
+    } else {
       if (buildFilters.isEmpty ||
           buildFilters.any((filter) => filter.matches(folder.fullName))) {
         await file.writeAsString(theContent);

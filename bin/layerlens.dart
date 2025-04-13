@@ -16,20 +16,6 @@ import 'package:args/args.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/layerlens.dart';
 
-enum _Options {
-  path('path'),
-  package('package'),
-  usage('usage'),
-  buildFilter('build-filter'),
-  help('help'),
-  failOnCycles('fail-on-cycles'),
-  ;
-
-  const _Options(this.name);
-
-  final String name;
-}
-
 void main(List<String> args) async {
   final parser = ArgParser()
     ..addFlag(
@@ -48,6 +34,11 @@ void main(List<String> args) async {
       _Options.failOnCycles.name,
       defaultsTo: false,
       help: 'Fail if there are circular dependencies.',
+    )
+    ..addFlag(
+      _Options.failIfChanged.name,
+      defaultsTo: false,
+      help: 'Fails if existing diagrams are different.',
     )
     ..addOption(
       _Options.path.name,
@@ -92,10 +83,8 @@ void main(List<String> args) async {
     rootDir: parsedArgs[_Options.path.name],
     packageName: parsedArgs[_Options.package.name],
     failOnCycles: parsedArgs[_Options.failOnCycles.name] as bool,
+    failIfChanged: parsedArgs[_Options.failIfChanged.name] as bool,
     buildFilters: getBuildFilters(),
-    cyclesFailureMessage: '''Error: cycles detected.
-To see the cycles, generate diagrams without --${_Options.failOnCycles.name} and search for '--!--'.
-''',
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',

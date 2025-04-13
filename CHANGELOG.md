@@ -1,3 +1,7 @@
+# 1.0.18
+
+* Add option `--fail-if-changed`.
+
 # 1.0.17
 
 * Add build filters.
