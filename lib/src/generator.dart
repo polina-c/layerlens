@@ -12,8 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'dart:io';
-
 import 'package:glob/glob.dart';
 import 'package:path/path.dart' as path;
 

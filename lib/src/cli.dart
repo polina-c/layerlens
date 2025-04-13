@@ -47,13 +47,17 @@ typedef ExitCallback = Function(int code);
 
 String pathSeparator = Platform.pathSeparator;
 
-Future<void> deleteDiagramFile(
-    {required String path, required bool failIfExists}) async {
+Future<void> deleteDiagramFile({
+  required String path,
+  required bool failIfExists,
+}) async {
   final file = File(path);
   bool exists = await file.exists();
   if (!exists) return;
   if (failIfExists) {
+    print('The diagram $path should be deleted.');
     failExecution(FailureCodes.diagramsOutdated);
+    return;
   }
   await file.delete();
 }
@@ -64,6 +68,18 @@ Future<void> updateDiagramFile(
   bool failIfDifferent,
 ) async {
   final file = File(path);
+  if (!(await file.exists()) && failIfDifferent) {
+    failExecution(FailureCodes.diagramsOutdated);
+    return;
+  }
+  if (failIfDifferent) {
+    final existingContent = await file.readAsString();
+    if (existingContent != content) {
+      print('The diagram $path should be regenerated.');
+      failExecution(FailureCodes.diagramsOutdated);
+      return;
+    }
+  }
   await file.writeAsString(content);
 }
 
