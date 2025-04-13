@@ -72,8 +72,8 @@ void main() {
   Future<int> generateFiles(MdGenerator generator) {
     return IOOverrides.runZoned(
       () async {
-        final noGeneratedFiles = await generator.generateFiles();
-        return noGeneratedFiles;
+        final fileCount = await generator.generateFiles();
+        return fileCount;
       },
       createFile: (path) => memoryFileSystem.file(path),
       createDirectory: (path) => memoryFileSystem.directory(path),
