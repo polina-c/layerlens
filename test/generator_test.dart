@@ -99,6 +99,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -120,6 +121,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('**')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -141,6 +143,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('lib')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -163,6 +166,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('lib'), Glob('lib/subfolder1')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -189,6 +193,7 @@ void main() {
           Glob('lib/subfolder2'),
           Glob('lib/subfolder2/**'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -216,6 +221,7 @@ void main() {
           Glob('lib/subfolder1'),
           Glob('lib/subfolder2/**'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -240,6 +246,7 @@ void main() {
           Glob('lib/subfolder1'),
           Glob('lib/subfolder1/**'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -268,6 +275,7 @@ void main() {
           Glob('lib/subfolder2/**'),
           Glob('lib/subfolder2/c'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);

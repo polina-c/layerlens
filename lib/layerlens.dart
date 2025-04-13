@@ -45,11 +45,11 @@ Future<int> generateLayering({
     failOnCycles: failOnCycles,
   );
   return await MdGenerator(
-          sourceFolder: layering.root,
-          rootDir: rootDir,
-          buildFilters: buildFilters,
-          failIfChanged: failIfChanged)
-      .generateFiles();
+    sourceFolder: layering.root,
+    rootDir: rootDir,
+    buildFilters: buildFilters,
+    failIfChanged: failIfChanged,
+  ).generateFiles();
 }
 
 @visibleForTesting
