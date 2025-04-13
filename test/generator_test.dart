@@ -249,9 +249,9 @@ void main() {
         failIfChanged: false,
       );
 
-      final noGeneratedFiles = await generateFiles(generator);
+      final generatedFileCount = await generateFiles(generator);
 
-      expect(noGeneratedFiles, 3);
+      expect(generatedFileCount, 3);
       expect(rootFile.existsSync(), false);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
