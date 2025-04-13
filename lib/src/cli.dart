@@ -47,7 +47,8 @@ typedef ExitCallback = Function(int code);
 
 String pathSeparator = Platform.pathSeparator;
 
-Future<void> deleteFile(String path, bool failIfExists) async {
+Future<void> deleteDiagramFile(
+    {required String path, required bool failIfExists}) async {
   final file = File(path);
   bool exists = await file.exists();
   if (!exists) return;
@@ -57,11 +58,14 @@ Future<void> deleteFile(String path, bool failIfExists) async {
   await file.delete();
 }
 
-Future<void> writeFile(
+Future<void> updateDiagramFile(
   String path,
   String content,
   bool failIfDifferent,
-) async {}
+) async {
+  final file = File(path);
+  await file.writeAsString(content);
+}
 
 enum FailureCodes {
   /// Cycles found.
