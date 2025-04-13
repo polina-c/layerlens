@@ -43,13 +43,13 @@ class Analyzer {
     for (final fullName in files.keys) {
       final file = files[fullName]!;
       nodes[file.fullName] = file;
-      _propogateFileToFolder(root, file, file.path, 0);
+      _propagateFileToFolder(root, file, file.path, 0);
     }
   }
 
   /// Recursively adds file, and folders for the file path, to the
   /// source tree.
-  _propogateFileToFolder(
+  _propagateFileToFolder(
     SourceFolder folder,
     SourceFile file,
     List<String> path,
@@ -73,7 +73,7 @@ class Analyzer {
       () => _createFolder(subFolderPath),
     ) as SourceFolder;
 
-    _propogateFileToFolder(subFolder, file, path, pathIndex + 1);
+    _propagateFileToFolder(subFolder, file, path, pathIndex + 1);
   }
 
   SourceFolder _createFolder(Path path) {
