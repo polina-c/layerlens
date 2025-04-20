@@ -42,7 +42,7 @@ To see the diagrams in your IDE:
 1. Run command:
 
    - With global configuration: `layerlens` in the root of the package or
-   in other place and pass --path <your package root>
+   in other place with `--path <your package root>`
 
    - With package configuration: `dart run layerlens` in the package root
 
