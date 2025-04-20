@@ -62,9 +62,10 @@ Make your pre-submit bots failing in case of issues, using flags:
 
 ### Re-generate on every GitHub push
 
-1. Add a `dev_dependency` to https://pub.dev/packages/layerlens
-2. Copy the content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/blob/main/.github/doc/run-layerlens.yaml)
+Copy the content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/blob/main/.github/doc/run-layerlens.yaml)
    to `.github/workflows`.
+
+It will work if your repo policy allows bots to update files.
 
 ## Build filters
 
