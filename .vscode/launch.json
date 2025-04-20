@@ -20,23 +20,9 @@
             ],
         },
         {
-            "name": "polina-c/flutter",
+            "name": "current test or app",
             "request": "launch",
             "type": "dart",
-            "program": "bin/layerlens.dart",
-            "args": [
-                "--path=../platform/polina_flutter/packages/flutter",
-            ],
-        },
-        {
-            "name": "polina-c/analyzer",
-            "request": "launch",
-            "type": "dart",
-            "program": "bin/layerlens.dart",
-            "args": [
-                "--path=../dart-sdk-github/pkg/analyzer",
-                "--package=analyzer",
-            ],
         },
     ]
 }

@@ -51,6 +51,8 @@ class MdGenerator {
           buildFilters.any((filter) => filter.matches(folder.fullName))) {
         await updateDiagramFile(filePath, theContent, failIfChanged);
         result++;
+      } else {
+        await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
       }
     }
 
