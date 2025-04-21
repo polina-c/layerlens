@@ -23,6 +23,9 @@ jobs:
     - name: dart pub get
       run: dart pub get
 
+    - name: activate
+      run: dart pub global activate layerlens
+
     - name: generate
       run: dart run layerlens
 

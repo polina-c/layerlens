@@ -26,7 +26,7 @@ import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/src/generated/source.dart';
 
 import 'model.dart';
-import 'primitives.dart';
+import 'cli.dart';
 
 Future<Dependencies> collectDeps({
   required String rootDir,

@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'primitives.dart';
+import 'cli.dart';
 
 typedef ShortName = String;
 typedef FullName = String;

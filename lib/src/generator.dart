@@ -12,22 +12,23 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'dart:io';
-
 import 'package:glob/glob.dart';
 import 'package:path/path.dart' as path;
 
+import 'cli.dart';
 import 'model.dart';
 
 class MdGenerator {
   final String rootDir;
   final SourceFolder sourceFolder;
   final List<Glob> buildFilters;
+  final bool failIfChanged;
 
   MdGenerator({
     required this.rootDir,
     required this.sourceFolder,
     required this.buildFilters,
+    required this.failIfChanged,
   });
 
   Future<int> generateFiles() async {
@@ -39,19 +40,19 @@ class MdGenerator {
   /// Returns number of generated files.
   Future<int> _generateFile(SourceFolder folder) async {
     var result = 0;
-    final file =
-        File(path.joinAll([rootDir, folder.fullName, 'DEPENDENCIES.md']));
-
-    if (await file.exists()) {
-      await file.delete();
-    }
-
+    final filePath =
+        path.joinAll([rootDir, folder.fullName, 'DEPENDENCIES.md']);
     final theContent = content(folder);
-    if (theContent != null) {
+
+    if (theContent == null) {
+      await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
+    } else {
       if (buildFilters.isEmpty ||
           buildFilters.any((filter) => filter.matches(folder.fullName))) {
-        await file.writeAsString(theContent);
+        await updateDiagramFile(filePath, theContent, failIfChanged);
         result++;
+      } else {
+        await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
       }
     }
 

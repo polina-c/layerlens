@@ -42,7 +42,6 @@ void main() async {
           layering,
           exitMock,
           failOnCycles: failOnCycles,
-          failureMessage: 'Cycles found',
         );
 
         bool shouldExit = failOnCycles && cycles;

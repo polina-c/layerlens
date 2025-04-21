@@ -72,8 +72,8 @@ void main() {
   Future<int> generateFiles(MdGenerator generator) {
     return IOOverrides.runZoned(
       () async {
-        final noGeneratedFiles = await generator.generateFiles();
-        return noGeneratedFiles;
+        final fileCount = await generator.generateFiles();
+        return fileCount;
       },
       createFile: (path) => memoryFileSystem.file(path),
       createDirectory: (path) => memoryFileSystem.directory(path),
@@ -90,6 +90,7 @@ void main() {
     expect(content, contains('this folder: 1'));
     expect(content, contains('sub-folders: 2'));
   });
+
   group('build filters', () {
     test('build all files (without any filters)', () async {
       final deps = await collectDeps(rootDir: rootDir);
@@ -99,6 +100,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -112,6 +114,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('build all files (with filter)', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -120,6 +123,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('**')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -133,6 +137,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('build only root', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -141,6 +146,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('lib')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -163,6 +169,7 @@ void main() {
         sourceFolder: analyzer.root,
         rootDir: rootDir,
         buildFilters: [Glob('lib'), Glob('lib/subfolder1')],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -189,6 +196,7 @@ void main() {
           Glob('lib/subfolder2'),
           Glob('lib/subfolder2/**'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -216,6 +224,7 @@ void main() {
           Glob('lib/subfolder1'),
           Glob('lib/subfolder2/**'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
@@ -229,6 +238,7 @@ void main() {
       expect(subfolderFileC.existsSync(), true);
       expect(subfolderFileD.existsSync(), true);
     });
+
     test('one subfolder with entire subtree', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -240,11 +250,12 @@ void main() {
           Glob('lib/subfolder1'),
           Glob('lib/subfolder1/**'),
         ],
+        failIfChanged: false,
       );
 
-      final noGeneratedFiles = await generateFiles(generator);
+      final fileCount = await generateFiles(generator);
 
-      expect(noGeneratedFiles, 3);
+      expect(fileCount, 3);
       expect(rootFile.existsSync(), false);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
@@ -253,6 +264,7 @@ void main() {
       expect(subfolderFileC.existsSync(), false);
       expect(subfolderFileD.existsSync(), false);
     });
+
     test(
         'one subfolder with entire subtree without the subfolder itself, but includes another subfolder',
         () async {
@@ -268,6 +280,7 @@ void main() {
           Glob('lib/subfolder2/**'),
           Glob('lib/subfolder2/c'),
         ],
+        failIfChanged: false,
       );
 
       final noGeneratedFiles = await generateFiles(generator);

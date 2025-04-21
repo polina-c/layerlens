@@ -15,53 +15,45 @@
 import 'package:args/args.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/layerlens.dart';
-
-enum _Options {
-  path('path'),
-  package('package'),
-  usage('usage'),
-  buildFilter('build-filter'),
-  help('help'),
-  failOnCycles('fail-on-cycles'),
-  ;
-
-  const _Options(this.name);
-
-  final String name;
-}
+import 'package:layerlens/src/cli.dart';
 
 void main(List<String> args) async {
   final parser = ArgParser()
     ..addFlag(
-      _Options.usage.name,
+      CliOptions.usage.name,
       defaultsTo: false,
       help:
-          'Prints help on how to use the command. The same as --${_Options.usage.name}.',
+          'Prints help on how to use the command. The same as --${CliOptions.usage.name}.',
     )
     ..addFlag(
-      _Options.help.name,
+      CliOptions.help.name,
       defaultsTo: false,
       help:
-          'Prints help on how to use the command. The same as --${_Options.help.name}.',
+          'Prints help on how to use the command. The same as --${CliOptions.help.name}.',
     )
     ..addFlag(
-      _Options.failOnCycles.name,
+      CliOptions.failOnCycles.name,
       defaultsTo: false,
       help: 'Fail if there are circular dependencies.',
     )
+    ..addFlag(
+      CliOptions.failIfChanged.name,
+      defaultsTo: false,
+      help: 'Fails if existing diagrams are different.',
+    )
     ..addOption(
-      _Options.path.name,
+      CliOptions.path.name,
       defaultsTo: '.',
       help: 'Root directory of the package.',
     )
     ..addOption(
-      _Options.package.name,
+      CliOptions.package.name,
       defaultsTo: null,
       help: 'Package name, that is needed when internal '
           'libraries reference each other with `package:` import.',
     )
     ..addMultiOption(
-      _Options.buildFilter.name,
+      CliOptions.buildFilter.name,
       help:
           'Filter for which folders to generate diagrams. Use glob syntax. Default is all folders.\nhttps://github.com/polina-c/layerlens/blob/main/README.md#build-filters',
     );
@@ -76,26 +68,24 @@ void main(List<String> args) async {
     return;
   }
 
-  if (parsedArgs[_Options.usage.name] == true ||
-      parsedArgs[_Options.help.name] == true) {
+  if (parsedArgs[CliOptions.usage.name] == true ||
+      parsedArgs[CliOptions.help.name] == true) {
     print(parser.usage);
     return;
   }
 
   List<Glob> getBuildFilters() {
-    final buildFilters = parsedArgs[_Options.buildFilter.name];
+    final buildFilters = parsedArgs[CliOptions.buildFilter.name];
     if (buildFilters is! List<String>) return [];
     return buildFilters.map((filter) => Glob(filter)).toList();
   }
 
   final generatedDiagrams = await generateLayering(
-    rootDir: parsedArgs[_Options.path.name],
-    packageName: parsedArgs[_Options.package.name],
-    failOnCycles: parsedArgs[_Options.failOnCycles.name] as bool,
+    rootDir: parsedArgs[CliOptions.path.name],
+    packageName: parsedArgs[CliOptions.package.name],
+    failOnCycles: parsedArgs[CliOptions.failOnCycles.name] as bool,
+    failIfChanged: parsedArgs[CliOptions.failIfChanged.name] as bool,
     buildFilters: getBuildFilters(),
-    cyclesFailureMessage: '''Error: cycles detected.
-To see the cycles, generate diagrams without --${_Options.failOnCycles.name} and search for '--!--'.
-''',
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',
