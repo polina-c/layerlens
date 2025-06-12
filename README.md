@@ -10,7 +10,7 @@ LayerLens is a tool that:
 
 1. Automatically generates a dependency diagram as a
 [Mermaid `flowchart`](https://mermaid.js.org/syntax/flowchart.html)
-within every folder of your Dart or Flutter package.
+within every directory of your Dart or Flutter package.
 
 2. Identifies and alerts you to any cyclic dependencies.
 
@@ -18,20 +18,20 @@ within every folder of your Dart or Flutter package.
 
 Unlike other dependency visualization and cycle detection tools that focus on language-specific concepts,
 LayerLens innovates by operating on **file system concepts**. It assumes that organizing your code by files
-and folders accurately reflects your mental model of the project.
+and directories accurately reflects your mental model of the project.
 
 Specifically, LayerLens:
 
-1. Restricts each diagram to the content of a single folder,
-so that every folder has its own diagram.
+1. Restricts each diagram to the content of a single directory,
+so that every directory has its own diagram.
 
-3. For each folder treats immediate sub-folders and files as equal elements,
+3. For each directory treats immediate sub-directories and files as equal elements,
 and shows dependencies between these elements as a directed graph.
 
 As result: 
 
-1. Each folder diagram is simple. It does not contain (1) any internal details of subfolders or files, and (2)
-any details of code outside the folder.
+1. Each directory diagram is simple. It does not contain (1) any internal details of directories or files, and (2)
+any details of code outside the directory.
 
 2. All diagrams together are enough to detect cycles in application.
 
