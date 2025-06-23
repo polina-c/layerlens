@@ -1,8 +1,8 @@
 # LayerLens
 
-[![pub package](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
+Keep code well structured.
 
-NOTE: LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
+[![pub package](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
 
 ## What is LayerLens?
 
@@ -13,6 +13,8 @@ LayerLens is a tool that:
 within every directory of your Dart or Flutter package.
 
 2. Identifies and alerts you to any cyclic dependencies.
+
+NOTE: LayerLens shows inside-package dependencies. For cross-package dependencies use `flutter pub deps`.
 
 ## How does it work?
 
