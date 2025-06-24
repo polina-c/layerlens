@@ -2,7 +2,7 @@
 
 Keep your code well structured.
 
-[![pub package](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
+[![package:layerlens](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
 
 ## What is LayerLens?
 
