@@ -40,8 +40,7 @@ class MdGenerator {
   /// Returns number of generated files.
   Future<int> _generateFile(SourceFolder folder) async {
     var result = 0;
-    final filePath =
-        path.joinAll([rootDir, folder.fullName, 'DEPENDENCIES.md']);
+    final filePath = path.joinAll([rootDir, folder.fullName, 'DEPS.md']);
     final theContent = content(folder);
 
     if (theContent == null) {

@@ -1,3 +1,7 @@
+# 2.0.0
+
+* Rename DEPENDENCIES.md to DEPS.md.
+
 # 1.0.18
 
 * Add option `--fail-if-changed`.

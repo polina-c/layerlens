@@ -74,10 +74,10 @@ To see the diagrams in your IDE:
 
    - With package configuration: `dart run layerlens` in the package root
 
-2. Find the generated file DEPENDENCIES.md in each source folder, where
+2. Find the generated file DEPS.md in each source folder, where
    libraries or folders depend on each other.
 
-3. In VSCode, right click DEPENDENCIES.md and select 'Open Preview'
+3. In VSCode, right click DEPS.md and select 'Open Preview'
 
 ## Continuous integration
 
@@ -97,7 +97,7 @@ It will work if your repo policy allows bots to update files.
 
 ## Build filters
 
-If you want to generate the `DEPENDENCIES.md` only for a specific folders, you can use `--build-filter` option and you should use [glob](https://pub.dev/packages/glob) syntax. For example, to generate the diagram only for the root `lib/` folder, you run following `dart run layerlens --build-filter "lib"`.
+If you want to generate the `DEPS.md` only for a specific folders, you can use `--build-filter` option and you should use [glob](https://pub.dev/packages/glob) syntax. For example, to generate the diagram only for the root `lib/` folder, you run following `dart run layerlens --build-filter "lib"`.
 
 You can specify multiple build filters . The mechanism is inspired by `--build-filter` in Dart's [`build_runner`](https://github.com/dart-lang/build/blob/master/docs/partial_builds.md). For example, to run the layerlens for root `lib/` and it's subfolder `lib/subfolder1` run `layerlens --build-filter "lib" --build-filter "lib/subfolder1"`. To generate the entire subtree for a given subfolder you can run following: `layerlens --build-filter "lib/subfolder1" --build-filter "lib/subfolder1/**"`
 
