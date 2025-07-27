@@ -33,3 +33,5 @@ information on using pull requests.
 ## Technical details
 
 ### Regenerate diagrams
+
+To regenerate diagrams in this package run `dart run`.
