@@ -88,6 +88,6 @@ void main(List<String> args) async {
     buildFilters: getBuildFilters(),
   );
   print(
-    'Generated $generatedDiagrams diagrams. Check files DEPENDENCIES.md in source folders.',
+    'Generated $generatedDiagrams diagrams. Check files DEPS.md in source folders.',
   );
 }

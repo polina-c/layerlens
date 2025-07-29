@@ -41,19 +41,13 @@ void main() {
     memoryFileSystem = MemoryFileSystem();
     localFileSystem = LocalFileSystem();
 
-    rootFile = memoryFileSystem.file('$rootDir/lib/DEPENDENCIES.md');
-    subfolderFile1 =
-        memoryFileSystem.file('$rootDir/lib/subfolder1/DEPENDENCIES.md');
-    subfolderFile2 =
-        memoryFileSystem.file('$rootDir/lib/subfolder2/DEPENDENCIES.md');
-    subfolderFileA =
-        memoryFileSystem.file('$rootDir/lib/subfolder1/a/DEPENDENCIES.md');
-    subfolderFileB =
-        memoryFileSystem.file('$rootDir/lib/subfolder1/b/DEPENDENCIES.md');
-    subfolderFileC =
-        memoryFileSystem.file('$rootDir/lib/subfolder2/c/DEPENDENCIES.md');
-    subfolderFileD =
-        memoryFileSystem.file('$rootDir/lib/subfolder2/d/DEPENDENCIES.md');
+    rootFile = memoryFileSystem.file('$rootDir/lib/DEPS.md');
+    subfolderFile1 = memoryFileSystem.file('$rootDir/lib/subfolder1/DEPS.md');
+    subfolderFile2 = memoryFileSystem.file('$rootDir/lib/subfolder2/DEPS.md');
+    subfolderFileA = memoryFileSystem.file('$rootDir/lib/subfolder1/a/DEPS.md');
+    subfolderFileB = memoryFileSystem.file('$rootDir/lib/subfolder1/b/DEPS.md');
+    subfolderFileC = memoryFileSystem.file('$rootDir/lib/subfolder2/c/DEPS.md');
+    subfolderFileD = memoryFileSystem.file('$rootDir/lib/subfolder2/d/DEPS.md');
 
     /// Copy test/test_project to MemoryFileSystem, so the files are created and tested in memory.
     await memoryFileSystem.directory(rootDir).create(recursive: true);
