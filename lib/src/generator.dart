@@ -22,12 +22,16 @@ class MdGenerator {
   final SourceFolder sourceFolder;
   final Filter filter;
   final bool failIfChanged;
+  final bool failOnCycles;
+  final ExitCallback? exitFn;
 
   MdGenerator({
     required this.rootDir,
     required this.sourceFolder,
     required this.filter,
     required this.failIfChanged,
+    required this.failOnCycles,
+    this.exitFn,
   });
 
   Future<int> generateFiles() async {
@@ -38,6 +42,11 @@ class MdGenerator {
   ///
   /// Returns number of generated files.
   Future<int> _generateFile(SourceFolder folder) async {
+    _handleCycles(
+      failOnCycles: failOnCycles,
+      totalInversions: folder.totalInversions,
+    );
+
     var result = 0;
     final filePath = path.joinAll([rootDir, folder.fullName, 'DEPS.md']);
     final theContent = content(folder);
@@ -103,5 +112,14 @@ class MdGenerator {
     );
 
     return result.toString();
+  }
+
+  void _handleCycles({
+    required bool failOnCycles,
+    required int totalInversions,
+  }) {
+    if (totalInversions > 0 && failOnCycles) {
+      failExecution(FailureCodes.cycles, exitFn: exitFn);
+    }
   }
 }

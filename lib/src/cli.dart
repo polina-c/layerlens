@@ -100,11 +100,12 @@ enum FailureCodes {
 /// Fails execution of the tool with message.
 void failExecution(
   FailureCodes code, {
-  ExitCallback exitFn = exit,
+  ExitCallback? exitFn,
 }) {
   print(
     _failureMessages[code] ?? 'Error: unknown error. Code: ${code.value}',
   );
   print('Read more at https://pub.dev/packages/layerlens.');
+  exitFn ??= exit;
   exitFn(code.value);
 }
