@@ -85,8 +85,8 @@ void main(List<String> args) async {
   }
 
   List<Glob> parseFilters(CliOptions optionName) {
-    return parsedArgs[optionName.name]?.map((filter) => Glob(filter)) ??
-        <Glob>[];
+    final arg = parsedArgs[optionName.name] as List<String>? ?? [];
+    return arg.map((filter) => Glob(filter)).toList();
   }
 
   Filter filter() {

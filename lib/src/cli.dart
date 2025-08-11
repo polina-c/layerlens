@@ -19,7 +19,7 @@ enum CliOptions {
   package('package'),
   usage('usage'),
   only('only'),
-  except('without'),
+  except('except'),
   help('help'),
   failOnCycles('fail-on-cycles'),
   failIfChanged('fail-if-changed'),

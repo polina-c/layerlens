@@ -100,13 +100,13 @@ It will work if your repo policy allows bots to update files.
 If you want to generate the `DEPS.md` only for a specific folders, use `--only` and `--except` options,
 formatted as [glob](https://pub.dev/packages/glob) syntax.
 
-For example, to generate the diagram :
+For example, to generate the diagrams:
 
-* only for the root `lib/` folder, run `dart run layerlens --only "lib"`
-* only for the root `lib/` folder, run `dart run layerlens --only "lib"`
-* for all folders except `l10n/`, run `dart run layerlens --except "lib"`
-
-You can specify multiple build filters . The mechanism is inspired by `--build-filter` in Dart's [`build_runner`](https://github.com/dart-lang/build/blob/master/docs/partial_builds.md). For example, to run the layerlens for root `lib/` and it's subfolder `lib/subfolder1` run `layerlens --build-filter "lib" --build-filter "lib/subfolder1"`. To generate the entire subtree for a given subfolder you can run following: `layerlens --build-filter "lib/subfolder1" --build-filter "lib/subfolder1/**"`
+* only for the root `lib/` folder: `dart run layerlens --only "lib"`
+* only for the root `lib/` folder: `dart run layerlens --only "lib"`
+* for all folders except `l10n/`: `dart run layerlens --except "l10n"`
+* only for root `lib/` and it's subfolder: run `layerlens --only "lib" --only "lib/subfolder1"`
+* for the entire subtree for a given subfolder: `layerlens --only "lib/subfolder1" --only "lib/subfolder1/**"`
 
 ## Supported languages
 
