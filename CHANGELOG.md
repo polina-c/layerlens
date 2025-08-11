@@ -1,3 +1,7 @@
+# 3.0.1
+
+* Print inversions if only there are inversions.
+
 # 3.0.0
 
 * Replace parameter `build-filter` with combination of `only` and `except`.

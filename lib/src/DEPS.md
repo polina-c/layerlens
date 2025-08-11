@@ -15,9 +15,3 @@ generator.dart-->model.dart;
 layering.dart-->model.dart;
 model.dart-->cli.dart;
 ```
-
-### Inversions
-In this folder: 0
-
-Including sub-folders: 0
-
