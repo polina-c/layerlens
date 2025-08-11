@@ -93,7 +93,7 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [],
+        filter: Filter.empty(),
         failIfChanged: false,
       );
 
@@ -116,7 +116,10 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [Glob('**')],
+        filter: Filter(
+          only: [Glob('**')],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -139,7 +142,10 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [Glob('lib')],
+        filter: Filter(
+          only: [Glob('lib')],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -162,7 +168,10 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [Glob('lib'), Glob('lib/subfolder1')],
+        filter: Filter(
+          only: [Glob('lib'), Glob('lib/subfolder1')],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -184,12 +193,15 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [
-          Glob('lib'),
-          Glob('lib/subfolder1'),
-          Glob('lib/subfolder2'),
-          Glob('lib/subfolder2/**'),
-        ],
+        filter: Filter(
+          only: [
+            Glob('lib'),
+            Glob('lib/subfolder1'),
+            Glob('lib/subfolder2'),
+            Glob('lib/subfolder2/**'),
+          ],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -213,11 +225,14 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [
-          Glob('lib'),
-          Glob('lib/subfolder1'),
-          Glob('lib/subfolder2/**'),
-        ],
+        filter: Filter(
+          only: [
+            Glob('lib'),
+            Glob('lib/subfolder1'),
+            Glob('lib/subfolder2/**'),
+          ],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -240,10 +255,13 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [
-          Glob('lib/subfolder1'),
-          Glob('lib/subfolder1/**'),
-        ],
+        filter: Filter(
+          only: [
+            Glob('lib/subfolder1'),
+            Glob('lib/subfolder1/**'),
+          ],
+          except: [],
+        ),
         failIfChanged: false,
       );
 
@@ -268,12 +286,15 @@ void main() {
       final generator = MdGenerator(
         sourceFolder: analyzer.root,
         rootDir: rootDir,
-        buildFilters: [
-          Glob('lib'),
-          Glob('lib/subfolder1'),
-          Glob('lib/subfolder2/**'),
-          Glob('lib/subfolder2/c'),
-        ],
+        filter: Filter(
+          only: [
+            Glob('lib'),
+            Glob('lib/subfolder1'),
+            Glob('lib/subfolder2/**'),
+            Glob('lib/subfolder2/c'),
+          ],
+          except: [],
+        ),
         failIfChanged: false,
       );
 

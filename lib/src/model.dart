@@ -12,6 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'package:glob/glob.dart';
+
 import 'cli.dart';
 
 typedef ShortName = String;
@@ -100,4 +102,29 @@ class Dependency {
 
   @override
   String toString() => '$consumer -> $dependency';
+}
+
+class Filter {
+  final List<Glob> only;
+  final List<Glob> except;
+
+  Filter({
+    required this.only,
+    required this.except,
+  });
+
+  Filter.empty()
+      : only = [],
+        except = [];
+
+  bool shouldGenerateFile(SourceFolder folder) {
+    if (only.isNotEmpty &&
+        !only.any((filter) => filter.matches(folder.fullName))) {
+      return false;
+    }
+    if (except.any((filter) => filter.matches(folder.fullName))) {
+      return false;
+    }
+    return true;
+  }
 }

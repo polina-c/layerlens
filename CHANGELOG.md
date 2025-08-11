@@ -1,3 +1,7 @@
+# 3.0.0
+
+* Replace parameter `build-filter` with combination of `only` and `except`.
+
 # 2.0.0
 
 * Rename DEPENDENCIES.md to DEPS.md.
@@ -36,8 +40,8 @@
 
 # 1.0.10
 
-* Configure layerlense as executable.
-* Oputput number of generated diagrams.
+* Configure layerlens as executable.
+* Output number of generated diagrams.
 * Update documentation.
 
 # 1.0.9

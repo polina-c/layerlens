@@ -12,7 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import 'package:glob/glob.dart';
 import 'package:path/path.dart' as path;
 
 import 'cli.dart';
@@ -21,13 +20,13 @@ import 'model.dart';
 class MdGenerator {
   final String rootDir;
   final SourceFolder sourceFolder;
-  final List<Glob> buildFilters;
+  final Filter filter;
   final bool failIfChanged;
 
   MdGenerator({
     required this.rootDir,
     required this.sourceFolder,
-    required this.buildFilters,
+    required this.filter,
     required this.failIfChanged,
   });
 
@@ -46,8 +45,7 @@ class MdGenerator {
     if (theContent == null) {
       await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
     } else {
-      if (buildFilters.isEmpty ||
-          buildFilters.any((filter) => filter.matches(folder.fullName))) {
+      if (filter.shouldGenerateFile(folder)) {
         await updateDiagramFile(filePath, theContent, failIfChanged);
         result++;
       } else {

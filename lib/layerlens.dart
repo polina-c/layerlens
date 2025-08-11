@@ -14,13 +14,13 @@
 
 import 'dart:io';
 
-import 'package:glob/glob.dart';
 import 'package:meta/meta.dart';
 
 import 'src/analyzer.dart';
 import 'src/code_parser.dart';
 import 'src/generator.dart';
 import 'src/cli.dart';
+import 'src/model.dart';
 
 /// Generates dependency diagram in each source folder
 /// where there are dependencies between dart libraries or folders.
@@ -31,7 +31,7 @@ Future<int> generateLayering({
   required String? packageName,
   required bool failOnCycles,
   required bool failIfChanged,
-  required List<Glob> buildFilters,
+  required Filter filter,
   ExitCallback exitFn = exit,
 }) async {
   final deps = await collectDeps(
@@ -47,7 +47,7 @@ Future<int> generateLayering({
   return await MdGenerator(
     sourceFolder: layering.root,
     rootDir: rootDir,
-    buildFilters: buildFilters,
+    filter: filter,
     failIfChanged: failIfChanged,
   ).generateFiles();
 }

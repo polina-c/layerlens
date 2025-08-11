@@ -30,7 +30,7 @@ so that every directory has its own diagram.
 3. For each directory treats immediate sub-directories and files as equal elements,
 and shows dependencies between these elements as a directed graph.
 
-As result: 
+As result:
 
 1. Each directory diagram is simple. It does not contain (1) any internal details of directories or files, and (2)
 any details of code outside the directory.
@@ -95,9 +95,16 @@ Copy the content of [run-layerlens.yaml](https://github.com/polina-c/layerlens/b
 
 It will work if your repo policy allows bots to update files.
 
-## Build filters
+## Filter
 
-If you want to generate the `DEPS.md` only for a specific folders, you can use `--build-filter` option and you should use [glob](https://pub.dev/packages/glob) syntax. For example, to generate the diagram only for the root `lib/` folder, you run following `dart run layerlens --build-filter "lib"`.
+If you want to generate the `DEPS.md` only for a specific folders, use `--only` and `--except` options,
+formatted as [glob](https://pub.dev/packages/glob) syntax.
+
+For example, to generate the diagram :
+
+* only for the root `lib/` folder, run `dart run layerlens --only "lib"`
+* only for the root `lib/` folder, run `dart run layerlens --only "lib"`
+* for all folders except `l10n/`, run `dart run layerlens --except "lib"`
 
 You can specify multiple build filters . The mechanism is inspired by `--build-filter` in Dart's [`build_runner`](https://github.com/dart-lang/build/blob/master/docs/partial_builds.md). For example, to run the layerlens for root `lib/` and it's subfolder `lib/subfolder1` run `layerlens --build-filter "lib" --build-filter "lib/subfolder1"`. To generate the entire subtree for a given subfolder you can run following: `layerlens --build-filter "lib/subfolder1" --build-filter "lib/subfolder1/**"`
 

@@ -16,6 +16,10 @@ import 'package:args/args.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/layerlens.dart';
 import 'package:layerlens/src/cli.dart';
+import 'package:layerlens/src/model.dart';
+
+const _filterDocLink =
+    'https://github.com/polina-c/layerlens/blob/main/README.md#filter';
 
 void main(List<String> args) async {
   final parser = ArgParser()
@@ -53,9 +57,15 @@ void main(List<String> args) async {
           'libraries reference each other with `package:` import.',
     )
     ..addMultiOption(
-      CliOptions.buildFilter.name,
-      help:
-          'Filter for which folders to generate diagrams. Use glob syntax. Default is all folders.\nhttps://github.com/polina-c/layerlens/blob/main/README.md#build-filters',
+      CliOptions.only.name,
+      help: 'Which folders to generate diagrams for. Use glob syntax. '
+          'If empty, all folders are included.'
+          '\n$_filterDocLink',
+    )
+    ..addMultiOption(
+      CliOptions.except.name,
+      help: 'Which folders to exclude from diagram generation. Use glob syntax.'
+          '\n$_filterDocLink',
     );
 
   late final ArgResults parsedArgs;
@@ -74,10 +84,16 @@ void main(List<String> args) async {
     return;
   }
 
-  List<Glob> getBuildFilters() {
-    final buildFilters = parsedArgs[CliOptions.buildFilter.name];
-    if (buildFilters is! List<String>) return [];
-    return buildFilters.map((filter) => Glob(filter)).toList();
+  List<Glob> parseFilters(CliOptions optionName) {
+    return parsedArgs[optionName.name]?.map((filter) => Glob(filter)) ??
+        <Glob>[];
+  }
+
+  Filter filter() {
+    return Filter(
+      only: parseFilters(CliOptions.only),
+      except: parseFilters(CliOptions.except),
+    );
   }
 
   final generatedDiagrams = await generateLayering(
@@ -85,7 +101,7 @@ void main(List<String> args) async {
     packageName: parsedArgs[CliOptions.package.name],
     failOnCycles: parsedArgs[CliOptions.failOnCycles.name] as bool,
     failIfChanged: parsedArgs[CliOptions.failIfChanged.name] as bool,
-    buildFilters: getBuildFilters(),
+    filter: filter(),
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPS.md in source folders.',
