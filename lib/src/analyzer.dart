@@ -121,7 +121,13 @@ int _findSiblingIndex(Path consumer, Path dependency) {
   var index = 0;
 
   while (consumer[index] == dependency[index]) {
-    index++;
+    final newIndex = index + 1;
+
+    if (newIndex >= consumer.length || newIndex >= dependency.length) {
+      break;
+    }
+
+    index = newIndex;
   }
 
   return index;
