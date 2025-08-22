@@ -94,11 +94,13 @@ void main() {
       sourceFolder: analyzer.root,
       rootDir: rootDir,
       filter: Filter(
-        only: [
+        only: [],
+        except: [
+          Glob('lib'),
           Glob('lib/subfolder1'),
           Glob('lib/subfolder1/**'),
+          Glob('lib/subfolder2/**'),
         ],
-        except: [],
       ),
       failIfChanged: false,
       failOnCycles: true,
@@ -106,14 +108,13 @@ void main() {
     );
 
     final fileCount = await generateFiles(generator);
-
-    expect(fileCount, 3);
+    expect(fileCount, 1);
     expect(rootFile.existsSync(), false);
-    expect(exitCodeUsed, FailureCodes.cycles.value);
-    expect(subfolderFile1.existsSync(), true);
-    expect(subfolderFile2.existsSync(), false);
-    expect(subfolderFile1A.existsSync(), true);
-    expect(subfolderFile1B.existsSync(), true);
+    expect(exitCodeUsed, null);
+    expect(subfolderFile1.existsSync(), false);
+    expect(subfolderFile2.existsSync(), true);
+    expect(subfolderFile1A.existsSync(), false);
+    expect(subfolderFile1B.existsSync(), false);
     expect(subfolderFile2C.existsSync(), false);
     expect(subfolderFile2D.existsSync(), false);
   });

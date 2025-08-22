@@ -35,38 +35,51 @@ class MdGenerator {
   });
 
   Future<int> generateFiles() async {
-    return await _generateFile(sourceFolder);
+    return await _generateRecursive(sourceFolder);
   }
 
   /// Recursively generates md files in source folders.
   ///
   /// Returns number of generated files.
-  Future<int> _generateFile(SourceFolder folder) async {
-    _handleCycles(
-      failOnCycles: failOnCycles,
-      totalInversions: folder.totalInversions,
-    );
-
+  Future<int> _generateRecursive(SourceFolder folder) async {
     var result = 0;
-    final filePath = path.joinAll([rootDir, folder.fullName, 'DEPS.md']);
-    final theContent = content(folder);
-
-    if (theContent == null) {
-      await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
-    } else {
-      if (filter.shouldGenerateFile(folder)) {
-        await updateDiagramFile(filePath, theContent, failIfChanged);
-        result++;
-      } else {
-        await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
-      }
-    }
+    final generated = await maybeGenerateDiagram(
+      filter.shouldGenerateFile(folder),
+      folder,
+    );
+    if (generated) result++;
 
     for (final node in folder.children.values) {
-      if (node is SourceFolder) result += await _generateFile(node);
+      if (node is SourceFolder) result += await _generateRecursive(node);
     }
 
     return result;
+  }
+
+  Future<bool> maybeGenerateDiagram(
+    bool included,
+    SourceFolder folder,
+  ) async {
+    final filePath = path.joinAll([rootDir, folder.fullName, 'DEPS.md']);
+
+    if (!included) {
+      await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
+      return false;
+    }
+
+    _handleCycles(
+      failOnCycles: failOnCycles,
+      totalInversions: folder.localInversions,
+    );
+
+    final theContent = content(folder);
+    if (theContent == null) {
+      await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
+      return false;
+    }
+
+    await updateDiagramFile(filePath, theContent, failIfChanged);
+    return true;
   }
 
   static String? content(SourceFolder folder) {
@@ -96,7 +109,7 @@ class MdGenerator {
     result.writeln(items.join('\n'));
     result.writeln('```');
 
-    if (folder.localInversions == 0 && folder.localInversions == 0) {
+    if (folder.localInversions == 0) {
       return result.toString();
     }
 

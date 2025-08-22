@@ -394,7 +394,7 @@ void main() {
         filter: Filter(
           only: [
             Glob('lib/subfolder1'),
-            // Glob('lib/subfolder2'),
+            Glob('lib/subfolder2'),
           ],
           except: [],
         ),
@@ -405,15 +405,15 @@ void main() {
 
       final noGeneratedFiles = await generateFiles(generator);
 
-      expect(noGeneratedFiles, 1);
+      expect(noGeneratedFiles, 2);
       expect(rootFile.existsSync(), false);
       expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(subfolderFile1.existsSync(), true);
-      expect(subfolderFile2.existsSync(), false);
+      expect(subfolderFile2.existsSync(), true);
       expect(subfolderFile1A.existsSync(), false);
       expect(subfolderFile1B.existsSync(), false);
-      expect(subfolderFile2C.existsSync(), true);
-      expect(subfolderFile2D.existsSync(), true);
+      expect(subfolderFile2C.existsSync(), false);
+      expect(subfolderFile2D.existsSync(), false);
     });
   });
 }
