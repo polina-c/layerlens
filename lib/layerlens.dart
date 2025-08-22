@@ -14,8 +14,6 @@
 
 import 'dart:io';
 
-import 'package:meta/meta.dart';
-
 import 'src/analyzer.dart';
 import 'src/code_parser.dart';
 import 'src/generator.dart';
@@ -39,26 +37,11 @@ Future<int> generateLayering({
     packageName: packageName,
   );
   final layering = Analyzer(deps);
-  handleCycles(
-    layering,
-    exitFn,
-    failOnCycles: failOnCycles,
-  );
   return await MdGenerator(
     sourceFolder: layering.root,
     rootDir: rootDir,
     filter: filter,
     failIfChanged: failIfChanged,
+    failOnCycles: failOnCycles,
   ).generateFiles();
-}
-
-@visibleForTesting
-void handleCycles(
-  Analyzer layering,
-  ExitCallback exitFn, {
-  required bool failOnCycles,
-}) {
-  if (layering.root.totalInversions > 0 && failOnCycles) {
-    failExecution(FailureCodes.cycles, exitFn: exitFn);
-  }
 }

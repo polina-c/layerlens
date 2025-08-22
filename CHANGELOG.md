@@ -1,3 +1,11 @@
+# 3.0.3
+
+* Fix false positives when `except` is applied.
+
+# 3.0.2
+
+* Fail on cycles if only the cycles are in enabled folders.
+
 # 3.0.1
 
 * Print inversions if only there are inversions.

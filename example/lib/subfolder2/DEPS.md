@@ -7,9 +7,3 @@ Dependencies that create loops (inversions) are marked with `!`.
 flowchart TD;
 c.dart-->d.dart;
 ```
-
-### Inversions
-In this folder: 0
-
-Including sub-folders: 0
-

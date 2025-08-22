@@ -18,10 +18,16 @@ import 'package:file/local.dart';
 import 'package:file/memory.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/src/analyzer.dart';
+import 'package:layerlens/src/cli.dart';
 import 'package:layerlens/src/code_parser.dart';
 import 'package:layerlens/src/generator.dart';
 import 'package:layerlens/src/model.dart';
 import 'package:test/test.dart';
+
+int? exitCodeUsed;
+void exitMock(int code) {
+  exitCodeUsed = code;
+}
 
 void main() {
   late MemoryFileSystem memoryFileSystem;
@@ -64,6 +70,8 @@ void main() {
         await memoryFileSystem.file(file.path).writeAsBytes(content);
       }
     }
+
+    exitCodeUsed = null;
   });
 
   /// Generate files in MemoryFileSystem and return number of generated files.
@@ -89,7 +97,7 @@ void main() {
     expect(content, contains('sub-folders: 2'));
   });
 
-  group('build filters', () {
+  group('filters', () {
     test('build all files (without any filters)', () async {
       final deps = await collectDeps(rootDir: rootDir);
       final analyzer = Analyzer(deps);
@@ -99,10 +107,13 @@ void main() {
         rootDir: rootDir,
         filter: Filter.empty(),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(noGeneratedFiles, 7);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
@@ -125,11 +136,14 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 7);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), true);
@@ -151,11 +165,14 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 1);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), false);
       expect(subfolderFile2.existsSync(), false);
@@ -177,12 +194,15 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 2);
       expect(rootFile.existsSync(), true);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
       expect(subfolderFile1A.existsSync(), false);
@@ -208,11 +228,14 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 5);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), true);
@@ -239,11 +262,14 @@ void main() {
           ],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 5);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), true);
@@ -271,11 +297,14 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 4);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(rootFile.existsSync(), true);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
@@ -300,12 +329,15 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final fileCount = await generateFiles(generator);
 
       expect(fileCount, 3);
       expect(rootFile.existsSync(), false);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
       expect(subfolderFile1A.existsSync(), true);
@@ -333,18 +365,55 @@ void main() {
           except: [],
         ),
         failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
       );
 
       final noGeneratedFiles = await generateFiles(generator);
 
       expect(noGeneratedFiles, 4);
       expect(rootFile.existsSync(), true);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
       expect(subfolderFile1.existsSync(), true);
       expect(subfolderFile2.existsSync(), false);
       expect(subfolderFile1A.existsSync(), false);
       expect(subfolderFile1B.existsSync(), false);
       expect(subfolderFile2C.existsSync(), true);
       expect(subfolderFile2D.existsSync(), true);
+    });
+
+    test(
+        'one subfolder with entire subtree without the subfolder itself, but includes another subfolder',
+        () async {
+      final deps = await collectDeps(rootDir: rootDir);
+      final analyzer = Analyzer(deps);
+
+      final generator = MdGenerator(
+        sourceFolder: analyzer.root,
+        rootDir: rootDir,
+        filter: Filter(
+          only: [
+            Glob('lib/subfolder1'),
+            Glob('lib/subfolder2'),
+          ],
+          except: [],
+        ),
+        failIfChanged: false,
+        failOnCycles: true,
+        exitFn: exitMock,
+      );
+
+      final noGeneratedFiles = await generateFiles(generator);
+
+      expect(noGeneratedFiles, 2);
+      expect(rootFile.existsSync(), false);
+      expect(exitCodeUsed, FailureCodes.cycles.value);
+      expect(subfolderFile1.existsSync(), true);
+      expect(subfolderFile2.existsSync(), true);
+      expect(subfolderFile1A.existsSync(), false);
+      expect(subfolderFile1B.existsSync(), false);
+      expect(subfolderFile2C.existsSync(), false);
+      expect(subfolderFile2D.existsSync(), false);
     });
   });
 }
