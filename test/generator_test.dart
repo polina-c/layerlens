@@ -13,7 +13,6 @@
 //  limitations under the License.
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:file/local.dart';
 import 'package:file/memory.dart';
