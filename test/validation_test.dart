@@ -18,7 +18,6 @@ import 'package:file/local.dart';
 import 'package:file/memory.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/src/analyzer.dart';
-import 'package:layerlens/src/cli.dart';
 import 'package:layerlens/src/code_parser.dart';
 import 'package:layerlens/src/generator.dart';
 import 'package:layerlens/src/model.dart';
