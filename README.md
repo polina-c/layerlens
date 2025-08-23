@@ -19,8 +19,8 @@ NOTE: LayerLens shows inside-package dependencies. For cross-package dependencie
 ## How does it work?
 
 Unlike other dependency visualization and cycle detection tools that focus on language-specific concepts,
-LayerLens innovates by operating on **file system concepts**. It assumes that organizing your code by files
-and directories accurately reflects your mental model of the project.
+LayerLens innovates by operating on **file system concepts**. It assumes that organizing our code by files
+and directories we accurately reflect our mental model of the project.
 
 Specifically, LayerLens:
 
@@ -32,7 +32,8 @@ and shows dependencies between these elements as a directed graph.
 
 As result:
 
-1. Each directory diagram is simple. It does not contain (1) any internal details of directories or files, and (2)
+1. Each directory diagram is simple. It does not contain (1) any
+internal details of directories or files, and (2)
 any details of code outside the directory.
 
 2. All diagrams together are enough to detect cycles in application.
