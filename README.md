@@ -19,8 +19,9 @@ NOTE: LayerLens shows inside-package dependencies. For cross-package dependencie
 ## How does it work?
 
 Unlike other dependency visualization and cycle detection tools that focus on language-specific concepts,
-LayerLens innovates by operating on **file system concepts**. It assumes that organizing your code by files
-and directories accurately reflects your mental model of the project.
+LayerLens innovates by operating on **file system concepts**.
+It assumes that when we organize our code by files
+and directories we accurately reflect our mental model of the project.
 
 Specifically, LayerLens:
 
