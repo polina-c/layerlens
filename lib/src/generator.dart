@@ -12,6 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+import 'dart:io';
+
 import 'package:path/path.dart' as path;
 
 import 'cli.dart';
@@ -67,18 +69,20 @@ class MdGenerator {
       return false;
     }
 
-    _handleCycles(
-      failOnCycles: failOnCycles,
-      totalInversions: folder.localInversions,
-    );
-
-    final theContent = content(folder);
-    if (theContent == null) {
+    final diagram = content(folder);
+    if (diagram == null) {
       await deleteDiagramFile(path: filePath, failIfExists: failIfChanged);
       return false;
     }
 
-    await updateDiagramFile(filePath, theContent, failIfChanged);
+    _handleCycles(
+      diagram: diagram,
+      failOnCycles: failOnCycles,
+      inversions: folder.localInversions,
+      path: folder.fullName,
+    );
+
+    await updateDiagramFile(filePath, diagram, failIfChanged);
     return true;
   }
 
@@ -129,9 +133,13 @@ class MdGenerator {
 
   void _handleCycles({
     required bool failOnCycles,
-    required int totalInversions,
+    required int inversions,
+    required String diagram,
+    required String path,
   }) {
-    if (totalInversions > 0 && failOnCycles) {
+    if (inversions > 0 && failOnCycles) {
+      stderr.writeln('Found inversions at $path:');
+      stderr.writeln(diagram);
       failExecution(FailureCodes.cycles, exitFn: exitFn);
     }
   }
