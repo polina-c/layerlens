@@ -1,3 +1,7 @@
+# 3.0.4
+
+* Output content of the diagram, that caused failure.s
+
 # 3.0.3
 
 * Fix false positives when `except` is applied.
