@@ -36,7 +36,7 @@ final _failureMessages = {
 To see the cycles, do one of the following:
 
 * Copy the diagram above and paste it somewhere, where the diagram will be previewed, for example, to a comment on a GitHub PR.
-* regenerate the diagrams by running `layerlens` in the project root and search for '--!--'
+* Regenerate the diagrams by running `layerlens` in the project root and search for '--!--'
 
 The tool failed because the CLI option --${CliOptions.failOnCycles.name} is set.
 ''',
