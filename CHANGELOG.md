@@ -1,6 +1,6 @@
 # 3.0.4
 
-* Output content of the diagram, that caused failure.s
+* Output content of the diagram, that caused failures.
 
 # 3.0.3
 
