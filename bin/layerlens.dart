@@ -16,10 +16,14 @@ import 'package:args/args.dart';
 import 'package:glob/glob.dart';
 import 'package:layerlens/layerlens.dart';
 import 'package:layerlens/src/cli.dart';
+import 'package:layerlens/src/generator.dart';
 import 'package:layerlens/src/model.dart';
 
 const _filterDocLink =
     'https://github.com/polina-c/layerlens/blob/main/README.md#filter';
+
+const _mermaidLayoutDocLink =
+    'https://mermaid.js.org/syntax/flowchart.html#renderer';
 
 void main(List<String> args) async {
   final parser = ArgParser()
@@ -66,6 +70,18 @@ void main(List<String> args) async {
       CliOptions.except.name,
       help: 'Which folders to exclude from diagram generation. Use glob syntax.'
           '\n$_filterDocLink',
+    )
+    ..addOption(
+      CliOptions.layout.name,
+      help: 'Layout engine to use for Mermaid diagrams.'
+          '\nCertain markdown preview plugins may not support all layout engines.'
+          '\n$_mermaidLayoutDocLink.',
+      defaultsTo: 'dagre',
+      allowed: ['elk', 'dagre'],
+      allowedHelp: {
+        'dagre': 'Mermaid\'s default layout engine.',
+        'elk': 'ELK layout engine (experimental).',
+      },
     );
 
   late final ArgResults parsedArgs;
@@ -96,12 +112,20 @@ void main(List<String> args) async {
     );
   }
 
+  // Prepare Mermaid options, extendable.
+  List<MermaidOption> mermaidOptions() {
+    return [
+      (key: 'layout', value: parsedArgs[CliOptions.layout.name]),
+    ];
+  }
+
   final generatedDiagrams = await generateLayering(
     rootDir: parsedArgs[CliOptions.path.name],
     packageName: parsedArgs[CliOptions.package.name],
     failOnCycles: parsedArgs[CliOptions.failOnCycles.name] as bool,
     failIfChanged: parsedArgs[CliOptions.failIfChanged.name] as bool,
     filter: filter(),
+    mermaidOptions: mermaidOptions(),
   );
   print(
     'Generated $generatedDiagrams diagrams. Check files DEPS.md in source folders.',

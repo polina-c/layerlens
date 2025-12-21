@@ -49,7 +49,7 @@ class Analyzer {
 
   /// Recursively adds file, and folders for the file path, to the
   /// source tree.
-  _propagateFileToFolder(
+  void _propagateFileToFolder(
     SourceFolder folder,
     SourceFile file,
     List<String> path,

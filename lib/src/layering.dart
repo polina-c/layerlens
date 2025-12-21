@@ -34,13 +34,7 @@ void assignLayers(SourceFolder folder) {
   folder.totalInversions = folder.localInversions + inversionsInSubfolders;
 }
 
-// TODO(polina-c): convert to record.
-class _NodesAndValue {
-  final Set<SourceNode> nodes;
-  final int value;
-
-  _NodesAndValue(this.nodes, this.value);
-}
+typedef _NodesAndValue = ({Set<SourceNode> nodes, int value});
 
 void _assignLocalLayerToChildren(SourceFolder folder) {
   // Items without layer.
@@ -98,10 +92,7 @@ _NodesAndValue _withMinConsumersWl(Set<SourceNode> nodes) {
 
   final minNumber = byNumberOfConsumersWl.keys.reduce((v, e) => min(v, e));
 
-  return _NodesAndValue(
-    byNumberOfConsumersWl[minNumber]!,
-    minNumber,
-  );
+  return (nodes: byNumberOfConsumersWl[minNumber]!, value: minNumber);
 }
 
 _NodesAndValue _withMaxDependenciesWl(Set<SourceNode> nodes) {
@@ -124,8 +115,5 @@ _NodesAndValue _withMaxDependenciesWl(Set<SourceNode> nodes) {
 
   final maxNumber = byNumberOfDependenciesWl.keys.reduce((v, e) => max(v, e));
 
-  return _NodesAndValue(
-    byNumberOfDependenciesWl[maxNumber]!,
-    maxNumber,
-  );
+  return (nodes: byNumberOfDependenciesWl[maxNumber]!, value: maxNumber);
 }

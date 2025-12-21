@@ -23,6 +23,7 @@ enum CliOptions {
   help('help'),
   failOnCycles('fail-on-cycles'),
   failIfChanged('fail-if-changed'),
+  layout('layout'),
   ;
 
   const CliOptions(this.name);

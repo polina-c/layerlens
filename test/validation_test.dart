@@ -103,6 +103,7 @@ void main() {
       ),
       failIfChanged: false,
       failOnCycles: true,
+      mermaidOptions: [],
       exitFn: exitMock,
     );
 

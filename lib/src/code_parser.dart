@@ -94,7 +94,7 @@ class _DepsCollector extends RecursiveAstVisitor
     return super.visitExportDirective(node);
   }
 
-  _collectDep(Dependency? dependency) {
+  void _collectDep(Dependency? dependency) {
     if (dependency == null) return;
 
     if (!collectedDeps.containsKey(dependency.consumer)) {

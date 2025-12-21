@@ -27,7 +27,7 @@ Specifically, LayerLens:
 1. Restricts each diagram to the content of a single directory,
 so that every directory has its own diagram.
 
-3. For each directory treats immediate sub-directories and files as equal elements,
+1. For each directory treats immediate sub-directories and files as equal elements,
 and shows dependencies between these elements as a directed graph.
 
 As result:
@@ -35,9 +35,9 @@ As result:
 1. Each directory diagram is simple. It does not contain (1) any internal details of directories or files, and (2)
 any details of code outside the directory.
 
-2. All diagrams together are enough to detect cycles in application.
+1. All diagrams together are enough to detect cycles in application.
 
-<img width="536" alt="Screenshot 2023-01-14 at 9 45 33 PM" src="https://user-images.githubusercontent.com/12115586/212524921-5221785f-692d-4464-a230-0f620434e2c5.png">
+<img width="536" alt="Example output" src="./screenshots/DEPENDENCIES.png">
 
 ## Configure layerlens
 
@@ -85,8 +85,8 @@ To see the diagrams in your IDE:
 
 Make your pre-submit bots failing in case of issues, using flags:
 
-* `--fail-on-cycles`: fail if there are dependency cycles
-* `--fail-if-changed`: fail if the generated diagrams has changed
+- `--fail-on-cycles`: fail if there are dependency cycles
+- `--fail-if-changed`: fail if the generated diagrams has changed
 
 ### Re-generate on every GitHub push
 
@@ -102,11 +102,21 @@ formatted as [glob](https://pub.dev/packages/glob) syntax.
 
 For example, to generate the diagrams:
 
-* only for the root `lib/` folder: `dart run layerlens --only "lib"`
-* only for the root `lib/` folder: `dart run layerlens --only "lib"`
-* for all folders except `l10n/`: `dart run layerlens --except "l10n"`
-* only for root `lib/` and it's subfolder: run `layerlens --only "lib" --only "lib/subfolder1"`
-* for the entire subtree for a given subfolder: `layerlens --only "lib/subfolder1" --only "lib/subfolder1/**"`
+- only for the root `lib/` folder: `dart run layerlens --only "lib"`
+- only for the root `lib/` folder: `dart run layerlens --only "lib"`
+- for all folders except `l10n/`: `dart run layerlens --except "l10n"`
+- only for root `lib/` and it's subfolder: run `layerlens --only "lib" --only "lib/subfolder1"`
+- for the entire subtree for a given subfolder: `layerlens --only "lib/subfolder1" --only "lib/subfolder1/**"`
+
+## Alternative layout engines
+
+For more complex dependency graphs, you may want to use the [`elk` layout engine](https://mermaid.js.org/syntax/flowchart.html#renderer) in your Mermaid diagrams:
+
+|`--layout=dagre` (default)|`--layout=elk`|
+|:---:|:---:|
+|![Dagre layout engine](./screenshots/DEFAULT%20LAYOUT.png)|![Elk Layout Engine](./screenshots/ELK%20LAYOUT.png)|
+
+>*Note: Some VSCode Markdown plugins do not support the `elk` engine yet, and will not produce different outputs to the default!.*
 
 ## Supported languages
 
