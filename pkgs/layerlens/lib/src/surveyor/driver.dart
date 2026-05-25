@@ -26,6 +26,21 @@ class DriverCommands {
   bool continueAnalyzing = true;
 }
 
+// Under `flutter test`, `Platform.resolvedExecutable` is `flutter_tester` and
+// analyzer's SDK auto-detection fails. Resolve the real dart-sdk so tests
+// work under both `dart test` and `flutter test`.
+String? _findDartSdk() {
+  final flutterRoot = io.Platform.environment['FLUTTER_ROOT'];
+  if (flutterRoot != null) {
+    final dartSdk = path.join(flutterRoot, 'bin', 'cache', 'dart-sdk');
+    if (io.File(path.join(dartSdk, 'version')).existsSync()) return dartSdk;
+  }
+  final candidate =
+      path.dirname(path.dirname(io.Platform.resolvedExecutable));
+  if (io.File(path.join(candidate, 'version')).existsSync()) return candidate;
+  return null;
+}
+
 class Driver {
   final List<String> sources;
   AstVisitor? visitor;
@@ -52,6 +67,7 @@ class Driver {
       final collection = AnalysisContextCollection(
         includedPaths: [root],
         resourceProvider: resourceProvider,
+        sdkPath: _findDartSdk(),
       );
 
       for (final context in collection.contexts) {
