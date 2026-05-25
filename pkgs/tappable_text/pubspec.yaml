@@ -12,6 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  markdown_widget: ^2.3.2+8
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
