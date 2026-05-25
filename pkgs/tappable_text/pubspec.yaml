@@ -1,5 +1,5 @@
-name: styled_link
-description: "Flutter package for creating consistently looking clickable texts across the app."
+name: tappable_text
+description: "Flutter package for creating consistently looking tappable texts across the app."
 version: 0.0.1-dev001
 homepage:
 

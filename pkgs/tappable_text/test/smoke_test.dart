@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:styled_link/styled_link.dart';
+import 'package:tappable_text/tappable_text.dart';
 
 void main() {
   test('adds one to input values', () {

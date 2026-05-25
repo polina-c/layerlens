@@ -6,5 +6,5 @@ environment:
 
 workspace:
   - pkgs/layerlens
-  - pkgs/styled_link
+  - pkgs/tappable_text
   - pkgs/layerlens/example
