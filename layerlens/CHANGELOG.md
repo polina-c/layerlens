@@ -1,4 +1,7 @@
-# 3.0.4-dev001
+# 3.0.5
+
+* Stopped depending on `surveyor`.
+* Removed `surveyor` related build constraints.
 
 # 3.0.4
 
