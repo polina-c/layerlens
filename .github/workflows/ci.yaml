@@ -34,17 +34,19 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
+      # Each `run:` step runs in a fresh shell, so a plain bash variable
+      # wouldn't survive to the next step. Writing to $GITHUB_ENV exports
+      # PACKAGES so the Test and Cycles steps below can read it.
       - name: Find packages
-        id: packages
         run: |
           pkgs=$(find . -mindepth 2 -name pubspec.yaml -not -path '*/.dart_tool/*' | xargs -n1 dirname | sort)
           echo "Found packages:"
           echo "$pkgs"
           {
-            echo "list<<EOF"
+            echo "PACKAGES<<EOF"
             echo "$pkgs"
             echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          } >> "$GITHUB_ENV"
 
       - name: Test packages
         run: |
@@ -53,7 +55,7 @@ jobs:
             echo "::group::Test $pkg"
             (cd "$pkg" && flutter test)
             echo "::endgroup::"
-          done <<< "${{ steps.packages.outputs.list }}"
+          done <<< "$PACKAGES"
 
       - name: Check for cycles in packages
         run: |
@@ -62,4 +64,4 @@ jobs:
             echo "::group::Cycles $pkg"
             (cd "$pkg" && dart run layerlens --fail-on-cycles --fail-if-changed)
             echo "::endgroup::"
-          done <<< "${{ steps.packages.outputs.list }}"
+          done <<< "$PACKAGES"
