@@ -21,7 +21,6 @@ import 'package:path/path.dart' as p;
 
 import 'cli.dart';
 import 'model.dart';
-import 'surveyor/driver.dart';
 import 'surveyor/visitors.dart';
 
 Future<Dependencies> collectDeps({
