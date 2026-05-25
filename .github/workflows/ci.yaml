@@ -22,6 +22,9 @@ jobs:
           flutter --version
           dart --version
 
+      - name: Precache Flutter engine artifacts
+        run: flutter precache --universal --linux
+
       - name: Install dependencies
         run: flutter pub get
 
