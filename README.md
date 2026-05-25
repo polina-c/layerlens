@@ -4,10 +4,18 @@ Helpful Dart and Flutter packages.
 
 ## Packages
 
-| Package                              | Description                                                                       | Version                                                                                                      |
-| ------------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [layerlens](layerlens/README.md)     | Generate a dependency diagram in every folder of your source code.                | [![package:layerlens](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)       |
-| [styled_link](styled_link/README.md) | Flutter package for creating consistently looking clickable texts across the app. | [![package:styled_link](https://img.shields.io/pub/v/styled_link.svg)](https://pub.dev/packages/styled_link) |
+| Package                              | Description                     | Version                                  |
+| ------------------------------------ | ------------------------------- | ---------------------------------------- |
+| [layerlens](layerlens/README.md)     | Generate a dependency diagrams. | [![package:layerlens][ll-svg]][ll-pub]   |
+| [styled_link](styled_link/README.md) | Style clickable texts.          | [![package:styled_link][sl-svg]][sl-pub] |
+
+
+<!-- References -->
+
+[ll-svg]: https://pub.dev/packages/layerlens-svg
+[ll-pub]: https://pub.dev/packages/layerlens
+[sl-svg]: https://pub.dev/packages/styled_link-svg
+[sl-pub]: https://pub.dev/packages/styled_link
 
 ## Contribute to LayerLens
 
