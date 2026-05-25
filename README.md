@@ -1,12 +1,15 @@
 # LayerLens
 
+Helpful Dart and Flutter packages.
 
+## Packages
 
-[![package:layerlens](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
+| Package                              | Description                                                                       | Version                                                                                                      |
+| ------------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [layerlens](layerlens/README.md)     | Generate a dependency diagram in every folder of your source code.                | [![package:layerlens](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)       |
+| [styled_link](styled_link/README.md) | Flutter package for creating consistently looking clickable texts across the app. | [![package:styled_link](https://img.shields.io/pub/v/styled_link.svg)](https://pub.dev/packages/styled_link) |
 
-
-
-## Contribute to layerlens
+## Contribute to LayerLens
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
 
