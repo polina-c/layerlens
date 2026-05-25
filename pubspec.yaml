@@ -5,6 +5,6 @@ environment:
   sdk: ^3.6.0
 
 workspace:
-  - layerlens
-  - styled_link
-  - layerlens/example
+  - pkgs/layerlens
+  - pkgs/styled_link
+  - pkgs/layerlens/example

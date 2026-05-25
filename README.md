@@ -6,8 +6,8 @@ Helpful Dart and Flutter packages.
 
 | Package                              | Description                     | Version                                  |
 | ------------------------------------ | ------------------------------- | ---------------------------------------- |
-| [layerlens](layerlens/README.md)     | Generate a dependency diagrams. | [![package:layerlens][ll-svg]][ll-pub]   |
-| [styled_link](styled_link/README.md) | Style clickable texts.          | [![package:styled_link][sl-svg]][sl-pub] |
+| [layerlens](pkgs/layerlens/README.md)     | Generate a dependency diagrams. | [![package:layerlens][ll-svg]][ll-pub]   |
+| [styled_link](pkgs/styled_link/README.md) | Style clickable texts.          | [![package:styled_link][sl-svg]][sl-pub] |
 
 
 <!-- References -->
