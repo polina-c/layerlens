@@ -10,6 +10,7 @@ analyzer.dart-->layering.dart;
 analyzer.dart-->model.dart;
 code_parser.dart-->cli.dart;
 code_parser.dart-->model.dart;
+code_parser.dart-->surveyor;
 generator.dart-->cli.dart;
 generator.dart-->model.dart;
 layering.dart-->model.dart;
