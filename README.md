@@ -1,6 +1,6 @@
 # LayerLens
 
-Keep your code well structured.
+
 
 [![package:layerlens](https://img.shields.io/pub/v/layerlens.svg)](https://pub.dev/packages/layerlens)
 

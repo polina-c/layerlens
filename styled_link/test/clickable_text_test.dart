@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:clickable_text/clickable_text.dart';
+import 'package:styled_link/styled_link.dart';
 
 void main() {
   test('adds one to input values', () {
