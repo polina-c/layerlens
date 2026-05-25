@@ -63,7 +63,7 @@ jobs:
         run: |
           set -e
           while IFS= read -r pkg; do
-            if [[ "$pkg" == "pkgs/layerlens/example" ]]; then
+            if [[ "$pkg" == "./pkgs/layerlens/example" ]]; then
               echo "Skip cycles check for $pkg (intentional cycles)"
               continue
             fi
