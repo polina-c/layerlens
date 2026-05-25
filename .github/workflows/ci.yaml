@@ -1,10 +1,10 @@
-name: Dart
+name: CI
 
 on:
   push:
-    branches: [ main]
+    branches: [main]
   pull_request:
-    branches: [ main]
+    branches: [main]
 
 jobs:
   CI:
@@ -12,20 +12,18 @@ jobs:
     steps:
       # These are the latest versions of the github actions; dependabot will
       # send PRs to keep these up-to-date.
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1.3
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
         with:
-          sdk: main
+          channel: master
 
       - name: Version
-        run: dart --version
+        run: |
+          flutter --version
+          dart --version
 
       - name: Install dependencies
-        run: dart pub get
-
-      - name: Install example dependencies
-        working-directory: example
-        run: dart pub get
+        run: flutter pub get
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
@@ -33,8 +31,14 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Run tests
+      - name: Test layerlens
+        working-directory: layerlens
         run: dart test
 
+      - name: Test styled_link
+        working-directory: styled_link
+        run: flutter test
+
       - name: Check for cycles
+        working-directory: layerlens
         run: dart run layerlens --fail-on-cycles --fail-if-changed
