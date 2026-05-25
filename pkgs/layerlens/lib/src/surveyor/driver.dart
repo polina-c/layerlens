@@ -35,8 +35,7 @@ String? _findDartSdk() {
     final dartSdk = path.join(flutterRoot, 'bin', 'cache', 'dart-sdk');
     if (io.File(path.join(dartSdk, 'version')).existsSync()) return dartSdk;
   }
-  final candidate =
-      path.dirname(path.dirname(io.Platform.resolvedExecutable));
+  final candidate = path.dirname(path.dirname(io.Platform.resolvedExecutable));
   if (io.File(path.join(candidate, 'version')).existsSync()) return candidate;
   return null;
 }
