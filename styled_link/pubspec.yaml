@@ -3,6 +3,8 @@ description: "Flutter package for creating consistently looking clickable texts 
 version: 0.0.1-dev001
 homepage:
 
+resolution: workspace
+
 environment:
   sdk: ^3.12.0-285.0.dev
   flutter: ">=1.17.0"

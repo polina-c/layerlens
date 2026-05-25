@@ -34,7 +34,6 @@ void assignLayers(SourceFolder folder) {
   folder.totalInversions = folder.localInversions + inversionsInSubfolders;
 }
 
-// TODO(polina-c): convert to record.
 class _NodesAndValue {
   final Set<SourceNode> nodes;
   final int value;
