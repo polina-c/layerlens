@@ -73,7 +73,7 @@ class SourceFolder extends SourceNode {
 }
 
 class SourceFile extends SourceNode {
-  SourceFile(FullName fullName) : super.parse(fullName);
+  SourceFile(super.fullName) : super.parse();
 
   final Set<SourceFile> dependencies = {};
 }
