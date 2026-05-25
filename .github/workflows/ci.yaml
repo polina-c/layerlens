@@ -57,10 +57,16 @@ jobs:
             echo "::endgroup::"
           done <<< "$PACKAGES"
 
+      # The example package has intentional cycles to demo layerlens, so
+      # skip it here.
       - name: Check for cycles in packages
         run: |
           set -e
           while IFS= read -r pkg; do
+            if [[ "$pkg" == "pkgs/layerlens/example" ]]; then
+              echo "Skip cycles check for $pkg (intentional cycles)"
+              continue
+            fi
             echo "::group::Cycles $pkg"
             (cd "$pkg" && dart run layerlens --fail-on-cycles --fail-if-changed)
             echo "::endgroup::"
