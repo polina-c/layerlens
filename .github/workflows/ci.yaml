@@ -47,10 +47,6 @@ jobs:
         run: |
           set -e
           while IFS= read -r pkg; do
-            if [ ! -d "$pkg/test" ]; then
-              echo "Skip $pkg (no test/ dir)"
-              continue
-            fi
             echo "::group::Test $pkg"
             (cd "$pkg" && flutter test)
             echo "::endgroup::"
