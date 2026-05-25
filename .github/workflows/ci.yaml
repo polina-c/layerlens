@@ -31,14 +31,36 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Test layerlens
-        working-directory: layerlens
-        run: dart test
+      - name: Find packages
+        id: packages
+        run: |
+          pkgs=$(find . -mindepth 2 -name pubspec.yaml -not -path '*/.dart_tool/*' | xargs -n1 dirname | sort)
+          echo "Found packages:"
+          echo "$pkgs"
+          {
+            echo "list<<EOF"
+            echo "$pkgs"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
-      - name: Test styled_link
-        working-directory: styled_link
-        run: flutter test
+      - name: Test packages
+        run: |
+          set -e
+          while IFS= read -r pkg; do
+            if [ ! -d "$pkg/test" ]; then
+              echo "Skip $pkg (no test/ dir)"
+              continue
+            fi
+            echo "::group::Test $pkg"
+            (cd "$pkg" && flutter test)
+            echo "::endgroup::"
+          done <<< "${{ steps.packages.outputs.list }}"
 
-      - name: Check for cycles
-        working-directory: layerlens
-        run: dart run layerlens --fail-on-cycles --fail-if-changed
+      - name: Check for cycles in packages
+        run: |
+          set -e
+          while IFS= read -r pkg; do
+            echo "::group::Cycles $pkg"
+            (cd "$pkg" && dart run layerlens --fail-on-cycles --fail-if-changed)
+            echo "::endgroup::"
+          done <<< "${{ steps.packages.outputs.list }}"
