@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:markdown_widget/markdown_widget.dart';
 import 'app_move.dart';
-import 'clickable.dart';
+import 'tappable_text.dart';
 
 Widget _defaultLinkBuilder(String text, String? href, String title) {
   if (href == null) {
     return Text(text);
   }
-  final button = ClickableText(
+  final button = TappableText(
     text: text,
     link: href,
     baseStyle: AppTexts.normalLink,
-    minimalPadding: true,
   );
 
   return Shift(button, 0, 5);

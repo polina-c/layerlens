@@ -19,8 +19,8 @@ void _copyToClipboard(String substring, BuildContext context) {
   Clipboard.setData(ClipboardData(text: substring));
 }
 
-class ClickableText extends StatelessWidget {
-  const ClickableText({
+class TappableText extends StatelessWidget {
+  const TappableText({
     super.key,
     required this.link,
     required this.text,
@@ -97,7 +97,7 @@ class MaybeClickableText extends StatelessWidget {
         maxLines: null,
       );
     }
-    return ClickableText(
+    return TappableText(
       text: text,
       link: link!,
       baseStyle: style,
