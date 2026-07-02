@@ -1,0 +1,15 @@
+name: seo_splash
+description: Splash screen for Flutter web applications, Dart part.
+version: 0.0.1-wip001
+repository: https://github.com/polina-c/layerlens/tree/main/pkgs/seo_splash
+
+resolution: workspace
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

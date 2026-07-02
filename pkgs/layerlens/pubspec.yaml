@@ -1,10 +1,7 @@
 name: layerlens
 version: 3.0.5
 description: Generate a dependency diagram in every folder of your source code.
-repository: https://github.com/polina-c/layerlens
-
-executables:
-  layerlens:
+repository: https://github.com/polina-c/layerlens/tree/main/pkgs/layerlens
 
 resolution: workspace
 

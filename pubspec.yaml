@@ -6,5 +6,8 @@ environment:
 
 workspace:
   - pkgs/layerlens
-  - pkgs/tappable_text
   - pkgs/layerlens/example
+  - pkgs/seo_splash
+  - pkgs/seo_splash_flutter
+  - pkgs/tappable_text
+  
