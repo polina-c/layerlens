@@ -1,6 +1,6 @@
 name: tappable_text
 description: "Flutter package for creating consistently looking tappable texts across the app."
-version: 0.0.1-dev001
+version: 0.0.1-wip001
 homepage:
 
 resolution: workspace
