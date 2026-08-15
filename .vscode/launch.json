@@ -8,13 +8,13 @@
             "name": "layerlens",
             "request": "launch",
             "type": "dart",
-            "program": "bin/layerlens.dart",
+            "program": "pkgs/layerlens/bin/layerlens.dart",
         },
         {
             "name": "example",
             "request": "launch",
             "type": "dart",
-            "program": "bin/layerlens.dart",
+            "program": "pkgs/layerlens/bin/layerlens.dart",
             "args": [
                 "--path=example",
             ],
