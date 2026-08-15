@@ -108,6 +108,16 @@ For example, to generate the diagrams:
 * only for root `lib/` and it's subfolder: run `layerlens --only "lib" --only "lib/subfolder1"`
 * for the entire subtree for a given subfolder: `layerlens --only "lib/subfolder1" --only "lib/subfolder1/**"`
 
+## Alternative layout engines
+
+For more complex dependency graphs, you may want to use the [`elk` layout engine](https://mermaid.js.org/syntax/flowchart.html#renderer) in your Mermaid diagrams:
+
+|`--layout=dagre` (default)|`--layout=elk`|
+|:---:|:---:|
+|![Dagre layout engine](./example/screenshots/DEFAULT%20LAYOUT.png)|![Elk Layout Engine](./example/screenshots/ELK%20LAYOUT.png)|
+
+>*Note: GitHub does not support the `elk` engine yet. Official VSCode Markdown preview supports it, but other plugins might not.*
+
 ## Supported languages
 
 While layerlens concepts are language agnostic, for now only `dart` is supported.

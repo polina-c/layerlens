@@ -30,6 +30,7 @@ Future<int> generateLayering({
   required bool failOnCycles,
   required bool failIfChanged,
   required Filter filter,
+  required List<MermaidOption> mermaidOptions,
   ExitCallback exitFn = exit,
 }) async {
   final deps = await collectDeps(
@@ -43,5 +44,6 @@ Future<int> generateLayering({
     filter: filter,
     failIfChanged: failIfChanged,
     failOnCycles: failOnCycles,
+    mermaidOptions: mermaidOptions,
   ).generateFiles();
 }

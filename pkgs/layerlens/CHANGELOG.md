@@ -1,6 +1,7 @@
 # 3.1.0
 
-* added markdown navigation links
+* Added markdown navigation links
+* Added `--layout=[dagre|elk]` option for selecting mermaid layout engine
 
 # 3.0.5
 
