@@ -7,15 +7,11 @@ Helpful Dart and Flutter packages.
 | Package                                       | Description                     | Version                                    |
 | --------------------------------------------- | ------------------------------- | ------------------------------------------ |
 | [layerlens](pkgs/layerlens/README.md)         | Generate a dependency diagrams. | [![package:layerlens][ll-svg]][ll-pub]     |
-| [tappable_text](pkgs/tappable_text/README.md) | Style clickable texts.          | [![package:tappable_text][sl-svg]][sl-pub] |
-
 
 <!-- References -->
 
 [ll-svg]: https://pub.dev/packages/layerlens-svg
 [ll-pub]: https://pub.dev/packages/layerlens
-[tl-svg]: https://pub.dev/packages/tappable_text-svg
-[tl-pub]: https://pub.dev/packages/tappable_text
 
 ## Contribute to LayerLens
 

@@ -1,0 +1,7 @@
+name: crm
+version: 0.0.1-wip01
+description: Work in progress. This version only reserves the package name.
+repository: https://github.com/polina-c/layerlens/tree/main/pkgs/crm/crm
+
+environment:
+  sdk: ^3.6.0
